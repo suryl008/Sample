@@ -1,0 +1,353 @@
+<form [formGroup]="programInfoForm">
+
+  <app-loader *ngIf="isLoaded"></app-loader>
+  <!-- <div *ngIf="isLoaded">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+  </div> -->
+  <div *ngIf="!isLoaded">
+    <div class="row p-3">
+
+      <div class="col-lg-9" style="margin-left: -10px;" *ngIf="!isNew">
+        <h6 *ngIf="isEdit===false">{{programInfoForm.value.grantPgmDesc}}</h6>
+      </div>
+      <div class="col-md-9 col-9" *ngIf="isEdit===true || isNew">
+        <mat-form-field matTooltip="Program name" [matTooltipPosition]="tooltipPosition" class="full-width">
+          <mat-label>Program Name</mat-label>
+          <input autocomplete="off" matInput placeholder="Program name" formControlName="grantPgmDesc" required>
+          <mat-error *ngIf="
+      programInfoForm.controls['grantPgmDesc']?.errors?.required">program name required</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-3">
+        <div id="editIcon">
+          <div>
+            <button class="" *ngIf="isEdit===true && !isNew" (click)="programInfoForm.valid && onSubmit()"
+              mat-raised-button color="primary">Save</button>
+            <button class="" type="button" (click)="programInfoForm.valid && onSubmit()" *ngIf="isNew===true"
+              mat-raised-button color="primary" [disable]="programInfoForm.invalid">Create</button>
+            <button *ngIf="isEdit===false && !isNew" (click)="editProgram()" mat-button color="primary">
+              <mat-icon color="accent" style="font-size: 20px;" class="ft-size">edit</mat-icon>Edit
+            </button>
+            <button *ngIf="isEdit===true || isNew" (click)="cancelprogram()" class="mt-n1" mat-button color="primary">
+              <mat-icon color="accent" class="ft-size">cancel</mat-icon>Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="program-view-section p-2 m-1">
+      <div class="row">
+
+        <div class="col-md-3 col-6">
+          <div *ngIf="!isNew">
+
+            <mat-form-field [disabled]="!isNew" matTooltip="Program code" [matTooltipPosition]="tooltipPosition"
+              class="full-width">
+              <mat-label>Program Code</mat-label>
+
+              <input autocomplete="off" [disabled]="!isNew" matInput placeholder="Program code"
+                value="{{programInfoForm.controls['grantPgm'].value}}" required>
+            </mat-form-field>
+          </div>
+          <mat-form-field *ngIf="isNew" matTooltip="Program code" [matTooltipPosition]="tooltipPosition"
+            class="full-width">
+            <mat-label>Program Code</mat-label>
+
+            <input *ngIf="isNew" autocomplete="off" matInput placeholder="Program code" formControlName="grantPgm"
+              required>
+            <mat-error *ngIf="
+          programInfoForm.controls['grantPgm']?.errors?.required">program code required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-6">
+          <mat-form-field matTooltip="Example : Choose an option from the drop down"
+            [matTooltipPosition]="tooltipPosition" class="full-width">
+            <mat-label>Program assigned to</mat-label>
+            <mat-select (selectionChange)="onChangeOffice($event)" formControlName="offCd">
+              <mat-option style="color: rgb(9, 2, 2);" *ngFor="let office of programOfficeList" [value]="office.offCd">
+                {{office.offName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="programInfoForm.controls['offCd'].invalid">program office required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 col-6">
+          <mat-form-field matTooltip="Program start year" [matTooltipPosition]="tooltipPosition">
+            <mat-label>Program Start Year</mat-label>
+            <input autocomplete="off" matInput placeholder="Program start year" type="number" formControlName="rvwStart"
+              required>
+            <mat-error *ngIf="programInfoForm.controls['rvwStart']?.errors?.required">program start year required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+
+          <label class="col-sm-12 col-form-label custom-label">{{programBaseCtl? 'GEMS/MARS':'GEMS
+            Lite'}}
+          </label>
+        </div>
+        <div class="col-md-3">
+          <mat-slide-toggle [labelPosition]="myLabelPosition" [checked]="programBaseCtl === true ? true : false"
+            (change)="programBaseCtl=!programBaseCtl">
+          </mat-slide-toggle>
+        </div>
+      </div>
+      <div class="panel-gems-lite rounded p-4 pt-2" *ngIf="!programBaseCtl">
+        <div class="row">
+          <div class="col-md-4">
+            <label class="col-sm-12 col-form-label">Do you plan on conducting any type of reviews/scoring in
+              GEMS/MARS?</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" [(ngModel)]="planconductreviewCtl"></mat-slide-toggle>
+          </div>
+          <div class="col-md-4">
+            <label class="col-sm-12 col-form-label">Do you plan on spending a <br />findings report or GAN?</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" [(ngModel)]="planspendfindingsrptCtl">
+            </mat-slide-toggle>
+          </div>
+          <div class="col-md-4">
+            <label class="col-sm-12 col-form-label">Are you linking an application to <br /> each review?</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" [(ngModel)]="linkappreviewCtl"></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+      <div class="panel-gems-full rounded p-4 pt-2" *ngIf="programBaseCtl">
+        <div class="row">
+          <div class="col-md-3">
+            <label class="col-sm-12 col-form-label custom-label">Consortium Applicability</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" formControlName="consAppl"></mat-slide-toggle>
+          </div>
+          <div class="col-md-3">
+            <label class="col-sm-12 col-form-label custom-label">Program Source</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" formControlName="pgmSrc"></mat-slide-toggle>
+          </div>
+          <div class="col-md-3">
+            <label class="col-sm-12 col-form-label custom-label">Require Email Confirmation</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" formControlName="confirmEmailReq">
+            </mat-slide-toggle>
+          </div>
+          <div class="col-md-3">
+            <label class="col-sm-12 col-form-label custom-label">Send Email Confirmation to RL</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" formControlName="sendEmailConfirm">
+            </mat-slide-toggle>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-3 mt-3">
+            <mat-form-field matTooltip="CFDA Number" [matTooltipPosition]="tooltipPosition" class="full-width">
+              <mat-label>CFDA Number</mat-label>
+              <input autocomplete="off" matInput placeholder="CFDA Number" formControlName="cfdaNo">
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <label class="col-sm-12 col-form-label custom-label">GEMS Access Request</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition1" [checked]="recStat === true ? true : false"
+              (change)="recStat=!recStat">
+              {{recStat? 'Active':'Inactive'}}</mat-slide-toggle>
+          </div>
+          <div class="col-md-6 mt-3">
+            <mat-form-field matTooltip="Comments" [matTooltipPosition]="tooltipPosition" class="full-width">
+              <mat-label>Comments</mat-label>
+              <textarea class="" autocomplete="off" matInput placeholder="Comments" (change)="onChangeComment($event)"
+                value={{comments}}></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <hr />
+        <div class="row mt-1">
+          <div class="col-md-3">
+            <label class="col-form-label custom-label">Do you need a customer review type name?</label>
+          </div>
+          <div class="col-md-3">
+
+            <mat-slide-toggle [labelPosition]="myLabelPosition" [checked]="customereviewCtl === true ? true : false"
+              (change)="customereviewCtl=!customereviewCtl" (click)="onReviewTypeChange()"></mat-slide-toggle>
+          </div>
+        </div>
+        <hr />
+        <div class="row mt-1">
+          <div class="col-md-3">
+            <label class="col-form-label custom-label">Naming Conventions</label>
+          </div>
+          <div class="col-md-3">
+            <mat-slide-toggle [labelPosition]="myLabelPosition" [checked]="customeNamingCtrl === true ? true : false"
+              (change)="customeNamingCtrl=!customeNamingCtrl">
+            </mat-slide-toggle>
+          </div>
+        </div>
+        <div>
+          <div class="row mt-3" *ngIf="customeNamingCtrl">
+            <div class="col-md-3">
+              <mat-form-field matTooltip="Sub-Recipient / Code" [matTooltipPosition]="tooltipPosition"
+                class="full-width">
+                <mat-label>Sub-Recipient / Code</mat-label>
+                <input autocomplete="off" matInput placeholder="Sub-Recipient / Code" formControlName="subCdNm">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field matTooltip="Parent" [matTooltipPosition]="tooltipPosition" class="full-width">
+                <mat-label>Parent</mat-label>
+                <input autocomplete="off" matInput placeholder="Parent" formControlName="subPNm">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field matTooltip="Child" [matTooltipPosition]="tooltipPosition" class="full-width">
+                <mat-label>Child</mat-label>
+                <input autocomplete="off" matInput placeholder="Child" formControlName="subCNm">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field matTooltip="Findings Report" [matTooltipPosition]="tooltipPosition" class="full-width">
+                <mat-label>Findings Report</mat-label>
+                <input autocomplete="off" matInput placeholder="Findings Report" formControlName="findRptNm">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field matTooltip="Compliance Plan" [matTooltipPosition]="tooltipPosition" class="full-width">
+                <mat-label>Compliance Plan</mat-label>
+                <input autocomplete="off" matInput placeholder="Compliance Plan" formControlName="compPlanNm">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field matTooltip="Completion Evidance" [matTooltipPosition]="tooltipPosition"
+                class="full-width">
+                <mat-label>Completion Evidance</mat-label>
+                <input autocomplete="off" matInput placeholder="Completion Evidance" formControlName="compEviNm">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row mt-1">
+          <div class="col-md-3">
+            <label class="col-form-label custom-label">Consolidated Review</label>
+          </div>
+          <div class="col-md-3">
+            <mat-slide-toggle [labelPosition]="myLabelPosition"
+              [checked]="consolidatedReviewsCtrl === true ? true : false"
+              (change)="consolidatedReviewsCtrl=!consolidatedReviewsCtrl">
+            </mat-slide-toggle>
+          </div>
+        </div>
+        <div class="row mt-4" *ngIf="consolidatedReviewsCtrl">
+          <div class="col-md-3">
+            <label class="col-sm-12 col-form-label custom-label">Consolidated Review Enabled</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" formControlName="consolidatedReviewEnabled">
+            </mat-slide-toggle>
+          </div>
+          <div class="col-md-3 mt-3">
+            <mat-form-field matTooltip="Review Type Name" [matTooltipPosition]="tooltipPosition" class="full-width">
+              <mat-label>Review Type Name</mat-label>
+              <input autocomplete="off" matInput placeholder="Review Type Name"
+                formControlName="consolidatedReviewTypeName">
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 mt-3">
+            <mat-form-field matTooltip="Review Name" [matTooltipPosition]="tooltipPosition" class="full-width">
+              <mat-label>Review Name</mat-label>
+              <input autocomplete="off" matInput placeholder="Review Name" formControlName="consolidatedReviewName">
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <label class="col-sm-12 col-form-label custom-label">Add User as Review Lead</label>
+            <mat-slide-toggle [labelPosition]="myLabelPosition" formControlName="consolidatedReviewAutoAddReviewLead"
+              color="green">
+            </mat-slide-toggle>
+          </div>
+        </div>
+        <hr />
+        <mat-card>
+
+
+          <div class="row p-1 ">
+            <div class="col-md-8 float-right">
+              <h6>Users</h6>
+            </div>
+            <div class="col-md-2  float-right" *ngIf="!isNew ">
+              <mat-form-field class="">
+                <input matInput (keyup)="applyFilter($any($event.target).value)" placeholder="Filter">
+              </mat-form-field>
+            </div>
+            <div class="col-md-1 ms-4 mt-1 float-right" *ngIf="isEdit || isNew">
+              <button (click)="openAddUser(assignedContactNameLists)" class="mt-1" mat-button color="primary">
+                <mat-icon color="accent">add</mat-icon>Add
+              </button>
+            </div>
+
+
+          </div>
+
+
+          <!-- ----------------------------Users table----------------------------------->
+          <div class="mat-elevation-z8 table-responsive mb-4" *ngIf="dataSourceUsers">
+            <table class="w-100 table-hover" #table mat-table [dataSource]="dataSourceUsers" matSort>
+
+
+
+              <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Name </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.fullName}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="userRole">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Area of Responsbility </th>
+                <td mat-cell *matCellDef="let element;let indexOfelement=index;">
+
+                  <mat-form-field>
+                    <mat-select [(value)]="element.pgmPerms[0].permCd" [disabled]="!isEdit && !isNew">
+                      <mat-option style="color: rgb(9, 2, 2);"
+                        *ngFor="let areaOfResponsbility of areaOfResponsbilityList[indexOfelement]"
+                        [value]="areaOfResponsbility.refCode">
+                        {{areaOfResponsbility.refDesc + " (" + areaOfResponsbility.refCode + ")"}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="userDsg">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Consolidated Review Responsbility </th>
+                <td mat-cell *matCellDef="let element;let indexOfelement=index;">
+                  <mat-form-field>
+                    <mat-select [(value)]="element.pgmPerms[0].consolidatedRvwPermCd" [disabled]="!isEdit && !isNew">
+                      <mat-option style="color: rgb(9, 2, 2);"
+                        *ngFor="let consolReviewResponsbility of consolReviewResponsbilityList[indexOfelement]"
+                        [value]="consolReviewResponsbility.refCode">
+                        {{consolReviewResponsbility.refDesc + " (" + consolReviewResponsbility.refCode + ")"}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="userEmail">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.userEmail}}
+
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Delete">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element">
+                  <a *ngIf="isEdit || isNew" [disabled]="!isEdit && !isNew" (click)="openDialog(element)">
+                    <mat-icon [ngClass]="{'disable':!isEdit}" color="warn">delete</mat-icon>
+                  </a>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsUsers"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsUsers;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</form>

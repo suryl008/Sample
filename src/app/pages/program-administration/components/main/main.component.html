@@ -1,0 +1,62 @@
+<div class="container-fluid program-detail-view">
+  <div class="row" *ngIf="isProgramView">
+    <div class="col-sm-12 col-md-12 program-info-bar" id="program-info-bar">
+      <div *ngIf="program" class="clearfix p-0 px-1">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="title-program pt-1">{{ program ? program.grantPgmDesc + " (" + program.grantPgm + ")" : "" }}
+            </h1>
+          </div>
+          <div class="col-md-5 fr review_type_section">
+            <a class="fr col-md-1 dni " routerLink="/program/review/{{ programId }}"
+              [queryParams]="{ id: programId, review: reviewType }">
+              <mat-icon class="white-icon">open_in_new</mat-icon>
+            </a>
+            <select class="form-select col-md-4 dni fr review_type_select" value="reviewType" name="review_type"
+              id="review_type" title="Select Review Type" (change)="changeReviewType($event.target)">
+              <option *ngFor="let rvw of program.pgmRvwInfos" value="{{rvw.rvwType}}"
+                [selected]="rvw.rvwType === reviewType">
+                {{ rvw.rvwDesc }}
+              </option>
+            </select>
+            <h2 class="col-md-7 tar fr title-review pt-2 dni">
+              Review Type
+            </h2>
+            <button mat-button="" (click)="navigateToAddNewReview()" color="primary"
+              class="mat-focus-indicator mt-1 mat-button mat-button-base mat-primary fr col-md-1 add-new-review-btn "><span
+                class="mat-button-wrapper">
+                <mat-icon role="img" color="accent" class="mat-icon notranslate mat-accent material-icons"
+                  aria-hidden="true" data-mat-icon-type="font">add</mat-icon>Add New
+              </span>
+            </button>
+            <div class="col-md-4 fr review_type_mat_select">
+              <mat-form-field appearance="fill">
+                <mat-label>Review Type</mat-label>
+                <mat-select title="Select Review Type" (selectionChange)="changeReviewType($event)"
+                  value="{{reviewType}}" name="review_type">
+                  <mat-option *ngFor="let rvw of program.pgmRvwInfos" value="{{rvw.rvwType}}"
+                    [selected]="rvw.rvwType === reviewType">
+                    {{ rvw.rvwDesc }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!program">
+        <h5>Setup new Program</h5>
+      </div>
+    </div>
+  </div>
+  <div class="row program-content">
+    <div class="col-sm-3 col-md-3 col-lg-2 sidebar pl-0" *ngIf="isProgramView">
+      <program-sidebar></program-sidebar>
+    </div>
+    <div class="main" [ngClass]="{
+        'col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 col-lg-10 col-md-offset-1': isProgramView
+      }">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

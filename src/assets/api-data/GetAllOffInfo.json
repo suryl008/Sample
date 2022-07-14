@@ -1,0 +1,77 @@
+[
+  {
+    "agencyId": 0,
+    "offCd": "000000",
+    "offName": "Michigan Department of Education"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "AE",
+    "offName": "Workforce Development Agency"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "CNAP",
+    "offName": "Child Nutrition Program"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "ETDC",
+    "offName": "Office of Technology"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OCSS",
+    "offName": "Office of School Support"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OCTPA",
+    "offName": "Mic Dep of Edu5"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OEII",
+    "offName": "Office of Education Innovation"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OFS",
+    "offName": "Office of Field Services"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OFSA",
+    "offName": "Office of Special Education"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OGS",
+    "offName": "Office of Great Start"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OPPS",
+    "offName": "Office of Professional Services"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OPS",
+    "offName": "Mic Dep of Edu1"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OSA",
+    "offName": "Office of Field Service A"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "OSPE",
+    "offName": "Office of Support Services"
+  },
+  {
+    "agencyId": 0,
+    "offCd": "SS",
+    "offName": "Office of Career Services"
+  }
+]

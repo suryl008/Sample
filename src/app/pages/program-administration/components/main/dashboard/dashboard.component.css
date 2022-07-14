@@ -1,0 +1,18 @@
+.hide {
+  display: none;
+}
+
+.example-full-width {
+  width: 50%;
+}
+
+.full-width {
+  width: 100%;
+}
+.material-icons.md-12 { font-size: 12px; } 
+.alert .alert-icon {
+  display: block;
+  float: left;
+  margin-right: 10px;
+  margin-top: -1px;
+}

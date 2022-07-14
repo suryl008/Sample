@@ -1,0 +1,14 @@
+[
+  {
+    "pgmMiscFldsId": 1,
+    "fieldName": "typeofreview",
+    "mergeFld": "typeofreview",
+    "hasFldData": true
+  },
+  {
+    "pgmMiscFldsId": 2,
+    "fieldName": "review lead",
+    "mergeFld": "rl",
+    "hasFldData": true
+  }
+]

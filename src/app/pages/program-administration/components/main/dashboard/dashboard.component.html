@@ -1,0 +1,279 @@
+<section class="container-fluid program-dashboard mt-1" role="main"
+  [ngClass]="{'program-selected': !(!selectedSearchProgram?.grantPgmId && !selectedSearchProgram?.length)}">
+
+  <div class="container" *ngIf="!selectedSearchProgram?.grantPgmId && !selectedSearchProgram?.length">
+    <div class="col-lg-12 mb-1">
+      <div class="alert alert-info">
+        <div class="message">
+          <div class="alert-icon"><span class="material-icons">info</span></div>
+          <span class="d-inline">Please select a program from the below search</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container search-bar mt-4">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div appearance="outline" class="search-results-count-box">
+          <mat-form-field class="full-width">
+            <input matInput required [(ngModel)]="selectedSearchProgram" [matAutocomplete]="auto"
+              [formControl]="searchProgramsCtrl" placeholder="Min 3 Characters Ex. Ogs" />
+            <button *ngIf="selectedSearchProgram" matSuffix mat-icon-button aria-label="Clear"
+              (click)="clearSelection()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <div style="margin-bottom: -30px">
+              <mat-icon style="margin-top: -2px" matSuffix></mat-icon>
+            </div>
+            <span matSuffix>
+              <mat-icon matSuffix>search</mat-icon>
+            </span>
+            <mat-label>Select Program</mat-label>
+            <mat-autocomplete [panelWidth]="480" #auto="matAutocomplete" (optionSelected)="onSelected()"
+              [displayWith]="displayWith">
+              <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+              <ng-container *ngIf="!isLoading">
+                <mat-option *ngFor="let program of filteredPrograms" [value]="program">
+                  <span><b>{{program.grantPgmDesc}}</b> ({{program.grantPgm}})</span>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </mat-form-field>
+          <div class="col-md-12 mt-1 mb-4 no-program-section">
+            <p class="mb-0">
+              <span>If program doesn't exists,</span>
+              <button class="btn btn-primary btn-rounded btn-sm my-0 waves-effect waves-light setup-pgm-btn mx-2"
+                (click)="newProgramInfo()" type="button">
+                Create a new program <span class="material-icons d-inline md-12">open_in_new</span>
+              </button>
+            </p>
+          </div>
+          <ng-container *ngIf="errorMsg;">
+            {{errorMsg}}
+          </ng-container>
+
+          <!-- <ng-container *ngIf="errorMsg; else elseTemplate">
+            {{errorMsg}}
+          </ng-container> -->
+          <!-- <ng-template #elseTemplate>
+            <div *ngIf="selectedSearchProgram?.grantPgmDesc">
+              <div>
+                <h3>Selected Program: {{selectedSearchProgram?.grantPgmDesc}}</h3>
+                <ul>
+                  <li>Selected grantPgmId: {{selectedSearchProgram?.grantPgmId}}</li>
+                  <li>Selected grantPgm: {{selectedSearchProgram?.grantPgm}}</li>
+                </ul>
+              </div>
+            </div>
+          </ng-template> -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+    </div>
+  </div>
+
+  <div class="dni">
+    <code>
+      <pre class="selectedProgram">{{ selectedProgram | json }}</pre>
+      <pre class="selectedProgramRvwTypes">{{ selectedProgramRvwTypes | json }}</pre>
+    </code>
+  </div>
+
+  <div class="container min-vh-100" *ngIf="selectedSearchProgram?.grantPgmId">
+    <div class="row main-program-widgets">
+      <div class="col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-header container-fluid">
+            <div class="row">
+              <div class="col-md-11">
+                <h6>Program Info</h6>
+              </div>
+              <div class="col-md-1 float-right dni">
+                <i class="fa fa-cog" title="Program Info and Theme Selection"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Program Info</h5>
+            <p class="card-text">
+              {{ selectedSearchProgram.grantPgmDesc }}
+            </p>
+            <a class="btn btn-outline-primary btn-sm" (click)="selectedProgramInfo()">
+              View Program Info
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-4 disabled-card">
+        <div class="card">
+          <div class="card-header container-fluid">
+            <div class="row">
+              <div class="col-md-11">
+                <h6>Sub-recipient Selection</h6>
+              </div>
+              <div class="col-md-1 float-right dni">
+                <i class="fa fa-cog" title="Sub-recipient Selection"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Sub-recipient Selection</h5>
+            <p class="card-text">{{ selectedSearchProgram.grantPgmDesc }}</p>
+            <a routerLink="/program/{{ selectedSearchProgram.grantPgmId }}/sub-recipient"
+              [queryParams]="{ id: selectedSearchProgram.grantPgmId }" class="btn btn-outline-primary btn-sm">
+              View Sub-recipient
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-4 disabled-card">
+        <div class="card">
+          <div class="card-header container-fluid">
+            <div class="row">
+              <div class="col-md-11">
+                <h6>Release Program</h6>
+              </div>
+              <div class="col-md-1 float-right dni">
+                <i class="fa fa-cog" title="Release Program"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Release Program</h5>
+            <p class="card-text">{{ selectedSearchProgram.grantPgmDesc }}</p>
+            <a routerLink="/program/{{ selectedSearchProgram.grantPgmId }}/release"
+              [queryParams]="{ id: selectedSearchProgram.grantPgmId }" class="btn btn-outline-primary btn-sm">
+              View Release Program
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="col-lg-12 mb-4 rvw-type-list">
+        <li *ngFor="let reviewType of selectedProgramRvwTypes; let i = index" class="rvwType-{{ i }}">
+
+          <div class="row bg-warning ds-u-lg-padding--1 ds-u-lg-margin-bottom--2 rounded">
+            <div class="col-10">
+              <h4 title="Review Type" class="h4">{{ reviewType.rvwDesc }}</h4>
+            </div>
+            <div class="col-2 float-right ds-u-lg-text-align--right">
+              <!-- <a class="btn btn-outline-primary btn-sm" (click)="selectedReviewInfo()">
+                View Review Info
+              </a> -->
+              <a routerLink="/program/review/{{ selectedSearchProgram.grantPgmId }}"
+                [queryParams]="{ id: selectedSearchProgram.grantPgmId, review: reviewType.rvwType }"
+                class="btn btn-outline-primary btn-sm">
+                View review info
+              </a>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header container-fluid">
+                  <div class="row">
+                    <div class="col-md-11">
+                      <h6>Master Document List</h6>
+                    </div>
+                    <div class="col-md-1 float-right dni">
+                      <i class="fa fa-cog" title="Master Document List"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Master Document List</h5>
+                  <p class="card-text">{{ selectedSearchProgram.grantPgmDesc }}</p>
+                  <a routerLink="/program/document/{{ selectedSearchProgram.grantPgmId }}"
+                    [queryParams]="{ id: selectedSearchProgram.grantPgmId, review: reviewType.rvwType }"
+                    class="btn btn-outline-primary btn-sm">
+                    View Master Document List
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header container-fluid">
+                  <div class="row">
+                    <div class="col-md-11">
+                      <h6>Findings Setup</h6>
+                    </div>
+                    <div class="col-md-1 float-right dni ">
+                      <i class="fa fa-cog" title="Findings Setup"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Findings Setup</h5>
+                  <p class="card-text">{{ selectedSearchProgram.grantPgmDesc }}</p>
+                  <a routerLink="/program/{{ selectedSearchProgram.grantPgmId }}/findings"
+                    [queryParams]="{ id: selectedSearchProgram.grantPgmId, review: reviewType.pgmRvwId }"
+                    class="btn btn-outline-primary btn-sm">
+                    View Findings
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header container-fluid">
+                  <div class="row">
+                    <div class="col-md-11">
+                      <h6>Findings Rules Setup</h6>
+                    </div>
+                    <div class="col-md-1 float-right dni">
+                      <i class="fa fa-cog" title="Findings Rules Setup"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Findings Rules Setup</h5>
+                  <p class="card-text">{{ selectedSearchProgram.grantPgmDesc }}</p>
+                  <a routerLink="/program/{{ selectedSearchProgram.grantPgmId }}/finding-rules"
+                    [queryParams]="{ id: selectedSearchProgram.grantPgmId, review: reviewType.pgmRvwId }"
+                    class="btn btn-outline-primary btn-sm">
+                    View Finding Rules
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <div class="card-header container-fluid">
+                  <div class="row">
+                    <div class="col-md-11">
+                      <h6>Stage Roles Setup</h6>
+                    </div>
+                    <div class="col-md-1 float-right dni">
+                      <i class="fa fa-cog" title="Stage Roles Setup"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Stage Roles Setup</h5>
+                  <p class="card-text">{{ selectedSearchProgram.grantPgmDesc }}</p>
+                  <a routerLink="/program/{{ selectedSearchProgram.grantPgmId }}/stage-roles"
+                    [queryParams]="{ id: selectedSearchProgram.grantPgmId, review: reviewType.pgmRvwId }"
+                    class="btn btn-outline-primary btn-sm">
+                    View Stage Roles
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+
+</section>
