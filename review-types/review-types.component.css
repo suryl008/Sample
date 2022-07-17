@@ -1,0 +1,11 @@
+.br-r {
+  border-right: 1px solid #ced4da;
+}
+#editIcon {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.edit-icon {
+  color: #1857a4;
+}

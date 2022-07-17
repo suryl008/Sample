@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProgramInfoComponent } from './program-info.component';
+import { ReviewTypesComponent } from './review-types.component';
 
-describe('ProgramInfoComponent', () => {
-  let component: ProgramInfoComponent;
-  let fixture: ComponentFixture<ProgramInfoComponent>;
+describe('ReviewTypesComponent', () => {
+  let component: ReviewTypesComponent;
+  let fixture: ComponentFixture<ReviewTypesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProgramInfoComponent ]
+      declarations: [ ReviewTypesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProgramInfoComponent);
+    fixture = TestBed.createComponent(ReviewTypesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserDialogComponent } from './user-dialog.component';
+import { MetadataDialogComponent } from './metadata-dialog.component';
 
-describe('UserDialogComponent', () => {
-  let component: UserDialogComponent;
-  let fixture: ComponentFixture<UserDialogComponent>;
+describe('MetadataDialogComponent', () => {
+  let component: MetadataDialogComponent;
+  let fixture: ComponentFixture<MetadataDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserDialogComponent ]
+      declarations: [ MetadataDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserDialogComponent);
+    fixture = TestBed.createComponent(MetadataDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
