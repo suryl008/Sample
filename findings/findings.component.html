@@ -1,0 +1,202 @@
+
+
+<form [formGroup]="userForm">
+  <div class="row" style="padding:15px">
+    <div class="col-lg-8">
+  <mat-form-field class="example-chip-list" [style.width.px]="650" appearance="legacy">
+    <mat-label>Citation</mat-label>
+    <mat-chip-list #chipList aria-label="Fruit selection">
+      <mat-chip
+        *ngFor="let fruit of fruits"
+        (removed)="remove(fruit)">
+        {{fruit}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="New fruit..."
+        #fruitInput
+        [formControl]="fruitCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+        {{fruit}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <p style="border: 1px solid #efefef; padding:20px">Google designed Angular as a ground-up rewrite of AngularJS.
+
+    Angular does not have a concept of "scope" or controllers; instead, it uses a hierarchy of components as its primary architectural characteristic.[5]
+    Angular has a different expression syntax, focusing on "[ ]" for property binding, and "( )" for event binding[6]
+    Modularity – much core functionality has moved to modules
+    Angular recommends the use of Microsoft's TypeScript language, which introduces the following features:
+    Static typing, including Generics
+    Annotations</p>
+</div>
+<div class="col-lg-4">
+  <mat-form-field 
+  class="w-100">
+  <mat-label>Citation category</mat-label>
+  <mat-select  required>
+    <mat-option style="color: rgb(9, 2, 2);" 
+      >
+    
+    </mat-option>
+  </mat-select>
+ 
+</mat-form-field> </div>
+</div>
+<div class="row" style="padding:15px">
+  <div class="col-lg-8">
+<mat-form-field class="example-chip-list" [style.width.px]="650" appearance="legacy">
+  <mat-label>Finding</mat-label>
+  <mat-chip-list #chipList aria-label="Fruit selection">
+    <mat-chip
+      *ngFor="let fruit of fruits"
+      (removed)="remove(fruit)">
+      {{fruit}}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      placeholder="New fruit..."
+      #fruitInput
+      [formControl]="fruitCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+      {{fruit}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<p style="border: 1px solid #efefef; padding:20px">Google designed Angular as a ground-up rewrite of AngularJS.
+
+  Angular does not have a concept of "scope" or controllers; instead, it uses a hierarchy of components as its primary architectural characteristic.[5]
+  Angular has a different expression syntax, focusing on "[ ]" for property binding, and "( )" for event binding[6]
+  Modularity – much core functionality has moved to modules
+  Angular recommends the use of Microsoft's TypeScript language, which introduces the following features:
+  Static typing, including Generics
+  Annotations</p>
+</div>
+<div class="col-lg-4">
+<mat-form-field 
+class="w-100">
+<mat-label>Finding category</mat-label>
+<mat-select  required>
+  <mat-option style="color: rgb(9, 2, 2);" 
+    >
+  
+  </mat-option>
+</mat-select>
+
+
+</mat-form-field> 
+<div class="row">
+  <label class="float-left">Edit</label>
+  <mat-slide-toggle 
+    class="float-right">
+  </mat-slide-toggle>
+</div>
+<div class="row">
+  <label class="float-left">ARC</label>
+  <mat-slide-toggle 
+    class="float-right">
+  </mat-slide-toggle>
+</div></div>
+</div>
+<div class="row">
+  <div class="col-md-4 col-lg-4">
+    <div class="row">
+    <label id="example-radio-group-label" class="col-lg-3" style="font-size: 14px;color: rgba(0, 0, 0, 0.38);">Entity level</label>
+    <div class="col-lg-9">      
+    <mat-radio-group layout="row" aria-labelledby="example-radio-group-label" class="col-lg-9" 
+      class="radio-group">
+      <mat-radio-button  class="radio-button col-md-3" style="font-size: 12px;" 
+        >
+       Sponser
+      </mat-radio-button>
+      <mat-radio-button  class="radio-button col-md-3" style="font-size: 12px;" 
+      >
+    Site
+    </mat-radio-button>
+    <mat-radio-button  class="radio-button col-md-3" style="font-size: 12px;" 
+    >
+  Both
+  </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+  </div>
+ 
+</div>
+<div class="row">
+  <!-- <table  style="border:1px solid #efefef" class="mt-4 w-100 table-hover" mat-table [dataSource]="dataSourceDocuments" matSort>
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+      <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="documentName">
+      <th mat-header-cell *matHeaderCellDef>Action items, Recommendations and Commendation(ARC)</th>
+      <td mat-cell *matCellDef="let element"> {{element.docName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="documentCategory">
+      <th mat-header-cell *matHeaderCellDef> ARC Category </th>
+      <td mat-cell *matCellDef="let element;">
+        <mat-form-field style="width: 90%;">
+          <mat-select formControlName="doctblCategoryCtrl">
+            <mat-option style="color: rgb(9, 2, 2);" *ngFor="let docCategory of documentCategoryList"
+              [value]="docCategory.refCode">
+              {{docCategory.refDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+   
+
+   
+   
+    <ng-container matColumnDef="inactive">
+      <th mat-header-cell *matHeaderCellDef> Edit? </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox></mat-checkbox>
+      </td>
+    </ng-container>
+  
+ 
+    <tr mat-header-row *matHeaderRowDef="displayedFields"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedFields;"></tr>
+  </table> -->
+</div>
+  <!-- Favorite fruits
+  <mat-form-field appearance="outline">
+    <mat-chip-list #fruitList required formControlName="fruits">
+      <mat-chip *ngFor="let fruit of user.fruits" [removable]="removable" (removed)="remove(fruit)">
+        {{fruit.name}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input #fruitInput placeholder="Add your favorite fruits" [matChipInputFor]="fruitList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="addFruit($event)" [matAutocomplete]="fruitsAutocomplete" formControlName="fruitInput" />
+    </mat-chip-list>
+    <mat-autocomplete #fruitsAutocomplete="matAutocomplete" (optionSelected)="selectFruit($event);">
+      <mat-option *ngFor="let fruit of filteredFruits$ | async" [value]="fruit">
+        {{fruit.name}}
+      </mat-option>
+    </mat-autocomplete>
+    <mat-error>At least 1 fruit need to be added</mat-error>
+  </mat-form-field> -->
+</form>
