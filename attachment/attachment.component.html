@@ -1,0 +1,138 @@
+<form [formGroup]="documentForm">
+   <div id="f1_container">
+   <div id="f1_card1">
+      <div class="front face">
+<div class="col-lg-12">
+
+    <mat-form-field class="example-full-width col-lg-12" appearance="legacy">
+       <mat-label>Instructions</mat-label>
+       <textarea matInput placeholder="Enter instruction"></textarea>
+    </mat-form-field>
+ </div>
+<div class="row" >
+    <div class="col-lg-6">
+       <mat-form-field class="example-full-width col-lg-12" appearance="legacy">
+          <mat-label class="col-lg-6">Mininum files</mat-label>
+          <input class="col-lg-2" type="number" matInput placeholder="Enter minimum files">
+       </mat-form-field>
+    </div>
+    <div class="col-lg-6">
+       <mat-form-field class="example-full-width col-lg-12" appearance="legacy">
+          <mat-label class="col-lg-6">Maximum files</mat-label>
+          <input class="col-lg-2" type="number" matInput placeholder="Enter maximum files">
+       </mat-form-field>
+    </div>
+    </div>
+    <div class="col-lg-12" >
+      <div class="col-lg-9">
+         <label class="col-lg-6">File type applicability</label>
+         <mat-slide-toggle  formControlName="fileTypeAppl">
+         </mat-slide-toggle>
+         <div  *ngIf="documentForm.controls['fileTypeAppl'].value" class="mt-2">
+            <mat-icon matTooltip="File Types" (click)="onclick()"
+               matSuffix mat-icon-button color="primary">
+               add_card</mat-icon>
+         </div>
+      </div>
+   </div>
+   </div>
+   <div class="back face center" style="height: 250px;overflow:auto;">
+
+      <table mat-table [dataSource]="dataSourceRemainder" style="width: 100%;">
+         <!-- <ng-container matColumnDef="{{column.key}}" *ngFor="let column of columnsToDisplay">
+           <th width="20" mat-header-cell *matHeaderCellDef> {{column.name}} </th>
+           <td width="20" mat-cell *matCellDef="let element"> {{element[column.key]}} </td>
+         </ng-container> -->
+
+         <ng-container matColumnDef="refType">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef>File Type </th>
+
+            <td width="30" style="padding:5px;font-size:12px;text-align: left;" mat-cell
+               *matCellDef="let element">
+               <span style=""> {{element.refType}} </span>
+            </td>
+         </ng-container>
+         <ng-container matColumnDef="refDesc">
+
+
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Description </th>
+
+            <td width="30" style="padding:5px;font-size:12px;text-align: left;" mat-cell
+               *matCellDef="let element">
+               {{element.refDesc}} </td>
+         </ng-container>
+         <ng-container matColumnDef="sel">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Sel. </th>
+
+            <td width="30" style="padding:5px;font-size:12px;text-align: left" mat-cell *matCellDef="let element">
+               <mat-checkbox [(ngModel)]="element.sel"> </mat-checkbox>
+         </ng-container>
+         <ng-container matColumnDef="sizeApply">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Size Appl. </th>
+
+            <td width="30" style="padding:5px;font-size:12px;text-align: left" mat-cell *matCellDef="let element">
+               <mat-checkbox [disabled]="!element.sel" [(ngModel)]="element.size_appl"> </mat-checkbox>
+         </ng-container>
+         <ng-container matColumnDef="maxSize">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Max Size </th>
+
+            <td width="30" style="padding:5px;font-size:12px;" mat-cell *matCellDef="let element">
+               <input matInput type = "number" value="element.max_size"></td>
+         </ng-container>
+         <ng-container matColumnDef="pageApply">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Page Appl. </th>
+
+            <td width="30" style="padding:5px;font-size:12px;text-align: left;" mat-cell *matCellDef="let element">
+               <mat-checkbox [(ngModel)]="element.page_appl"> </mat-checkbox>
+            </td>
+
+         </ng-container>
+        
+
+         <ng-container matColumnDef="min">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Min. Pages </th>
+
+            <td width="30" style="padding:5px;font-size:12px;" mat-cell *matCellDef="let element">
+               <input matInput  type="number" value={{element.minLen}}>
+            </td>
+         </ng-container>
+         <ng-container matColumnDef="max">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Max. Pages</th>
+
+            <td width="30" style="padding:5px;font-size:12px; text-align: left;" mat-cell *matCellDef="let element">
+               <input matInput  type="number" value={{element.maxLen}}>
+            </td>
+         </ng-container>
+         <ng-container matColumnDef="Del">
+
+            <th style="padding:5px;font-weight:500;font-size:14px;color:black" mat-header-cell
+               *matHeaderCellDef> Del </th>
+            <td width="30" style="padding:5px;font-size:12px;"  mat-cell *matCellDef="let element"></td>
+          
+         </ng-container>
+
+
+         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="example-element-row">
+         </tr>
+      </table>
+   </div>
+   </div>
+   </div>
+   </form>

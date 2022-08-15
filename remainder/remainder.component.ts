@@ -66,6 +66,7 @@ export interface User {
 })
 export class RemainderComponent implements OnInit {
   @Output() emitService = new EventEmitter();
+  @Output() newItemEvent = new EventEmitter<string>();
   @Input() isRemainderForm = false;
   title = "angular-mat-table-example";
   isEdit = false;
