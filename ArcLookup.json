@@ -1,0 +1,24 @@
+[
+    {
+      "cfaRefId": 7,
+      "recType": null,
+      "grantPgmId": 1,
+      "cfaCd": null,
+      "cfaSeq": 0,
+      "cfaShortDesc": null,
+      "cfaDesc": "The Subrecipient could not provide adequate documentation for cash draws.",
+      "cfaCat": "G",
+      "editAppl": null,
+      "arcAppl": null,
+      "createDt": null,
+      "createId": null,
+      "lastUpdDt": null,
+      "lastUpdId": null,
+      "origCit": null,
+      "previousCfaRefId": 0,
+      "citationCategory": "General",
+      "grantPgm": null,
+      "cfXrefCits": [],
+      "cfXrefFinds": []
+    }
+  ]

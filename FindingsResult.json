@@ -1,0 +1,43 @@
+[
+    {
+      "findId": "1",
+      "findCd": "F1492_0001",
+      "findSeq": "1",
+      "findDesc": "Subrecipient could not provide adequate doc for cash draws.",
+      "findCat": "F",
+      "editAppl": "Y",
+      "arcAppl": "N",
+      "findCatDesc": "",
+      "cfXrefId": 1,
+      "cfXrefSeq": 1,
+      "arcId": 1,
+      "arcCd": "R00030",
+      "arcSeq": 30,
+      "arcDesc": "Federal funded staff members must have time and effort documentation available for review to substantiate amount paid by grant funds.",
+      "arcCat": "C",
+      "editArc": "N",
+      "cfaXrefSeq": "1",
+      "pcInd": "B"
+    },  
+    {
+        "findId": "1",
+        "findCd": "F1492_0001",
+        "findSeq": "1",
+        "findDesc": "Subrecipient could not provide adequate doc for cash draws.",
+        "findCat": "F",
+        "editAppl": "Y",
+        "arcAppl": "Y",
+        "findCatDesc": "",
+        "cfXrefId": 1,
+        "cfXrefSeq": 1,
+        "arcId": 2,
+        "arcCd": "R00031",
+        "arcSeq": 31,
+        "arcDesc": "Federal funded staff members must have time and effort documentation available for review to substantiate amount paid by grant funds.",
+        "arcCat": "A",
+        "editArc": "Y",
+        "cfaXrefSeq": "2",
+        "pcInd": "B"
+      }
+
+  ]

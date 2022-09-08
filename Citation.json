@@ -1,0 +1,38 @@
+[
+  {
+    "refType": "CCT",
+    "refSubType": "000000",
+    "refCode": "F",
+    "refDesc": "Federal",
+    "refAddlInfo": "",
+    "valReqd": null,
+    "dataType": null,
+    "dataTypeRule": null,
+    "lenVal": null,
+    "minLen": 0,
+    "maxLen": 0,
+    "createDt": null,
+    "createId": null,
+    "lastUpdDt": null,
+    "lastUpdId": null,
+    "recStat": null
+  },
+  {
+    "refType": "CCT",
+    "refSubType": "000000",
+    "refCode": "S",
+    "refDesc": "State",
+    "refAddlInfo": "",
+    "valReqd": null,
+    "dataType": null,
+    "dataTypeRule": null,
+    "lenVal": null,
+    "minLen": 0,
+    "maxLen": 0,
+    "createDt": null,
+    "createId": null,
+    "lastUpdDt": null,
+    "lastUpdId": null,
+    "recStat": null
+  }
+]
