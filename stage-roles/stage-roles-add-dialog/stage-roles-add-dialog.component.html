@@ -1,8 +1,17 @@
-  <div class="row p-1 ">
-      <div class="col-md-10 float-right">
+  <div class="row p-1 " style="align-items: center;">
+      <div class="col-md-8 float-right" >
         <h6 md-dialog-title>Add New Stage Role</h6>
-      </div>
+       
     </div>
+     
+      <div class="col-md-2 ms-4 mt-1 float-right">
+        <button class="mt-1" mat-button color="primary" (click)="addDefaultRoles()">
+          <mat-icon style="color:green">person</mat-icon><span style="margin-top:3px;position:absolute">Add Default Roles</span>
+        </button>
+      </div>
+  
+    </div>
+    
     <hr>
     <md-dialog-content>
 <div class="row">
@@ -22,10 +31,12 @@
         <mat-form-field style="width: 90%;">
             <mat-label>Role Type</mat-label>
             <mat-select [(value)]=" addNewStageRole.roleType">
-                <mat-option style="color: rgb(9, 2, 2);" *ngFor="let roleType of data.roleTypeList"
+                <ng-container *ngFor="let roleType of data.roleTypeList">
+                <mat-option style="color: rgb(9, 2, 2);" *ngIf="addNewStageRole.roleCls===roleType.refSubType" 
                     [value]="roleType.refCode">
                     {{roleType.refDesc}}
                 </mat-option>
+            </ng-container>
             </mat-select>
         </mat-form-field>
         
@@ -35,9 +46,9 @@
          class="radio-group">
         <mat-radio-button [checked]="addNewStageRole.roleInd===roleIndicator"
             class="radio-button col-md-3" style="font-size: 12px;width:150px"
-            *ngFor="let roleIndicator of data.roleIndicatorList" [value]="roleIndicator"
+            *ngFor="let roleIndicator of data.roleIndicatorList" [value]="roleIndicator.key"
            >
-            {{ roleIndicator }}
+            {{ roleIndicator.label }}
         </mat-radio-button>
     </mat-radio-group>
         

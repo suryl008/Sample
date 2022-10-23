@@ -1,0 +1,61 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  padding: 9px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #75757e2e;
+}
+
+.mat-header-cell {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding-top: 5px;
+}
+
+::ng-deep .mat-select-panel {
+  margin-top: 45px;
+}
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-btn-outer{
+  position: relative;
+}
+
+.close-btn-inner{
+  position: absolute;
+  right: -9px;
+  top: -17px;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.mat-mini-fab:not([class*=mat-elevation-z]){
+  box-shadow: none;
+}
+.mat-flat-button.mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent{
+  background-color: none !important;
+}

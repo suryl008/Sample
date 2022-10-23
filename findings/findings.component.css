@@ -1,0 +1,8 @@
+#editIcon {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.edit-icon {
+  color: #1857a4;
+}

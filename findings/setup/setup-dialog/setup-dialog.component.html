@@ -1,0 +1,112 @@
+<span style="float: right;cursor: pointer !important;" [mat-dialog-close]>X</span>
+<h2 mat-dialog-title class="mt-1">Add Findings</h2>
+
+
+<hr>
+<mat-dialog-content class="mat-typography">
+  {{data | json }}
+  <app-finding-fields *ngIf="data.mode==='Add'" (newItemEvent)="GetFindingForm($event)"></app-finding-fields>
+
+  <div class="row" *ngIf="data.mode==='Add'">
+
+
+    <div class="row" style="margin-left: 0px;">
+      <label id="example-radio-group-label" class="col-lg-3" style="font-size: 14px;color: rgba(0, 0, 0, 0.38);">Entity
+        level</label>
+      <div class="col-lg-9">
+        <mat-radio-group layout="row" aria-labelledby="example-radio-group-label" (change)="onEntityLevelChange($event)"
+          [(ngModel)]="entityLevel" class="col-lg-9" class="radio-group">
+          <mat-radio-button [checked]="entityLevel==='P'" [value]="'P'" class="radio-button col-md-3"
+            style="font-size: 12px;">
+            Sponser
+          </mat-radio-button>
+          <mat-radio-button [checked]="entityLevel==='C'" [value]="'C'" class="radio-button col-md-3"
+            style="font-size: 12px;">
+            Site
+          </mat-radio-button>
+          <mat-radio-button [checked]="entityLevel==='B'" [value]="'B'" class="radio-button col-md-3"
+            style="font-size: 12px;">
+            Both
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+
+ </div>
+  <!-- 
+  <div class="row mt-2" style="margin-left: 0px;">
+    <div class="col-lg-6">
+     <mat-form-field class="full-width">
+        <input matInput [matAutocomplete]="autoFinding" [formControl]="searchFinding"
+          placeholder="Min 3 Characters Ex. Ogs" />
+        <button *ngIf="searchFinding" matSuffix mat-icon-button aria-label="Clear" (click)="clearSelection1()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <div style="margin-bottom: -30px">
+          <mat-icon style="margin-top: -2px" matSuffix></mat-icon>
+        </div>
+        <span matSuffix>
+          <mat-icon matSuffix>search</mat-icon>
+        </span>
+        <mat-label>Select Action Items, Recommendations and Commendattions (ARC)</mat-label>
+        <mat-autocomplete [panelWidth]="670" #autoFinding="matAutocomplete" [displayWith]="displayWithFinding">
+          <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option (click)="selectFinding(find)" *ngFor="let find of filteredFinding" [value]="find">
+              <span><b>{{find.cfaDesc}}</b>
+              </span>
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </mat-form-field> 
+
+      <div class="row" *ngFor="let arc of arcList; let i = index">
+        <mat-form-field class="example-full-width" style="width: 100%" appearance="legacy">
+          <textarea autocomplete="off" matInput placeholder="Please enter ARC" (change)="changeARC(arc, i)"
+            [(ngModel)]="arc.arc.arcDesc">
+
+        </textarea>
+        </mat-form-field>
+      </div>
+
+       <p *ngIf="findingValue!=''" style="border: 1px solid #efefef; padding:20px">
+
+        {{ findingValue}}
+      </p> 
+    </div>
+    <div class="col-lg-4">
+      <mat-form-field matTooltip="Example : Choose an option from the drop down" class="full-width">
+        <mat-label>Select ARC Category</mat-label>
+        <mat-select formControlName="findingCat">
+          <mat-option style="color: rgb(9, 2, 2);" *ngFor="let cat of arcCategory" [value]="cat.refDesc">
+            {{cat.refDesc }}
+          </mat-option>
+        </mat-select>
+
+      </mat-form-field>
+
+
+
+    </div>
+    <div class="col-lg-2 ">
+      <div class="mt-1">
+        <mat-checkbox style="margin-top:10px" (checked)="(this.editArc === 'Y' ? true : false)"
+          (click)="this.editArc === 'Y' ? (this.editArc = 'N') : (this.editArc = 'Y')">Edit</mat-checkbox>
+      </div>
+    </div>
+  </div> -->
+  <div class="mt-3">
+  <app-setup (newARCItemEvent)="GetFindingARC($event)" [citationValue]="'None'" [findingValue]="'None'" [data]="[]"
+    [selectedPgmId]="0" [reviewType]="''" [mode]="'add'">
+
+  </app-setup>
+</div>
+  <hr>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial (click)="addFindings()">Add</button>
+</mat-dialog-actions>

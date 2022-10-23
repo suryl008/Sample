@@ -57,44 +57,52 @@
                     <ng-container matColumnDef="roleType">
                         <th mat-header-cell *matHeaderCellDef style="width: 10%"> Role Type</th>
                         <td mat-cell *matCellDef="let element;" style="width: 10%">
+                       
                             <mat-form-field style="width: 90%;">
+                               
                                 <mat-select [(value)]="element.roleType" [disabled]="!isStageRoleEdit">
-                                    <mat-option style="color: rgb(9, 2, 2);" *ngFor="let roleType of roleTypeList"
+                                    <ng-container *ngFor="let roleType of roleTypeList">
+                   
+                                    <mat-option style="color: rgb(9, 2, 2);" *ngIf="element.roleCls===roleType.refSubType" 
                                         [value]="roleType.refCode">
                                         {{roleType.refDesc}}
                                     </mat-option>
+                                </ng-container>
                                 </mat-select>
                             </mat-form-field>
+                       
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="roleIndicator">
                         <th mat-header-cell *matHeaderCellDef style="width: 10%"> Role Indicator </th>
-                        <td mat-cell *matCellDef="let element;" style="width: 10%">
-                            <mat-radio-group layout="row" aria-labelledby="example-radio-group-label" class="col-lg-9"
+                        <td mat-cell *matCellDef="let element;" style="width: 10%;display:flex;flex-direction:column ">
+                            <mat-radio-group  aria-labelledby="example-radio-group-label" class="col-lg-9"
                                 [(ngModel)]="roleIndicatorCtrl" class="radio-group">
-                                <mat-radio-button [checked]="roleIndicatorCtrl===roleIndicator"
+                                <mat-radio-button [checked]="element.roleInd===roleIndicator.key"
                                     class="radio-button col-md-3" style="font-size: 12px;"
-                                    *ngFor="let roleIndicator of roleIndicatorList" [value]="roleIndicator"
+                                    *ngFor="let roleIndicator of roleIndicatorList" [value]="roleIndicator.key"
                                     [disabled]="!isStageRoleEdit">
-                                    {{ roleIndicator }}
+                                    {{ roleIndicator.label }}
                                 </mat-radio-button>
                             </mat-radio-group>
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="roleRequired">
-                        <th mat-header-cell *matHeaderCellDef style="width: 10%"> Role Required </th>
-                        <td mat-cell *matCellDef="let element;" style="width: 10%">
-                            <mat-checkbox [checked]="element.roleReqd === true"
-                                (change)="element.roleReqd = !element.roleReqd" [disabled]="!isStageRoleEdit">
-                            </mat-checkbox>
+                        <th mat-header-cell *matHeaderCellDef style="width: 10%;padding:10px"> Role Required </th>
+                        <td mat-cell *matCellDef="let element;" style="width: 10%;padding:10px">
+                            <mat-slide-toggle [labelPosition]="myLabelPosition"
+                            [checked]="element.roleReqd === 'Y' ? true : false"  [disabled]="!isStageRoleEdit"
+                            (change)="element.roleReqd === 'Y'? element.roleReqd='N':element.roleReqd='Y'">
+            </mat-slide-toggle>
+                            
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="roleRule">
-                        <th mat-header-cell *matHeaderCellDef style="width: 10%"> Role Rule </th>
-                        <td mat-cell *matCellDef="let element;" style="width: 10%">
+                        <th mat-header-cell *matHeaderCellDef style="width: 10%;padding:10px"> Role Rule </th>
+                        <td mat-cell *matCellDef="let element;" style="width: 10%;padding:10px">
                             <mat-form-field style="width: 90%;">
                                 <mat-select [(value)]="element.roleRule" [disabled]="!isStageRoleEdit">
                                     <mat-option style="color: rgb(9, 2, 2);" *ngFor="let roleRule of roleRuleList"
@@ -108,25 +116,25 @@
 
                     <ng-container matColumnDef="min">
                         <th mat-header-cell *matHeaderCellDef style="width: 10%"> Min </th>
-                        <td mat-cell *matCellDef="let element" style="width: 10%">
+                        <td mat-cell *matCellDef="let element" style="width: 10%;padding:10px">
                             <mat-form-field class="example-full-width col-lg-12" appearance="legacy">
-                                <input class="col-lg-2" type="number" matInput placeholder="Minimum"
+                                 <input class="col-lg-2" [value]="element.minNos" type="number" matInput placeholder="Minimum"
                                     formControlName="minNos" [disabled]="!isStageRoleEdit">
                             </mat-form-field>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="max">
                         <th mat-header-cell *matHeaderCellDef style="width: 10%"> Max </th>
-                        <td mat-cell *matCellDef="let element" style="width: 10%">
+                        <td mat-cell *matCellDef="let element" style="width: 10%;padding:10px">
                             <mat-form-field class="example-full-width col-lg-12" appearance="legacy">
-                                <input class="col-lg-2" type="number" matInput placeholder="Maximum"
+                                <input class="col-lg-2" [value]="element.maxNos" type="number" matInput placeholder="Maximum"
                                     formControlName="maxNos" [disabled]="!isStageRoleEdit">
                             </mat-form-field>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="dataSource">
                         <th mat-header-cell *matHeaderCellDef style="width: 10%"> Data Source</th>
-                        <td mat-cell *matCellDef="let element;" style="width: 10%">
+                        <td mat-cell *matCellDef="let element;" style="width: 10%;padding:10px">
                             <mat-form-field style="width: 90%;">
                                 <mat-select [(value)]="element.dataSrc" [disabled]="!isStageRoleEdit">
                                     <mat-option style="color: rgb(9, 2, 2);" *ngFor="let dataSrc of dataSrcList"

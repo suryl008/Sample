@@ -49,7 +49,8 @@ export class StageRolesComponent implements OnInit {
     "dataSource",
     "delete",
   ];
-  roleIndicatorList: string[] = ["Notification", "Review"];
+  roleIndicatorList:  any[]= [{"key":"N","label":"Notification"},
+  {"key":"R","label":"Review"}];
   constructor(
     private programAdministrationService: ProgramAdministrationService,
     private toastrService: ToastrService,
@@ -93,7 +94,7 @@ export class StageRolesComponent implements OnInit {
   }
   getStageRoleTypeInfo() {
     this.programAdministrationService
-      .getStageRoleTypeInfo(1565, "EarlyOn", "GSFI", "")
+      .getStageRoleTypeInfo(1565, "EarlyOn", this.selectedReviewStage, "A")
       .subscribe((res: any) => {
         if (res != null) {
           console.log({ getStageRoleTypeInfo: res });
@@ -134,8 +135,9 @@ export class StageRolesComponent implements OnInit {
       .getReviewStageLookup(1565, "EarlyOn", "GSFI")
       .subscribe((res: any) => {
         if (res != null) {
-          this.reviewStageList = res; 
+          this.reviewStageList = res;
           this.reviewStageCtrl = this.reviewStageList[0].rvwStage;
+          this.selectedReviewStage = this.reviewStageList[0].rvwStage;
 
           console.log({ reviewStageList: this.reviewStageList });
         }
@@ -155,7 +157,7 @@ export class StageRolesComponent implements OnInit {
     let data = {
       roleClassList: null,
       roleTypeList: null,
-      roleIndicatorList: ["Notification", "Review"],
+      roleIndicatorList: this.roleIndicatorList,
       roleRuleList: null,
       min: 0,
       max: 0,
@@ -172,7 +174,7 @@ export class StageRolesComponent implements OnInit {
     const dialogRef = this.dialog.open(StageRolesAddDialogComponent, {
       maxWidth: "100vw",
       maxHeight: "100vh",
-     
+
       width: "50%",
       data: data,
     });
@@ -182,7 +184,7 @@ export class StageRolesComponent implements OnInit {
     dialogRef.afterClosed().subscribe((data) => {
       console.log(`Dialog result: ${data}`);
       if (data.result) {
-         if (this.dataSourceStageRoleTypes) {
+        if (this.dataSourceStageRoleTypes) {
           this.dataSourceStageRoleTypes.data.unshift(data.result);
         } else {
           let temp = [];
@@ -191,6 +193,13 @@ export class StageRolesComponent implements OnInit {
         }
         console.log(this.dataSourceStageRoleTypes.data);
         console.log(data.result);
+        this.dataSourceStageRoleTypes._updateChangeSubscription();
+        this.cd.markForCheck(); //or  cd.detectChanges();
+      }
+      else if(data.default){
+        data.default.map((role:any)=>{
+          this.dataSourceStageRoleTypes.data.unshift(role);
+        })
         this.dataSourceStageRoleTypes._updateChangeSubscription();
         this.cd.markForCheck(); //or  cd.detectChanges();
        

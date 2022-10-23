@@ -22,6 +22,7 @@ export class StageRolesAddDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
 ){}
 addNewStageRole:any;
+defaultRoles=[];
 
 
 addNewStage(){
@@ -65,6 +66,11 @@ addNewStage(){
         "pgmRoleRules": []
       };
       
+  }
+
+  addDefaultRoles():void {
+    this.defaultRoles=[];
+    this.dialogRef.close({default:this.defaultRoles});
   }
 
   

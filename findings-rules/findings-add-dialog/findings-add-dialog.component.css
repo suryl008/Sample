@@ -1,0 +1,54 @@
+.mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .close-btn-outer{
+    position: relative;
+  }
+  
+  .close-btn-inner{
+    position: absolute;
+    right: -9px;
+    top: -17px;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+
+  table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    padding: 9px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #75757e2e;
+  }
+  
+  .mat-header-cell {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  /* input.mat-input-element {
+    margin-top: 0.9375em;
+} */
