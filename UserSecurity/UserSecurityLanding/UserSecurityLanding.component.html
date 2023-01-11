@@ -1,0 +1,10 @@
+<div class="card-body-header">
+    <div class="card-body-user">
+        <mat-tab-group animationDuration="1000ms" style="background: #112e51;"
+            (selectedTabChange)="navigateTab($event)" [selectedIndex]="selectedIndex" >
+            <ng-container *ngFor="let item of tabIndex">
+                <mat-tab *ngIf="item.visible" label=" {{item.tabHeaderName}}"></mat-tab>
+            </ng-container>
+        </mat-tab-group>
+    </div>
+</div>
