@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-user-security-landing',
-  templateUrl: './UserSecurityLanding.component.html',
-  styleUrls: ['./UserSecurityLanding.component.css', '../UserSecurity.css']
+  selector: 'app-workflow-landing',
+  templateUrl: './WorkflowLanding.component.html',
+  styleUrls: ['./WorkflowLanding.component.scss', '../Workflow.scss']
 })
-export class UserSecurityLandingComponent implements OnInit {
+export class WorkflowLandingComponent implements OnInit {
 
   @Input() selectedTabIndex;
   public tabIndex : any = [];
@@ -21,18 +21,15 @@ export class UserSecurityLandingComponent implements OnInit {
 
   pageHeadingTab(){
     this.tabIndex = [
-      { tabHeaderName : 'GEMS', visible : true},
-      { tabHeaderName : 'CIA', visible : true},
+      { tabHeaderName : 'Copy Workflow', visible : true},
     ] 
   }
 
   async navigateTab(event : any){
     if(event.index === 0){
-      this.router.navigate(['usersecurity/gemsusersearch'])
-    }
-    if(event.index === 1){
-      this.router.navigate(['usersecurity/usersecuritydetails'])
+      this.router.navigate(['WorkflowLanding/copyWorkflow'])
     }
   }
 
 }
+

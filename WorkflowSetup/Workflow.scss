@@ -68,5 +68,26 @@
   .mat-table{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
+
+  .mat-expansion-panel-header{
+    border-bottom: 1px solid lavender;
+    background-color: #e5e5e6 !important;
+    height: 42px !important;
+  }
+
+  .mat-panel-title-span{
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 45px;
+  }
+
+  .mat-tab-header-manual{
+    background: #bda73642 ;
+  }
+
+
+
+
+  
   
   
