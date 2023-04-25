@@ -1,15 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-landing',
-  templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.css']
+  selector: 'app-landing-header',
+  templateUrl: './Landing.component.html',
+  styleUrls: ['./Landing.component.scss']
 })
-export class LandingComponent implements OnInit {
+export class LandingHeaderComponent implements OnInit {
 
-  constructor() { }
+  @Input() headerMenu;
+  public tabIndex : any = [];
+  public selectedIndex : number
 
-  ngOnInit(): void {
+  constructor(private router : Router) { }
+
+  async ngOnInit() {
+    this.getHeaderData()    
   }
 
+  getHeaderData(){
+    if(this.headerMenu == 'communication'){
+      this.tabIndex = [
+        { tabHeaderName : 'Email Template', visible : true},
+      ] 
+    }
+
+  }
+
+
 }
+
