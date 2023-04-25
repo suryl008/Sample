@@ -1,0 +1,154 @@
+<div>
+    <div class="row header">
+        <div class="col-lg-10 mt-5">
+            <h6>{{headerName}}</h6>
+        </div>
+        <div class="col-lg-2 mt-5" style="text-align: right">
+            <span style="cursor: pointer !important;" [mat-dialog-close]><b>X</b></span>
+        </div>
+    </div>
+    <div style="min-height: 50iupx;" *ngIf="pageName == 'confirmationPopup'">
+        <div class="row mt-20">
+            <span>Are you sure you want to change '{{data.emailData.templateName}}' status ?</span>
+        </div>
+        <div class="row mt-20">
+            <div style="text-align: right; width: 98%;">
+                <button class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                    class="mr-10" (click)="closePopup('confirmationPopup', 'ok')">Ok</button>
+                <button class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                    class="mr-10" (click)="closePopup('confirmationPopup', 'cancel')">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div style="min-height: 100px;" *ngIf="pageName == 'emailTemplate' ">
+        <!-- BASE DETAILS -->
+        <div class="row mt-20">
+            <div class="col-lg-4">
+                <div appearance="outline" class="search-results-count-box">
+                    <mat-form-field class="full-width">
+                        <input matInput [matAutocomplete]="office" placeholder="Min 3 Characters Ex. Ogs" />
+                        <button matSuffix mat-icon-button aria-label="Clear">
+                            <mat-icon class="mr-10">close</mat-icon>
+                        </button>
+                        <div style="margin-bottom: -30px">
+                            <mat-icon class="mr-10" style="margin-top: -2px" matSuffix></mat-icon>
+                        </div>
+                        <span matSuffix>
+                            <mat-icon class="mr-10" matSuffix>search</mat-icon>
+                        </span>
+                        <mat-label>Search office</mat-label>
+                        <mat-autocomplete #office="matAutocomplete">
+                            <ng-container>
+                                <mat-option *ngFor="let office of officeList"
+                                    [value]="office.offName + ' ('+ office.offCd+ ')'">
+                                    <span>{{office.offName}} ({{office.offCd}})</span>
+                                </mat-option>
+                            </ng-container>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div appearance="outline" class="search-results-count-box">
+                    <mat-form-field class="full-width">
+                        <input matInput [matAutocomplete]="program" placeholder="Min 3 Characters Ex. Ogs" />
+                        <button matSuffix mat-icon-button aria-label="Clear">
+                            <mat-icon class="mr-10">close</mat-icon>
+                        </button>
+                        <div style="margin-bottom: -30px">
+                            <mat-icon class="mr-10" style="margin-top: -2px" matSuffix></mat-icon>
+                        </div>
+                        <span matSuffix>
+                            <mat-icon class="mr-10" matSuffix>search</mat-icon>
+                        </span>
+                        <mat-label>Search Program</mat-label>
+                        <mat-autocomplete #program="matAutocomplete">
+                            <ng-container>
+                                <mat-option *ngFor="let program of progReviewTypeList"
+                                    (onSelectionChange)="changeProgramName(program, $event)"
+                                    [value]="program.grantPgmDesc + ' ('+ program.grantPgm+ ')'">
+                                    <span>{{program.grantPgmDesc}} ({{program.grantPgm}})</span>
+                                </mat-option>
+                            </ng-container>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div appearance="outline" class="search-results-count-box">
+                    <mat-form-field class="full-width">
+                        <input matInput [matAutocomplete]="review" placeholder="Min 3 Characters Ex. Ogs" />
+                        <button matSuffix mat-icon-button aria-label="Clear">
+                            <mat-icon class="mr-10">close</mat-icon>
+                        </button>
+                        <div style="margin-bottom: -30px">
+                            <mat-icon class="mr-10" style="margin-top: -2px" matSuffix></mat-icon>
+                        </div>
+                        <span matSuffix>
+                            <mat-icon class="mr-10" matSuffix>search</mat-icon>
+                        </span>
+                        <mat-label>Search Review Type</mat-label>
+                        <mat-autocomplete #review="matAutocomplete">
+                            <ng-container>
+                                <mat-option *ngFor="let review of reviewTypeList" [value]="review.rvwType">
+                                    <span>{{review.rvwType}}</span>
+                                </mat-option>
+                            </ng-container>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-lg-4 column-search mt-10">
+                <mat-form-field class="full-width">
+                    <mat-label for="emailTemplateName">Template Name</mat-label>
+                    <input autocomplete="off" id="emailTemplateName" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4 column-search mt-10">
+                <mat-form-field class="full-width">
+                    <mat-label for="emailTemplateSubject">Email Subject</mat-label>
+                    <input autocomplete="off" id="emailTemplateSubject" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4 column-search mt-10">
+                <label class="col-lg-10 mt-20">Auto Attach Findings Report</label>
+                <mat-slide-toggle class=" mt-20" [labelPosition]="labelPosition"></mat-slide-toggle>
+            </div>
+        </div>
+        <!-- TEMPLATE EDITOR -->
+        <div class="row mt-20">
+            <ckeditor [(ngModel)]="name" 
+              [config]="ckeConfig"
+              (change)="inputCkEditor()"
+              debounce="500" >
+            </ckeditor>
+        </div>
+         <!-- UPLOAD DETAILS -->
+         <div class="row mt-20">
+            <div class="col-lg-8 column-search mt-10">
+                <div class="row">
+                    <div class="col-lg-2"><label for="formFileSm" class="form-label">File Upload</label></div>
+                    <div class="col-lg-8"><input class="form-control form-control-sm" id="formFile"
+                            (change)="onFileSelected($event)" type="file"></div>
+                    <div class="col-lg-2"><button style="color: #bd3640 !important;float: right;" mat-raised-button
+                            class="mr-10">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BUTTONS -->
+        <div class="row mt-20">
+            <div style="text-align: right; width: 98%;">
+                <button class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                    class="mr-10">Submit</button>
+                <button class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                    class="mr-10">Duplicate</button>
+                <button *ngIf="data.mode == 'edit'" class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                    class="mr-10">Delete</button>
+                <button class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                    class="mr-10" [mat-dialog-close]>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

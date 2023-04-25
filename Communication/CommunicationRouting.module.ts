@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CopyWorkflowComponent } from './CopyWorkflow/CopyWorkflow.component';
+import { EmailTemplateComponent } from './EmailTemplate/EmailTemplate.component';
 
 const routes: Routes = [
   {
     path: "",
-    component: CopyWorkflowComponent,
+    component: EmailTemplateComponent,
     children: [
-      { path: "copyworkflow", component:  CopyWorkflowComponent},
+      { path: "emailtemplate", component:  EmailTemplateComponent},
     ],
   },
 ];
@@ -16,5 +16,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class WorkflowRoutingModule { 
+export class CommunicationRoutingModule { 
 }
