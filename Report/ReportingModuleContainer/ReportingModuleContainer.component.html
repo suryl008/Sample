@@ -1,0 +1,10 @@
+<app-landing-header [headerMenu]="headerMenu" [selectedIndex]="selectedIndex" (emitcurrentTabSelection)="getHeaderTabSelection($event)"></app-landing-header>
+<div class="d-height" [ngClass]="selectedPage == 'reportModuleList' ? '' : 'dispnone'">
+    <app-report-module-list (emitReportModuleDetails)="emitReportModuleDetails($event)"></app-report-module-list>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'reportModuleDetails'">
+    <app-report-module-details [reportModuleId]="reportModuleId" (emitReportModuleDetails)="emitReportModuleDetails($event)"></app-report-module-details>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'reportModuleUsers'">
+    <app-report-module-users [reportModuleId]="reportModuleId"></app-report-module-users>
+</div>

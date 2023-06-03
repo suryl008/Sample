@@ -1,0 +1,190 @@
+<div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <!-- CURRENT USERS LIST -->
+            <mat-accordion class="example-headers-align" multi>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                        <mat-panel-title>
+                            <div class="row" style="width: 100%;">
+                                <div class="col-lg-9">
+                                    <span class="mat-panel-title-span">Current Assigned Uesrs
+                                    </span>
+                                </div>
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                        [ngClass]="currentUserResponseData.length == '0' ? 'disable-field' : ''"
+                                        (click)="panelSearch._toggle();removeReportUser('', 'all')">
+                                        <mat-icon class="mr-10">person_add</mat-icon>
+                                        <span class="mt-20">Remove All User(s)</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="col-lg-12">
+                        <mat-card-content class="user-table-height mat-elevation-z8">
+                            <table mat-table [dataSource]="currentUserResponseData" class="tbl-width">
+                                <!-- Position Column -->
+                                <ng-container *ngFor="let disCol of columnsHeaders; let colIndex = index"
+                                    matColumnDef="{{disCol.fieldName}}">
+                                    <th mat-header-cell *matHeaderCellDef>{{disCol.headerName}}</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span *ngIf="disCol.fieldName == 'recStat'">
+                                            <mat-icon class="cursor" style="color:green"
+                                                *ngIf="element[disCol.fieldName]==='A'">verified</mat-icon>
+                                            <mat-icon class="cursor" style="color:red"
+                                                *ngIf="element[disCol.fieldName]==='I'">dangerous</mat-icon>
+                                        </span>
+                                        <span title="{{element[disCol.fieldName]}}"
+                                            *ngIf="disCol.fieldName != 'recStat'">{{element[disCol.fieldName]}}</span>
+                                    </td>
+                                </ng-container>
+        
+                                <ng-container matColumnDef="Action">
+                                    <th mat-header-cell *matHeaderCellDef>Remove User</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-icon class="cursor mr-10" title="Remove User" style="color: #bd3640;"
+                                            (click)="removeReportUser(element, '')">remove</mat-icon>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedColumns.length">No Records Found!</td>
+                                </tr>
+        
+                            </table>
+                            <mat-paginator #paginator1 [length]="currentUserResponseData?.filteredData?.length"
+                                [pageSizeOptions]="[5,10, 15, 20]" showFirstLastButtons></mat-paginator>
+                        </mat-card-content>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="col-lg-12 mt-10">
+            <!-- SEARCH NEW USERS -->
+            <mat-accordion class="example-headers-align" multi>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                        <mat-panel-title>
+                            <div class="row" style="width: 100%;">
+                                <div class="col-lg-9">
+                                    <span class="mat-panel-title-span">Users Search
+                                    </span>
+                                </div>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row column-search mt-10">
+                        <div class="col-lg-4 ">
+                            <mat-form-field>
+                                <mat-label>First Name</mat-label>
+                                <input autocomplete="off" id="firstName" [(ngModel)]="searchUserDetails.fName"
+                                    matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <mat-form-field>
+                                <mat-label>Last Name</mat-label>
+                                <input autocomplete="off" id="lastName" [(ngModel)]="searchUserDetails.lName"
+                                    matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <mat-form-field>
+                                <mat-label>User Role</mat-label>
+                                <input autocomplete="off" id="userRole" [(ngModel)]="searchUserDetails.userRole"
+                                    matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <mat-form-field>
+                                <mat-label>User Designation</mat-label>
+                                <input autocomplete="off" id="userDesignation"
+                                    [(ngModel)]="searchUserDetails.userDsg" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <mat-form-field>
+                                <mat-label>Office Code</mat-label>
+                                <input autocomplete="off" id="officeCode" [(ngModel)]="searchUserDetails.offCd"
+                                    matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <mat-form-field>
+                                <mat-label>User ID</mat-label>
+                                <input autocomplete="off" id="userID" [(ngModel)]="searchUserDetails.userId" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4 mt-10">
+                            <mat-label class="mr-10">Status : </mat-label>
+                            <mat-radio-group id="menuFlag" [(ngModel)]="searchUserDetails.recStat">
+                                <mat-radio-button class="mr-10" value="O">All</mat-radio-button>
+                                <mat-radio-button class="mr-10" value="A"
+                                    style="padding-right: 5px;">Active</mat-radio-button>
+                                <mat-radio-button class="mr-10" value="I">In-Active</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="col-lg-4 "></div>
+                        <div class="col-lg-4 ">
+                            <div style="text-align: right; width: 98%;">
+                                <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                    *ngIf="searchUserResponseData?.filteredData?.length > 0"
+                                    (click)="addReportUser('', 'all')">
+                                    <mat-icon class="mr-10">person_add</mat-icon>
+                                    <span class="mt-20">Add All User(s)</span>
+                                </button>
+                                <button class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                                    class="mr-10" (click)="searchUsersReportList()">Search</button>
+                                <button class="cursor" style="color: #bd3640 !important;" mat-raised-button
+                                    class="mr-10" (click)="clearReportUsers()">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-card-content class="user-table-height mat-elevation-z8"
+                *ngIf="searchUserResponseData?.filteredData?.length > 0">
+                <table mat-table [dataSource]="searchUserResponseData" class="tbl-width">
+                    <!-- Position Column -->
+                    <ng-container *ngFor="let disCol of columnsHeaders; let colIndex = index"
+                        matColumnDef="{{disCol.fieldName}}">
+                        <th mat-header-cell *matHeaderCellDef>{{disCol.headerName}}</th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngIf="disCol.fieldName == 'recStat'">
+                                <mat-icon class="cursor" style="color:green"
+                                    *ngIf="element[disCol.fieldName]==='A'">verified</mat-icon>
+                                <mat-icon class="cursor" style="color:red"
+                                    *ngIf="element[disCol.fieldName]==='I'">dangerous</mat-icon>
+                            </span>
+                            <span title="{{element[disCol.fieldName]}}"
+                                *ngIf="disCol.fieldName != 'recStat'">{{element[disCol.fieldName]}}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Action">
+                        <th mat-header-cell *matHeaderCellDef>Add User</th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-icon class="cursor mr-10" title="Add User" style="color: #bd3640;"
+                                (click)="addReportUser(element, '')">add</mat-icon>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">No Records Found!</td>
+                    </tr>
+
+                </table>
+                <mat-paginator #paginator2 [length]="searchUserResponseData?.filteredData?.length" [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+            </mat-card-content>
+        </div>
+    </mat-card>
+</div>

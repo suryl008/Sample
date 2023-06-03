@@ -1,0 +1,210 @@
+<div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Report Details
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-8" style="text-align: right;">
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle();previewReportModuleUser()">
+                                            <mat-icon class="mr-10">preview</mat-icon>
+                                            <span class="mt-20">Preview</span>
+                                        </button>
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle();saveReportModuleUser()">
+                                            <mat-icon class="mr-10">save</mat-icon>
+                                            <span class="mt-20">Save</span>
+                                        </button>
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle();deleteReportModuleUser()">
+                                            <mat-icon class="mr-10">delete</mat-icon>
+                                            <span class="mt-20">Delete</span>
+                                        </button>
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle();cancelReportModuleUser()">
+                                            <mat-icon class="mr-10">cancel</mat-icon>
+                                            <span class="mt-20">Cancel</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-10">
+                            <div class="col-lg-4 ">
+                                <mat-form-field>
+                                    <mat-label>Report Name</mat-label>
+                                    <input autocomplete="off" id="reportName" [(ngModel)]="responseData.reportName"
+                                        matInput>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-4">
+                                <div appearance="outline" class="search-results-count-box">
+                                    <mat-form-field class="full-width">
+                                        <input matInput [matAutocomplete]="program"
+                                            [(ngModel)]="responseData.grantPgmDesc"
+                                            placeholder="Min 3 Characters Ex. Ogs" />
+                                        <button matSuffix mat-icon-button aria-label="Clear">
+                                            <mat-icon class="mr-10"
+                                                (click)="clearAutoSelect('program')">close</mat-icon>
+                                        </button>
+                                        <div style="margin-bottom: -30px">
+                                            <mat-icon class="mr-10" style="margin-top: -2px" matSuffix></mat-icon>
+                                        </div>
+                                        <span matSuffix>
+                                            <mat-icon class="mr-10" matSuffix>search</mat-icon>
+                                        </span>
+                                        <mat-label>Search Program</mat-label>
+                                        <mat-autocomplete #program="matAutocomplete">
+                                            <ng-container>
+                                                <mat-option *ngFor="let program of progReviewTypeList"
+                                                    (onSelectionChange)="changeProgramName(program, $event)"
+                                                    [value]="program.grantPgmDesc + ' ('+ program.grantPgm+ ')'">
+                                                    <span>{{program.grantPgmDesc}} ({{program.grantPgm}})</span>
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div appearance="outline" class="search-results-count-box">
+                                    <mat-form-field class="full-width">
+                                        <input matInput [matAutocomplete]="review" [(ngModel)]="responseData.rvwType"
+                                            placeholder="Min 3 Characters Ex. Ogs" />
+                                        <button matSuffix mat-icon-button aria-label="Clear">
+                                            <mat-icon class="mr-10" (click)="clearAutoSelect('review')">close</mat-icon>
+                                        </button>
+                                        <div style="margin-bottom: -30px">
+                                            <mat-icon class="mr-10" style="margin-top: -2px" matSuffix></mat-icon>
+                                        </div>
+                                        <span matSuffix>
+                                            <mat-icon class="mr-10" matSuffix>search</mat-icon>
+                                        </span>
+                                        <mat-label>Search Review Type</mat-label>
+                                        <mat-autocomplete #review="matAutocomplete">
+                                            <ng-container>
+                                                <mat-option *ngFor="let review of reviewTypeList"
+                                                    (onSelectionChange)="changeReviewName(review, $event)"
+                                                    [value]="review.rvwType">
+                                                    <span>{{review.rvwType}}</span>
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row column-search mt-10">
+                            <div class="col-lg-4">
+                                <mat-form-field>
+                                    <mat-label>Created By</mat-label>
+                                    <input autocomplete="off" id="createdBy" readonly
+                                        [(ngModel)]="responseData.createdByName" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-4 mt-20">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <mat-label>Status</mat-label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <mat-slide-toggle [(ngModel)]="responseData.active"
+                                            id="status"></mat-slide-toggle>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row column-search mt-10">
+                                <div class="col-lg-4">
+                                    <mat-form-field>
+                                        <mat-label>Add/Edit Data</mat-label>
+                                        <mat-select [(ngModel)]="responseData.dataList">
+                                            <mat-option style="color: rgb(9, 2, 2);" *ngFor="let data of dataList"
+                                                [value]="data.id">
+                                                {{data.itemName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-4" *ngIf="responseData.dataList != 0">
+                                    <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                        (click)="addEditDataList()">
+                                        <mat-icon class="mr-10">person_add</mat-icon>
+                                        <span class="mt-20">Add/Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <!-- Data List -->
+                <div class="col-lg-12">
+                    <mat-card-content class="user-table-height mat-elevation-z8">
+                        <table #table mat-table [dataSource]="dataSourceList?.filteredData" class="tbl-width"
+                            cdkDropList [cdkDropListData]="dataSourceList?.filteredData"
+                            (cdkDropListDropped)="dropTable($event)">
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="sourceType">
+                                <th mat-header-cell *matHeaderCellDef width="30%">Source</th>
+                                <td mat-cell title="{{element.sourceType}}" *matCellDef="let element">
+                                    {{element.sourceType}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="reviewDataFieldName">
+                                <th mat-header-cell *matHeaderCellDef width="25%">Field</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field>
+                                        <input autocomplete="off" [(ngModel)]="element.reviewDataFieldName" matInput>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="filter">
+                                <th mat-header-cell *matHeaderCellDef width="5%">Filter</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-checkbox [(ngModel)]="element.filter" (change)="!element.filter"
+                                        [checked]="element.filter"></mat-checkbox>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="filteroperator">
+                                <th mat-header-cell *matHeaderCellDef width="15%">Source</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field *ngIf="element.filter" [(ngModel)]="element.filteroperator">
+                                        <mat-select>
+                                            <mat-option value="=">= </mat-option>
+                                            <mat-option value=">" disabled>></mat-option>
+                                            <mat-option value=""></mat-option>
+                                        </mat-select>
+                                    </mat-form-field></td>
+                            </ng-container>
+                            <ng-container matColumnDef="filterValue">
+                                <th mat-header-cell *matHeaderCellDef width="25%">Source</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-form-field *ngIf="element.filter">
+                                        <input autocomplete="off" [(ngModel)]="element.filterValue" matInput>
+                                    </mat-form-field>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag [cdkDragData]="row">
+                            </tr>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedColumns.length">No Records Found!</td>
+                            </tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+                    </mat-card-content>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>
