@@ -1,0 +1,152 @@
+<div>
+    <div class="row header">
+        <div class="col-lg-10 mt-5">
+            <h6>{{headerName}}</h6>
+        </div>
+        <div class="col-lg-2 mt-5" style="text-align: right">
+            <span style="cursor: pointer !important;" [mat-dialog-close]><b>X</b></span>
+        </div>
+    </div>
+    <div style="min-height: 100px;" *ngIf="pageName == 'setValidation' ">
+        <div class="row mt-20">
+            <div class="col-lg-9">
+                <mat-label>Field is Required</mat-label>
+            </div>
+            <div class="col-lg-2">
+                <mat-slide-toggle [(ngModel)]="emitdata.fieldRequired" id="fieldIsRequired"></mat-slide-toggle>
+            </div>
+        </div>
+        <div class="row mt-20">
+            <div class="col-lg-9">
+                <mat-label>Field should allow only numeric values</mat-label>
+            </div>
+            <div class="col-lg-2">
+                <mat-slide-toggle [(ngModel)]="emitdata.numericOnly" id="onlyNumeric"></mat-slide-toggle>
+            </div>
+        </div>
+        <div class="row mt-20">
+            <div class="col-lg-9">
+                <mat-label>Field should allow only non numeric values</mat-label>
+            </div>
+            <div class="col-lg-2">
+                <mat-slide-toggle [(ngModel)]="emitdata.alphaOnly" id="onlyNonNumeric"></mat-slide-toggle>
+            </div>
+        </div>
+        <div class="row mt-20">
+            <div style="text-align: right; width: 98%;">
+                <button style="color: #bd3640 !important;" mat-raised-button class="mr-10" [mat-dialog-close]>Cancel</button>
+                <button style="color: #bd3640 !important;" mat-raised-button class="mr-10" (click)="closePopup('ok')">Ok</button>
+            </div>
+        </div>
+    </div>
+    <div style="min-height: 100px;" *ngIf="pageName == 'setMapping' ">
+        <div class="row mt-20">
+            <div class=" col-lg-4">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input autocomplete="off" id="Name" readonly disabled  [(ngModel)]="this.emitdata.Name"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field>
+                    <mat-label>Description</mat-label>
+                    <input autocomplete="off" id="Description" readonly disabled [(ngModel)]="this.emitdata.Description" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field>
+                    <mat-label>Mapping Type</mat-label>
+                    <mat-select [(value)]="emitdata.MappingType">
+                        <mat-option style="color: rgb(9, 2, 2);" *ngFor="let value of MappingList" [value]="value.id" >
+                            {{value.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="wrapper-box mt-20">
+                <span>Define Mapping Information</span>
+                <div>
+                    <div class="row mr-10"  *ngIf="emitdata.MappingType == 'RVW'">
+                        <span>Select Review Element You Want to Show</span>
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <mat-label>Element</mat-label>
+                                <mat-select [(value)]="emitdata.ReviewData">
+                                    <mat-option style="color: rgb(9, 2, 2);" *ngFor="let revw of reviewDataList" [value]="revw.id" (onSelectionChange)="onSelectionChanged('review', revw )">
+                                        {{revw.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mr-10" *ngIf="emitdata.MappingType == 'ext'">
+                        <span>Select View and Field</span>
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <mat-label>View</mat-label>
+                                <mat-select [(value)]="emitdata.ExternalViewID">
+                                    <mat-option style="color: rgb(9, 2, 2);" *ngFor="let extView of externalViewList" [value]="extView.id" (onSelectionChange)="onSelectGetExternalViewFieldList($event, 'extView', extView)">
+                                        {{extView.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <mat-label>Field</mat-label>
+                                <mat-select [(value)]="emitdata.ExternalViewFieldID">
+                                    <mat-option style="color: rgb(9, 2, 2);" *ngFor="let extViewField of externalViewFieldList" [value]="extViewField.id" (onSelectionChange)="onSelectionChanged('extField', extViewField)">
+                                        {{extViewField.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mr-10" *ngIf="emitdata.MappingType == 'other'">
+                        <span>Select Form and Field</span>
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <mat-label>Form</mat-label>
+                                <mat-select [(value)]="emitdata.OtherFlexFormPDFTemplateID">
+                                    <mat-option style="color: rgb(9, 2, 2);" *ngFor="let form of otherFlexForm" [value]="form.id" (onSelectionChange)="onSelectionChanged('otherForm', form)">
+                                        {{form.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <mat-label>Field</mat-label>
+                                <mat-select [(value)]="emitdata.otherFlexFormPDFTemplateFieldID">
+                                    <mat-option style="color: rgb(9, 2, 2);" *ngFor="let field of otherFlexFormField" [value]="field.id" (onSelectionChange)="onSelectionChanged('otherFormField', field)">
+                                        {{field.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mr-10" *ngIf="emitdata.MappingType == 'meta'">
+                        <span>Select Meta Data Field</span>
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <mat-label>Field</mat-label>
+                                <mat-select [(value)]="emitdata.pgm_misc_flds_id">
+                                    <mat-option style="color: rgb(9, 2, 2);" *ngFor="let metaData of metaDataFormList" [value]="metaData.id" (onSelectionChange)="onSelectionChanged('ext', metaData)">
+                                        {{metaData.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-20">
+            <div style="text-align: right; width: 98%;">
+                <button style="color: #bd3640 !important;" mat-raised-button class="mr-10" [mat-dialog-close]>Cancel</button>
+                <button style="color: #bd3640 !important;" mat-raised-button class="mr-10" (click)="closePopup('ok')">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

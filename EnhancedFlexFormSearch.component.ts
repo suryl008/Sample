@@ -37,12 +37,16 @@ export class EnhancedFlexFormSearchComponent implements OnInit {
   public programList: any = [];
   public reviewList: any = [];
   public formList: any = [];
+  public initialOfficeList: any = [];
+  public initialProgramList: any = [];
+  public initialReviewList: any = [];
+  public initialFormList: any = [];
   public enhancedFormSearchResult: any = [];
   public displayedColumns: any = ['name', 'version', 'published', 'offName', 'grantPgmDesc', 'reviewType', 'action'];
 
   // Model
   public enhancedFormSearch: any = {
-    flexFormPDFTemplateID: '',
+    flexFormPDFTemplateID: 0,
     offCd: '',
     grantProgramID: 0,
     reviewType: '',
@@ -77,26 +81,26 @@ export class EnhancedFlexFormSearchComponent implements OnInit {
   getofficeList() {
     this.httpClient.get("assets/api-data/GetAllOffInfo.json").subscribe
       (res => {
-        this.officeList = res;
+        this.initialOfficeList = res;
       })
   }
 
   getProgramList() {
     this.httpClient.get("assets/api-data/GetAllPgmSearchLookup.json").subscribe
       (res => {
-        this.programList = res;
+        this.initialProgramList = res;
       })
   }
 
   getReviewList(grantProgramID) {
     this.httpClient.get("assets/api-data/GetAllRvwTypes.json").subscribe
       (res => {
-        this.reviewList = res;
+        this.initialReviewList = res;
       })
   }
 
   getFormList() {
-    this.formList = [
+    this.initialFormList = [
       {
         formCode: '',
         name: "FormList-1",
@@ -174,6 +178,56 @@ export class EnhancedFlexFormSearchComponent implements OnInit {
     }
   }
 
+  filteAutoComplete(field) {
+    if (field == 'office') {
+      this.officeList = [];
+      this.initialOfficeList.forEach(element => {
+        var offcd: string; var offName: string;
+        offcd = element.offCd; offName = element.offName
+        if (offcd.toLocaleLowerCase().includes(this.tempClearSearch.offName.toLowerCase())
+          || offName.toLocaleLowerCase().includes(this.tempClearSearch.offName.toLowerCase())
+          || (offName.toLocaleLowerCase() + ' (' + offcd.toLocaleLowerCase() + ')').includes(this.tempClearSearch.offName.toLowerCase())
+        ) {
+          this.officeList.push(element);
+        }
+      });
+    }
+    if (field == 'program') {
+      this.programList = [];
+      this.initialProgramList.forEach(element => {
+        var grantPgm: string; var grantPgmDesc: string;
+        grantPgm = element.grantPgm; grantPgmDesc = element.grantPgmDesc
+        if (grantPgm.toLocaleLowerCase().includes(this.tempClearSearch.grantPgmDesc.toLowerCase())
+          || grantPgmDesc.toLocaleLowerCase().includes(this.tempClearSearch.grantPgmDesc.toLowerCase())
+          || (grantPgmDesc.toLocaleLowerCase() + ' (' + grantPgm.toString().toLocaleLowerCase() + ')').includes(this.tempClearSearch.grantPgmDesc.toLowerCase())
+        ) {
+          this.programList.push(element);
+        }
+      });
+    }
+    if (field == 'review') {
+      this.reviewList = [];
+      this.initialReviewList.forEach(element => {
+        var rvwType1: string;
+        rvwType1 = element.rvwType1;
+        if (rvwType1.toLocaleLowerCase().includes(this.tempClearSearch.reviewType.toLowerCase())) {
+          this.reviewList.push(element);
+        }
+      });
+    }
+    if (field == 'form') {
+      this.formList = [];
+      this.initialFormList.forEach(element => {
+        var formName: string;
+        formName = element.name;
+        if (formName.toLocaleLowerCase().includes(this.tempClearSearch.formName.toLowerCase())
+        ) {
+          this.formList.push(element);
+        }
+      });
+    }
+  }
+
   searchReporting() {
     console.log(this.enhancedFormSearch);
     this.httpClient.get("assets/api-data/Enhanced/searchGrid.json").subscribe
@@ -184,7 +238,7 @@ export class EnhancedFlexFormSearchComponent implements OnInit {
   }
 
   openAddorEditEnhancedDetails(element) {
-    console.log(element)
+    this.selectedIndex = 1;
     this.emitTabData.emit({ selectedPage: 'enhancedDetails', showDetails: true, enhancedSelectedID: element?.flexFormPDFTemplateID })
   }
 }
