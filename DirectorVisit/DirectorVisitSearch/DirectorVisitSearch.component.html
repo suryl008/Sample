@@ -1,0 +1,238 @@
+<div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <!-- SEARCH FIELD -->
+            <div class="col-lg-12">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-9">
+                                        <span class="mat-panel-title-span">Search Visit
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row mt-20">
+                            <div class="col-lg-4">
+                                <div appearance="outline" class="search-results-count-box">
+                                    <mat-form-field class="full-width">
+                                        <input matInput [matAutocomplete]="director"
+                                            (input)="filterAutoComplete('director')"
+                                            [(ngModel)]="tempClearSearch.directorName"
+                                            placeholder="Min 3 Characters Ex. Ogs" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="clearAutoComplete('director')">
+                                            <mat-icon class="mr-10">close</mat-icon>
+                                        </button>
+                                        <div style="margin-bottom: -30px">
+                                            <mat-icon class="mr-10" style="margin-top: -2px" matSuffix></mat-icon>
+                                        </div>
+                                        <span matSuffix>
+                                            <mat-icon class="mr-10" matSuffix>search</mat-icon>
+                                        </span>
+                                        <mat-label>Director</mat-label>
+                                        <mat-autocomplete #director="matAutocomplete">
+                                            <ng-container>
+                                                <mat-option *ngFor="let director of directorList"
+                                                    (onSelectionChange)="changeAutoComplete('director', director, $event)"
+                                                    [value]="director.rvwDesc + ' ('+ director.rvwType1+ ')'">
+                                                    <span>{{director.rvwDesc}} ({{director.rvwType1}})</span>
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div appearance="outline" class="search-results-count-box">
+                                    <mat-form-field class="full-width">
+                                        <input matInput [matAutocomplete]="subRecipient"
+                                            (input)="filterAutoComplete('subRecipient')"
+                                            [(ngModel)]="tempClearSearch.subRecipientName"
+                                            placeholder="Min 3 Characters Ex. Ogs" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="clearAutoComplete('subRecipient')">
+                                            <mat-icon class="mr-10">close</mat-icon>
+                                        </button>
+                                        <div style="margin-bottom: -30px">
+                                            <mat-icon class="mr-10" style="margin-top: -2px" matSuffix></mat-icon>
+                                        </div>
+                                        <span matSuffix>
+                                            <mat-icon class="mr-10" matSuffix>search</mat-icon>
+                                        </span>
+                                        <mat-label>Sub Recipient</mat-label>
+                                        <mat-autocomplete #subRecipient="matAutocomplete">
+                                            <ng-container>
+                                                <mat-option *ngFor="let subRecipient of subRecipientList"
+                                                    (onSelectionChange)="changeAutoComplete('subRecipient', subRecipient, $event)"
+                                                    [value]="subRecipient.rvwDesc + ' ('+ subRecipient.rvwType1+ ')'">
+                                                    <span>{{subRecipient.rvwDesc}}
+                                                        ({{subRecipient.rvwType1}})</span>
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <button class="cursor button-red mr-10" mat-raised-button
+                                    (click)="searchReporting()">Search</button>
+                            </div>
+                            <div class="col-lg-4 mt-20">
+                                <mat-label class="mr-10">Import Visits</mat-label>
+                                <button class="cursor button-blue mr-10" mat-raised-button
+                                    (click)="searchReporting()">Import</button>
+                            </div>
+                            <div class="col-lg-4 mt-20">
+                                <mat-label class="mr-10">Available Entities</mat-label>
+                                <button class="cursor button-blue mr-10" mat-raised-button
+                                    (click)="searchReporting()">Download Report</button>
+                            </div>
+                            <div class="col-lg-4 mt-20">
+                                <mat-label class="mr-10">Filter Entities :</mat-label>
+                                <mat-radio-group>
+                                    <mat-radio-button *ngFor="let item of filterEntities" class="mr-10"
+                                        [value]="item.value">{{item.status}}</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <div class="row mt-20">
+                    <div class="col-lg-3">
+                        <mat-form-field>
+                            <mat-label>Add Visit to Director(Enter District Code)</mat-label>
+                            <input autocomplete="off" id="name" matInput [(ngModel)]="addNewVisitorCode">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 mt-10">
+                        <button class="cursor button-red mr-10" mat-raised-button [disabled]="addNewVisitorCode?.trim() == ''" (click)="addNewVisitor()">Add Visit</button>
+                    </div>
+                    <div class="col-lg-3 float-end">
+                        <mat-form-field>
+                            <mat-label>Filter(s)</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="Search columns" #input>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <mat-card-content class="user-table-height mat-elevation-z8"
+                        *ngIf="directorResult.filteredData?.length > 0">
+                        <table mat-table [dataSource]="directorResult" class="tbl-width">
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="sub_rec_cd">
+                                <th mat-header-cell *matHeaderCellDef>Entity Code</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.sub_rec_cd}}" [innerHTML]="element.sub_rec_cd"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="sub_rec_name">
+                                <th mat-header-cell *matHeaderCellDef>Director Name</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.sub_rec_name}}" [innerHTML]="element.sub_rec_name"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ISDName">
+                                <th mat-header-cell *matHeaderCellDef>ISD Name</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.ISDName}}" [innerHTML]="element.ISDName"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="AgencyReviewCount">
+                                <th mat-header-cell *matHeaderCellDef>Review Count</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.AgencyReviewCount}}"
+                                        [innerHTML]="element.AgencyReviewCount"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef>Contacts</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-icon class="cursor mr-10" title="Edit"
+                                        (click)="openContactsDetails(element)">info</mat-icon>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedColumns.length">No Records Found</td>
+                            </tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+                    </mat-card-content>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <!-- SEARCH TABLE FIELD -->
+                <div class="col-lg-12">
+                    <mat-card-content class="user-table-height mat-elevation-z8"
+                        *ngIf="directorSearchResult.filteredData?.length > 0">
+                        <table mat-table [dataSource]="directorSearchResult" class="tbl-width">
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="row_type_desc">
+                                <th mat-header-cell *matHeaderCellDef>Director</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.row_type_desc}}" [innerHTML]="element.row_type_desc"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="sub_rec_cd">
+                                <th mat-header-cell *matHeaderCellDef>Code</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.sub_rec_cd}}" [innerHTML]="element.sub_rec_cd"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="sub_rec_name">
+                                <th mat-header-cell *matHeaderCellDef>Sub Recipient</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.sub_rec_name}}" [innerHTML]="element.sub_rec_name"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="ISDName">
+                                <th mat-header-cell *matHeaderCellDef>ISD</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.ISDName}}" [innerHTML]="element.ISDName"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="row_ref_no">
+                                <th mat-header-cell *matHeaderCellDef>Review Number</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.row_ref_no}}" [innerHTML]="element.row_ref_no"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="rvw_yr">
+                                <th mat-header-cell *matHeaderCellDef>Review Year</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span title="{{element.rvw_yr}}" [innerHTML]="element.rvw_yr"></span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef>Action</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-icon class="cursor mr-10" title="Edit"
+                                        (click)="openDirectorVisitDetails(element)">edit</mat-icon>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedSearchColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedSearchColumns;"></tr>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedSearchColumns.length">No Records Found
+                                </td>
+                            </tr>
+                        </table>
+                        <mat-paginator #paginator1 [pageSizeOptions]="[10, 15, 20, 25]" showFirstLastButtons></mat-paginator>
+                    </mat-card-content>
+                </div>
+            </div>
+
+        </div>
+    </mat-card>
+</div>
