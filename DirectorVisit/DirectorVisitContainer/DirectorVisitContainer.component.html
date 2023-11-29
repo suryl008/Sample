@@ -1,7 +1,0 @@
-<app-landing-header [headerMenu]="headerMenu" [selectedIndex]="selectedIndex" (emitcurrentTabSelection)="getHeaderTabSelection($event)"></app-landing-header>
-<div class="d-height" [ngClass]="selectedPage == 'selectVisit' ? '' : 'dispnone'">
-    <app-directorvisit-search (emitTabData)="emitTabData($event)"></app-directorvisit-search>
-</div>
-<div class="d-height" *ngIf="selectedPage == 'visitDetails'">
-    <app-directorvisit-details [directorVisitSelectedID]="directorVisitSelectedID" (emitTabData)="emitTabData($event)" (emitEnhancedData)="emitEnhancedData($event)"></app-directorvisit-details>
-</div>
