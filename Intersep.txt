@@ -1,0 +1,161 @@
+
+"apiName-ApiKey": "Au|1osvcIYK!5[A3FQ9pq4?,00y46Xk8.t!rC7e9pH+(4S.uEf].C{zcEm3YY+Wz"
+
+public const string Apikey = "apiName-ApiKey";
+
+public class CustomValidationMiddleware
+    {
+        private readonly RequestDelegate _next;
+        public CustomValidationMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            if (!context.Request.Headers.TryGetValue(Constants.Apikey, out var extractedApiKey))
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsync("Key Required");
+                return;
+            }
+
+            var appSettings = context.RequestServices.GetRequiredService<IConfiguration>();
+
+            var apiKey = appSettings.GetValue<string>(Constants.Apikey);
+
+            if (!apiKey.Equals(extractedApiKey))
+            {
+                context.Response.StatusCode = 401;
+                return;
+            }
+
+            await _next(context);
+        }
+    }
+	
+	
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "custom", Version = "v1" });
+    c.AddSecurityDefinition(Constants.Apikey, new OpenApiSecurityScheme
+    {
+        Description = "ApiKey missing in header",
+        Type = SecuritySchemeType.ApiKey,
+        Name = Constants.Apikey,
+        In = ParameterLocation.Header,
+        Scheme = "ApiKeyScheme"
+    });
+    var key = new OpenApiSecurityScheme
+    {
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = Constants.Apikey
+        },
+        In = ParameterLocation.Header
+    };
+    var requirement = new OpenApiSecurityRequirement
+    {
+        { key, new List<string>() }
+    };
+    c.AddSecurityRequirement(requirement);
+});
+
+var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseAuthorization();
+app.UseMiddleware<CustomValidationMiddleware>();
+app.MapControllers();
+
+// Configure the HTTP request pipeline.
+
+app.Run();
+
+
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError, map, catchError } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class HttpHeaderInterceptorService implements HttpInterceptor {
+
+  constructor() { }
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    const apiKey = "Au|1osvcIYK!5[A3FQ9pq4?,00y46Xk8.t!rC7e9pH+(4S.uEf].C{zcEm3YY+Wz";
+
+    req = req.clone({
+      setHeaders: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        Accept: 'text/plain',
+        'apiName-ApiKey': apiKey
+      },
+    });
+
+    
+    req = req.clone({ withCredentials: true });
+
+    return next.handle(req).pipe(
+      map((event: HttpEvent<any>) => {
+        return event;
+      }),
+      catchError((err: any, caught) => {
+        if (err instanceof HttpErrorResponse) {
+          
+          if (err.status >= 400) {            
+            console.error(JSON.stringify(err), 'Thrown Exception on Http Error');
+          }
+          return throwError(() => err);
+        }
+      }));
+  }
+}
+
+
+import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule, NO_ERRORS_SCHEMA, DoBootstrap } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';ig/standard-item-config.component';
+
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule
+  ],
+  providers: [    
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpHeaderInterceptorService,
+      multi: true
+    }
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+})
+
+
+export class AppModule implements DoBootstrap {
+  constructor(private injector: Injector) { }
+  public ngDoBootstrap() {
+    const myCustomElement = createCustomElement(AppComponent, { injector: this.injector });    
+  }
+}
+	
