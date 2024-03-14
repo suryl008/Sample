@@ -1,0 +1,51 @@
+<div>
+    <div class="row header">
+        <div class="col-lg-10 mt-5">
+            <h6>{{headerName}}</h6>
+        </div>
+        <div class="col-lg-2" style="text-align: right">
+            <span style="cursor: pointer !important;" [mat-dialog-close]><b>X</b></span>
+        </div>
+    </div>
+    <div *ngIf="pageName == 'errand' ">
+        <div class="row mt-20">
+            <div class="table-responsive">
+                <table mat-table [dataSource]="responseData.filteredData" class="tbl-width">
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-icon title="Edit" *ngIf="!element.isEdit" class="cursor me-2"
+                                (click)="element.isEdit = !element.isEdit">edit</mat-icon>
+                            <mat-icon title="Edit" *ngIf="!element.isEdit" class="cursor me-2"
+                                (click)="element.isEdit">delete</mat-icon>
+                            <mat-icon title="Save" *ngIf="element.isEdit" class="cursor me-2"
+                                (click)="saveOrUpdate(element)">save</mat-icon>
+                            <mat-icon title="Cancel" *ngIf="element.isEdit" class="cursor me-2"
+                                (click)="element.isEdit = !element.isEdit">cancel</mat-icon>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
+                        <th style="min-width: 60px;" mat-header-cell *matHeaderCellDef>{{data.name}}</th>
+                        <td mat-cell *matCellDef="let element; let j = index">
+                            <input [disabled]="!element.isEdit" [title]="element[data.id]" id="{{data.id}}_{{j}}"
+                                *ngIf="data.id != 'errandId' && data.id != 'emailTemplate' && data.id != 'lastUpdDt'" type="text"
+                                [value]="element[data.id]" [(ngModel)]="element[data.id]">
+                            <textarea [disabled]="!element.isEdit" *ngIf="data.id === 'emailTemplate'" rows="4" cols="80"
+                                [value]="element[data.id]" [(ngModel)]="element[data.id]"></textarea>
+                            <span *ngIf="data.id == 'errandId' || data.id == 'lastUpdDt'">{{element[data.id]}}</span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length"> No data matching the filter.</td>
+                    </tr>
+                </table>
+                <div class="my-2 mx-2">
+                    <button [disabled]="enableSaveButton()" class="cursor button-blue mr-10" mat-raised-button (click)="addNewErrandSchedule()">Add New Errand</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
