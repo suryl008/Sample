@@ -1,16 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CTEUserComponent } from './cteuser.component';
-describe('CTEUserComponent', () => {
-  let component: CTEUserComponent;
-  let fixture: ComponentFixture<CTEUserComponent>;
+
+import { ErrandComponent } from './errand.component';
+
+describe('ErrandComponent', () => {
+  let component: ErrandComponent;
+  let fixture: ComponentFixture<ErrandComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CTEUserComponent ]
+      declarations: [ ErrandComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CTEUserComponent);
+    fixture = TestBed.createComponent(ErrandComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
