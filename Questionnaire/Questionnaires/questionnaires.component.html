@@ -1,0 +1,320 @@
+<div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <div class="col-lg-7 ps-3 pt-2">
+                <strong>Name : </strong>
+                <span>{{selectedQuestionnaire?.name}}</span>
+            </div>
+            <div class="col-lg-5 text-end">
+                <button class="cursor button-red" mat-button>
+                    <mat-icon class="mr-10">save</mat-icon>
+                    <span class="mt-20">Save</span>
+                </button>
+                <button class="cursor button-red" mat-button>
+                    <mat-icon class="mr-10">cancel</mat-icon>
+                    <span class="mt-20">Cancel</span>
+                </button>
+            </div>
+            <mat-accordion class="example-headers-align mt-3" multi>
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                        <mat-panel-title>
+                            <div class="row" style="width: 100%;">
+                                <span class="mat-panel-title-span">Questionnaire Administration</span>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row column-search mt-20">
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Code</mat-label>
+                                <mat-label class="mandatory">*</mat-label>
+                                <input matInput autocomplete="off" placeholder="Code">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Name</mat-label>
+                                <mat-label class="mandatory">*</mat-label>
+                                <input matInput autocomplete="off" placeholder="Name">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Permission</mat-label>
+                                <input matInput autocomplete="off" placeholder="Permission">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Record Status</mat-label>
+                                <input matInput autocomplete="off" disabled placeholder="Record Status">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Created By</mat-label>
+                                <input matInput autocomplete="off" disabled placeholder="Created By">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Created Date</mat-label>
+                                <input matInput autocomplete="off" disabled placeholder="Created Date">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Modified By</mat-label>
+                                <input matInput autocomplete="off" disabled placeholder="Modified By">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field>
+                                <mat-label>Modified Date</mat-label>
+                                <input matInput autocomplete="off" disabled placeholder="Modified Dates">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion class="example-headers-align mt-3" multi>
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                        <mat-panel-title>
+                            <div class="row" style="width: 100%;">
+                                <span class="mat-panel-title-span">Questionnaire Splash Page</span>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row column-search">
+                        <div class="col-lg-2 pt-4">
+                            <span>Search Button : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-2">
+                            <span>Splash Text : </span>
+                        </div>
+                        <div class="col-lg-10 pe-4 mt-2">
+                            <ckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+                        </div>
+                        <div class="col-lg-2 pt-2">
+                            <span>Search Text : </span>
+                        </div>
+                        <div class="col-lg-10 pe-4 mt-2">
+                            <ckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Search Button : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-2">
+                            <span>Home Respond Text: </span>
+                        </div>
+                        <div class="col-lg-10 pe-4 mt-2">
+                            <ckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>METS Respond Button : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Guest Respond Button : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Header Image : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion class="example-headers-align mt-3" multi>
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                        <mat-panel-title>
+                            <div class="row" style="width: 100%;">
+                                <span class="mat-panel-title-span">Questionnaire Status</span>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row column-search mt-10">
+                        <div class="col-lg-2 pt-2">
+                            <span>Approval Notice : </span>
+                        </div>
+                        <div class="col-lg-10 pe-4 mt-2">
+                            <ckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+                        </div>
+                        <div class="col-lg-2 pt-2">
+                            <span>Rejection Notice : </span>
+                        </div>
+                        <div class="col-lg-10 pe-4 mt-2">
+                            <ckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Submit Confirmation : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Accept Confirmation Header : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Accept Confirmation : </span>
+                        </div>
+                        <div class="col-lg-10 pe-4 mt-4">
+                            <ckeditor [config]="ckeConfig" debounce="500"></ckeditor>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Submission Receipt : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Questionnaire Field Email : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Allow Submit : </span>
+                        </div>
+                        <div class="col-lg-10 pt-4">
+                            <!-- <mat-checkbox [(ngModel)]="element.isActive" (change)="!element.isActive"
+                            [checked]="element.isActive"></mat-checkbox> -->
+                            <mat-checkbox></mat-checkbox>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion class="example-headers-align mt-3" multi>
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                        <mat-panel-title>
+                            <div class="row" style="width: 100%;">
+                                <span class="mat-panel-title-span">Misc Page Setup</span>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row column-search">
+                        <div class="col-lg-2 pt-4">
+                            <span>Search Page Title : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Response Page Title : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Search Enabled : </span>
+                        </div>
+                        <div class="col-lg-10 pt-4">
+                            <mat-checkbox></mat-checkbox>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion class="example-headers-align mt-3" multi>
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                        <mat-panel-title>
+                            <div class="row" style="width: 100%;">
+                                <span class="mat-panel-title-span">Questionnaire Relationship Management</span>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row column-search mt-10">
+                        <div class="col-lg-2 pt-4">
+                            <span>Show User Page : </span>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <mat-checkbox></mat-checkbox>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Allow Create From UserPage : </span>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <mat-checkbox></mat-checkbox>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Allow Reassign : </span>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <mat-checkbox></mat-checkbox>
+                        </div>
+                        <div class="col-lg-2 pt-4 mt-2">
+                            <span>Group Name : </span>
+                        </div>
+                        <div class="col-lg-10 mt-2">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>User List Group Name : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 pt-4">
+                            <span>Parent Questionnaire : </span>
+                        </div>
+                        <div class="col-lg-10">
+                            <mat-form-field>
+                                <input matInput autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </mat-card>
+</div>

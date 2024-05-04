@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CTEPortalComponent } from './cteportal.component';
+import { QusPopupComponent } from './qus-popup.component';
 
-describe('CTEPortalComponent', () => {
-  let component: CTEPortalComponent;
-  let fixture: ComponentFixture<CTEPortalComponent>;
+describe('QusPopupComponent', () => {
+  let component: QusPopupComponent;
+  let fixture: ComponentFixture<QusPopupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CTEPortalComponent ]
+      declarations: [ QusPopupComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CTEPortalComponent);
+    fixture = TestBed.createComponent(QusPopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

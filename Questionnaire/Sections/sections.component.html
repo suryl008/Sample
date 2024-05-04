@@ -1,0 +1,58 @@
+<div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <div class="col-lg-7 ps-3 pt-2">
+                <strong>Name : </strong>
+                <span>{{selectedQuestionnaire?.name}}</span>
+            </div>
+            <div class="col-lg-5 text-end">
+                <button class="cursor button-red" mat-button>
+                    <mat-icon class="">add</mat-icon>
+                    <span class="mt-20">Add New Section</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-12 mt-10">
+            <mat-card-content class="mat-elevation-z8">
+                <div class="table-responsive">
+                    <table #table mat-table [dataSource]="responseData" class="tbl-width" cdkDropList
+                        [cdkDropListData]="responseData?.data" (cdkDropListDropped)="dragdropTable($event)">
+                        <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
+                            <th style="min-width: 60px;" mat-header-cell *matHeaderCellDef mat-sort-header>{{data.name}}</th>
+                            <td mat-cell *matCellDef="let element; let j = index">
+                                <mat-form-field appearance="standard" style="margin-top: -15px;" *ngIf="data.id == 'label'">
+                                    <input matInput autocomplete="off" [(ngModel)]="element[data.id]">
+                                </mat-form-field>
+                                <span *ngIf="data.id != 'label'">{{element[data.id]}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="field">
+                            <th mat-header-cell *matHeaderCellDef>Field</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-icon title="Edit" class="cursor me-2" (click)="editFields(element)">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="dependencies">
+                            <th mat-header-cell *matHeaderCellDef>Dependencies</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-icon title="Edit" class="cursor me-2">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row cdkDrag [cdkDragData]="row" cdkDragLockAxis="y" *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" [attr.colspan]="displayedColumns.length"> No data matching the filter.</td>
+                        </tr>
+                    </table>
+                </div>
+                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20, 25]" showFirstLastButtons></mat-paginator>
+            </mat-card-content>
+        </div>
+    </mat-card>
+
+</div>
