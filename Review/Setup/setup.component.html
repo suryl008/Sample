@@ -1,0 +1,128 @@
+<div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <div class="col-lg-12">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Select Program and Review Year</span>
+                                    </div>
+                                    <div class="col-lg-8 text-end">
+                                        <button class="mt-1 cursor button-red" mat-button [disabled]="disableSearch()" (click)="panelSearch._toggle();openPopup({}, 'addSchedule')">
+                                            <mat-icon class="mr-10">add</mat-icon>
+                                            <span class="mt-20">Add Schedule</span>
+                                        </button>
+                                        <button class="mt-1 cursor button-red" mat-button (click)="panelSearch._toggle(); save()">
+                                            <mat-icon class="mr-10">save</mat-icon>
+                                            <span class="mt-20">Save</span>
+                                        </button>
+                                        <button class="mt-1 cursor button-red" mat-button (click)="panelSearch._toggle();">
+                                            <mat-icon class="mr-10">cancel</mat-icon>
+                                            <span class="mt-20">Cancel</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20 me-2">
+                            <div class="col-lg-4">
+                                <app-dropdown [selectedText]="'Please Select Program'" [dropdownListValue]="programList" (updatedSelectedValue)="updatedSelectedValue($event, 'program')"  [isMultiSelectDropdown]="false"></app-dropdown>
+                            </div>
+                            <div class="col-lg-4">
+                                <app-dropdown [selectedText]="'Please Select Review Type'" [dropdownListValue]="reviewTypeList" [selectedItemsValues]="selectedReviewTypeList"
+                                 (updatedSelectedValue)="updatedSelectedValue($event, 'reviewType')" [isMultiSelectDropdown]="false"></app-dropdown>
+                            </div>
+                            <div class="col-lg-4">
+                                <app-dropdown [selectedText]="'Please Select Parent'" [dropdownListValue]="parentList" (updatedSelectedValue)="updatedSelectedValue($event, 'parent')" [isMultiSelectDropdown]="false"></app-dropdown>
+                            </div>
+                            <div class="col-lg-8 mt-4">
+                                <label>Review Year:</label>
+                                <mat-radio-group  class="mx-2" [(ngModel)]="searchObj.rvwYear">
+                                    <ng-container *ngFor="let years of reviewYears">
+                                        <mat-radio-button class="radio-button" [value]="years">{{years}}</mat-radio-button>
+                                    </ng-container>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-lg-3 mt-4">
+                                <button class="mt-1 cursor button-red" mat-button (click)="searchSetupList()" [disabled]="disableSearch()">
+                                    <mat-icon class="mr-10">search</mat-icon>
+                                    <span class="mt-20">Search</span>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-3">
+                <mat-card-content class="mat-elevation-z8">
+                    <div class="table-responsive">
+                        <table #table mat-table [dataSource]="responseData" class="tbl-width">
+                            <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
+                                <th style="min-width: 30px;" mat-header-cell *matHeaderCellDef>{{data.name}}
+                                    <div *ngIf="data.id == 'select'">
+                                        <mat-checkbox></mat-checkbox>
+                                    </div>
+                                </th>
+                                <td mat-cell *matCellDef="let element; let j = index">
+                                    <div *ngIf="data.id == 'sub_rec_name' || data.id == 'row_ref_no'">
+                                        <span>{{element[data.id]}}</span>
+                                    </div>
+                                    <div *ngIf="data.id == 'contact'">
+                                        <span class="cursor" (click)="openPopup(element, 'contacts')"><mat-icon>contacts</mat-icon></span>
+                                    </div>
+                                    <div *ngIf="data.id == 'child'">
+                                        <span class="cursor" (click)="openPopup(element, 'child')"><mat-icon>home</mat-icon></span>
+                                    </div>
+                                    <div *ngIf="data.id == 'docs'">
+                                        <span class="cursor" (click)="openPopup(element, 'document')"><mat-icon>insert_drive_file</mat-icon></span>
+                                    </div>
+                                    <div *ngIf="data.id == 'rvw_start'">
+                                        <mat-form-field>
+                                            <mat-label>Enter a date range</mat-label>
+                                            <mat-date-range-input [rangePicker]="picker">
+                                                <input matStartDate matInput placeholder="Start date" [(ngModel)]="element['rvw_start']">
+                                                <input matEndDate matInput placeholder="End date" [(ngModel)]="element['rvw_end']">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #picker></mat-date-range-picker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div *ngIf="data.id == 'notify_ind'" class="me-3">
+                                        <mat-form-field>
+                                            <mat-select [(value)]="element[data.id]">
+                                              <mat-option value="N">Notify</mat-option>
+                                              <mat-option value="Y">UnAnnounced</mat-option>
+                                            </mat-select>
+                                          </mat-form-field>
+                                    </div>
+                                    <div *ngIf="data.id == 'select'">
+                                        <mat-checkbox [(ngModel)]="element[data.id]" (change)="!element[data.id]"
+                                            [checked]="element[data.id]"></mat-checkbox>
+                                    </div>
+                                    <div *ngIf="data.id == 'stage_stat'">
+                                        <mat-icon style="color:green" *ngIf="element[data.id] == 'C'">verified</mat-icon>
+                                        <mat-icon class="cursor" style="color:red" *ngIf="element[data.id] == 'P'" (click)="openPopup(element, 'error')">dangerous</mat-icon>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedColumns.length"> No data matching the filter.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <mat-paginator #paginator [pageSizeOptions]="[10, 15, 20, 25, 50]" showFirstLastButtons></mat-paginator>
+                </mat-card-content>
+            </div>
+        </div>
+    </mat-card>
+</div>

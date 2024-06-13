@@ -1,0 +1,428 @@
+<div>
+    <div class="row header">
+        <div class="col-lg-10 mt-5">
+            <h6>{{headerName}}</h6>
+        </div>
+        <div class="col-lg-2 pt-1 text-end">
+            <span style="cursor: pointer !important;" [mat-dialog-close]><b>X</b></span>
+        </div>
+    </div>
+    <div class="row mt-3" *ngIf="pageName == 'saveError'">
+        <div class="col-lg-12 text-end mb-2">
+            <button class="cursor button-red" mat-button (click)="closePopup(pageName, 'cancel')">
+                <mat-icon class="mr-10">cancel</mat-icon>
+                <span class="mt-20">Close</span>
+            </button>
+        </div>
+        <span class="col-lg-2 border"><b>Row No:</b></span>
+        <span class="col-lg-4 border"><b>Row Name:</b></span>
+        <span class="col-lg-6 border"><b>Row Error:</b></span>
+        <ng-container *ngFor="let error of emitdata">
+            <span class="col-lg-2 border"> {{error?.rowNo}}</span>
+            <span class="col-lg-4 border"> {{error?.rowName}}</span>
+            <span class="col-lg-6 border"> {{error?.startDate}}<br
+                    *ngIf="error?.commaSeparator">{{error?.endDate}}</span>
+        </ng-container>
+    </div>
+    <div class="row mt-3" *ngIf="pageName == 'child'">
+        <div class="col-lg-12">
+            <mat-form-field>
+                <mat-label>Program Name</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.searchObj.grant_PgaDesc">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+            <mat-form-field>
+                <mat-label>Parent</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.sub_rec_name">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+            <mat-form-field>
+                <mat-label>Review Type</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.searchObj.rvwDesc">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+            <mat-form-field>
+                <mat-label>Sub-Recipient</mat-label>
+                <input autocomplete="off" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+            <mat-form-field>
+                <mat-label>Child</mat-label>
+                <input autocomplete="off" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+            <button class="mt-3 cursor button-red" mat-button>
+                <mat-icon class="mr-10">search</mat-icon>
+                <span class="mt-20">Search</span>
+            </button>
+        </div>
+        <div class="col-lg-12 text-end">
+            <button class="mt-3 cursor button-red" mat-button (click)="closePopup(pageName, 'ok')">
+                <mat-icon class="mr-10">save</mat-icon>
+                <span class="mt-20">Ok</span>
+            </button>
+            <button class="mt-3 cursor button-red" mat-button (click)="closePopup(pageName, 'cancel')">
+                <mat-icon class="mr-10">cancel</mat-icon>
+                <span class="mt-20">Cancel</span>
+            </button>
+        </div>
+
+    </div>
+    <div class="row mt-3" *ngIf="pageName == 'error'">
+        <div class="col-lg-12">
+            <mat-form-field>
+                <mat-label>Program Name</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.grant_PgaDesc">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-12">
+            <mat-form-field>
+                <mat-label>Parent</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.sub_rec_name">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-12 mt-3">
+            <mat-card-content class="mat-elevation-z8">
+                <div class="table-responsive">
+                    <table #table mat-table [dataSource]="responseData" class="tbl-width">
+                        <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
+                            <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}</th>
+                            <td mat-cell *matCellDef="let element; let j = index">
+                                <span>{{element[data.id]}}</span>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" [attr.colspan]="displayedColumns.length"> No data matching the filter.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <mat-paginator #paginator [pageSizeOptions]="[10, 15, 20, 25, 50]" showFirstLastButtons></mat-paginator>
+            </mat-card-content>
+            <div class="text-end">
+                <button class="mt-3 cursor button-red" mat-button (click)="closePopup(pageName, 'cancel')">
+                    <mat-icon class="mr-10">cancel</mat-icon>
+                    <span class="mt-20">Cancel</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-3" *ngIf="pageName == 'document'">
+        <div class="col-lg-8">
+            <mat-form-field>
+                <mat-label>Program Name</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.grant_PgaDesc">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <mat-form-field>
+                <mat-label>Parent</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.sub_rec_name">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-12 header px-3">
+            <h6 class="mt-2">Document Details</h6>
+        </div>
+        <div class="col-lg-3 mt-2">
+            <mat-form-field>
+                <mat-label>Document Name</mat-label>
+                <input autocomplete="off" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-3 mt-2">
+            <app-dropdown [selectedText]="'Please Select Document Category'"
+                [isMultiSelectDropdown]="false"></app-dropdown>
+        </div>
+        <div class="col-lg-3 mt-3">
+            <label>Type:</label>
+            <mat-radio-group class="mx-2">
+                <ng-container *ngFor="let type of documentType">
+                    <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
+                </ng-container>
+            </mat-radio-group>
+        </div>
+        <div class="col-lg-3 mt-3">
+            <label>Validity:</label>
+            <mat-radio-group class="mx-2">
+                <ng-container *ngFor="let type of validateType">
+                    <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
+                </ng-container>
+            </mat-radio-group>
+        </div>
+        <div class="col-lg-9 mt-2">
+            <mat-form-field>
+                <mat-label>Instructions</mat-label>
+                <textarea autocomplete="off" matInput rows="2"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4 mt-3">
+            <mat-form-field>
+                <mat-label>Validate Date</mat-label>
+                <input autocomplete="off" matInput type="datetime-local">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-3 mt-3">
+            <label>Units:</label>
+            <mat-radio-group class="mx-2">
+                <ng-container *ngFor="let type of unitTypes">
+                    <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
+                </ng-container>
+            </mat-radio-group>
+        </div>
+
+        <!-- ATTACHMENT -->
+        <div class="row">
+            <div class="col-lg-12 header px-3 mt-2">
+                <h6 class="mt-2">Attachment Rules</h6>
+            </div>
+            <div class="col-lg-6 mt-2 d-flex">
+                <div class="col-lg-6">
+                    <mat-form-field>
+                        <mat-label>Minimum Files</mat-label>
+                        <input autocomplete="off" matInput numbersOnly>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-form-field>
+                        <mat-label>Maximum Files</mat-label>
+                        <input autocomplete="off" matInput numbersOnly>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-3">
+                <label>File Type Applicability:</label>
+                <mat-radio-group class="mx-2">
+                    <ng-container *ngFor="let type of fileTypeApplicability">
+                        <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
+                    </ng-container>
+                </mat-radio-group>
+
+                <label class="ms-4">
+                    <span>File Types :</span>
+                    <span class="position-relative" style="top: 7px;"><mat-icon
+                            class="mx-3">create_new_folder</mat-icon></span>
+                </label>
+            </div>
+        </div>
+        <!-- FORMS -->
+        <div class="row">
+            <div class="col-lg-12 header px-3 mt-2">
+                <h6 class="mt-2">Form Rules</h6>
+            </div>
+            <div class="col-lg-7 mt-2 d-flex">
+                <div class="col-lg-10">
+                    <app-dropdown [selectedText]="'Please Select Form'" [isMultiSelectDropdown]="false"></app-dropdown>
+                </div>
+                <div class="col-lg-2 mt-2">
+                    <button class="mt-1 cursor button-red" mat-button>
+                        <mat-icon class="mr-10">preview</mat-icon>
+                        <span class="mt-20">Preview</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-5 mt-2 d-flex">
+                <div class="col-lg-6">
+                    <mat-form-field>
+                        <mat-label>Effective Date From</mat-label>
+                        <input autocomplete="off" matInput type="date">
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-form-field>
+                        <mat-label>Effective Date To</mat-label>
+                        <input autocomplete="off" matInput type="date">
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-12 text-end">
+            <button class="mt-1 cursor button-red" mat-button>
+                <mat-icon class="mr-10">save</mat-icon>
+                <span class="mt-20">Ok</span>
+            </button>
+            <button class="mt-1 cursor button-red" mat-button>
+                <mat-icon class="mr-10">cancel</mat-icon>
+                <span class="mt-20">Cancel</span>
+            </button>
+        </div>
+
+    </div>
+    <div class="row mt-3" id="addSchedule" *ngIf="pageName == 'addSchedule'">
+        <div class="col-lg-6">
+            <mat-form-field>
+                <mat-label>Program Name</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.grant_PgaDesc">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <mat-form-field>
+                <mat-label>Review Type</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.rvwType">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2">
+            <mat-form-field>
+                <mat-label>Review Year</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.rvwYear">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+            <mat-form-field>
+                <mat-label>Sub-Recipient</mat-label>
+                <input autocomplete="off" matInput [(ngModel)]="scheduleSearchObj.subRecipient">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <mat-form-field>
+                <mat-label>Parent</mat-label>
+                <input autocomplete="off" matInput [(ngModel)]="scheduleSearchObj.parent">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2">
+            <button class="mt-3 cursor button-red" mat-button (click)="filterAddScheduleSearch()">
+                <mat-icon class="mr-10">search</mat-icon>
+                <span class="mt-20">Search</span>
+            </button>
+        </div>
+        <div class="col-lg-12 mt-3 table-responsive">
+            <mat-card-content class="mat-elevation-z8">
+                <div class="">
+                    <table #table mat-table [dataSource]="responseData" class="tbl-width">
+                        <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
+                            <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}</th>
+                            <td mat-cell *matCellDef="let element; let j = index">
+                                <span *ngIf="data.id != 'select'">{{element[data.id]}}</span>
+                                <mat-checkbox *ngIf="data.id == 'select'" [(ngModel)]="element[data.id]"
+                                    (change)="!element[data.id]" [checked]="element[data.id]"></mat-checkbox>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" [attr.colspan]="displayedColumns.length"> No data matching the filter.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+            </mat-card-content>
+        </div>
+        <div class="col-lg-12 text-end">
+            <button class="mt-3 cursor button-red" mat-button (click)="closePopup(pageName, 'Ok')">
+                <mat-icon class="mr-10">save</mat-icon>
+                <span class="mt-20">Ok</span>
+            </button>
+            <button class="mt-3 cursor button-red" mat-button (click)="closePopup(pageName, 'cancel')">
+                <mat-icon class="mr-10">cancel</mat-icon>
+                <span class="mt-20">Cancel</span>
+            </button>
+        </div>
+    </div>
+    <div class="row mt-3" id="contacts" *ngIf="pageName == 'contacts'">
+        <div class="col-lg-4">
+            <mat-form-field>
+                <mat-label>Program Name</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.grant_PgaDesc">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <mat-form-field>
+                <mat-label>Parent</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.sub_rec_name">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <mat-form-field>
+                <mat-label>Review Type</mat-label>
+                <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.rvwType">
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <app-dropdown [selectedText]="'Please Select Scheduling Notification Template'"
+                [isMultiSelectDropdown]="false"></app-dropdown>
+        </div>
+        <div class="col-lg-1">
+            <button class="mt-3 cursor button-red" mat-button>
+                <mat-icon class="mr-10">preview</mat-icon>
+                <span class="mt-20">Preview</span>
+            </button>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-12 mt-10">
+                <mat-accordion #contacts class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Notification Information
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-8" style="text-align: right;">
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle();">
+                                            <mat-icon class="mr-10">add</mat-icon>
+                                            <span class="mt-20">Add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="col-lg-12 mt-3 table-responsive">
+                            <table #table mat-table [dataSource]="responseData" class="tbl-width">
+                                <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
+                                    <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}</th>
+                                    <td mat-cell *matCellDef="let element; let j = index">
+                                        {{element[data.id]}}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedColumns.length"> No data matching the filter.
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-12 mt-10">
+                <mat-accordion #contacts class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">MDE Review Team</span>
+                                    </div>
+                                    <div class="col-lg-8" style="text-align: right;">
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle();">
+                                            <mat-icon class="mr-10">add</mat-icon>
+                                            <span class="mt-20">Add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <!-- Data List -->
+
+            </div>
+        </div>
+    </div>
+</div>
