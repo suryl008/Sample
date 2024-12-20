@@ -1,370 +1,97 @@
-<div class="row mt-3" *ngIf="pageName == 'document'">
-        <div class="row" [ngClass]="{'display-none' : showDocument || showMisc}">
-            <div class="col-lg-6">
-                <mat-form-field>
-                    <mat-label>Program Name</mat-label>
-                    <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.grant_PgaDesc">
-                </mat-form-field>
-            </div>
-            <div class="col-lg-3">
-                <mat-form-field>
-                    <mat-label>Parent</mat-label>
-                    <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.sub_rec_name">
-                </mat-form-field>
-            </div>
-            <div class="col-lg-3">
-                <mat-form-field>
-                    <mat-label>Review Type</mat-label>
-                    <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.rvwType">
-                </mat-form-field>
-            </div>
-            <div class="col-lg-12 mt-3 table-responsive">
-                <table #table mat-table [dataSource]="responseData" class="tbl-width">
-                    <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
-                        <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}</th>
-                        <td mat-cell *matCellDef="let element; let j = index">
-                            {{element[data.id]}}
-                        </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" [attr.colspan]="displayedColumns.length"> No data matching the filter.
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-lg-12 text-end">
-                <button class="mt-1 cursor button-red" mat-button (click)="showDocument = !showDocument">
-                    <mat-icon class="mr-10">add</mat-icon>
-                    <span class="mt-20">Add Document</span>
-                </button>
-                <button class="mt-1 cursor button-red" mat-button>
-                    <mat-icon class="mr-10">save</mat-icon>
-                    <span class="mt-20">Ok</span>
-                </button>
-                <button class="mt-1 cursor button-red" mat-button>
-                    <mat-icon class="mr-10">cancel</mat-icon>
-                    <span class="mt-20">Cancel</span>
-                </button>
-            </div>
-        </div>
-        <div class="row" [ngClass]="{'display-none' : !showDocument}">
-            <div class="row" [ngClass]="{'display-none' : showFileType}">
-                <div class="col-lg-8">
-                    <mat-form-field>
-                        <mat-label>Program Name</mat-label>
-                        <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.grant_PgaDesc">
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-4">
-                    <mat-form-field>
-                        <mat-label>Parent</mat-label>
-                        <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.sub_rec_name">
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-12 header px-3">
-                    <h6 class="mt-2">Document Details</h6>
-                </div>
-                <div class="col-lg-3 mt-2">
-                    <mat-form-field>
-                        <mat-label>Document Name</mat-label>
-                        <input autocomplete="off" matInput>
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-3 mt-2">
-                    <app-dropdown [selectedText]="'Please Select Document Category'"
-                        [isMultiSelectDropdown]="false"></app-dropdown>
-                </div>
-                <div class="col-lg-3 mt-3">
-                    <label>Type:</label>
-                    <mat-radio-group class="mx-2">
-                        <ng-container *ngFor="let type of documentType">
-                            <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
-                        </ng-container>
-                    </mat-radio-group>
-                </div>
-                <div class="col-lg-3 mt-3">
-                    <label>Validity:</label>
-                    <mat-radio-group class="mx-2">
-                        <ng-container *ngFor="let type of validateType">
-                            <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
-                        </ng-container>
-                    </mat-radio-group>
-                </div>
-                <div class="col-lg-9 mt-2">
-                    <mat-form-field>
-                        <mat-label>Instructions</mat-label>
-                        <textarea autocomplete="off" matInput rows="2"></textarea>
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-4 mt-3">
-                    <mat-form-field>
-                        <mat-label>Validate Date</mat-label>
-                        <input autocomplete="off" matInput type="datetime-local">
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-3 mt-3">
-                    <label>Units:</label>
-                    <mat-radio-group class="mx-2">
-                        <ng-container *ngFor="let type of unitTypes">
-                            <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
-                        </ng-container>
-                    </mat-radio-group>
-                </div>
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
 
-                <!-- ATTACHMENT -->
-                <div class="row">
-                    <div class="col-lg-12 header px-3 mt-2">
-                        <h6 class="mt-2">Attachment Rules</h6>
-                    </div>
-                    <div class="col-lg-6 mt-2 d-flex">
-                        <div class="col-lg-6">
-                            <mat-form-field>
-                                <mat-label>Minimum Files</mat-label>
-                                <input autocomplete="off" matInput numbersOnly>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-lg-6">
-                            <mat-form-field>
-                                <mat-label>Maximum Files</mat-label>
-                                <input autocomplete="off" matInput numbersOnly>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 mt-3">
-                        <label>File Type Applicability:</label>
-                        <mat-radio-group class="mx-2">
-                            <ng-container *ngFor="let type of fileTypeApplicability">
-                                <mat-radio-button class="radio-button" [value]="type">{{type}}</mat-radio-button>
-                            </ng-container>
-                        </mat-radio-group>
-
-                        <label class="ms-4">
-                            <span>File Types :</span>
-                            <span class="position-relative" style="top: 7px;" (click)="showFileType = !showFileType"><mat-icon
-                                    class="mx-3">create_new_folder</mat-icon></span>
-                        </label>
-                    </div>
-                </div>
-                <!-- FORMS -->
-                <div class="row">
-                    <div class="col-lg-12 header px-3 mt-2">
-                        <h6 class="mt-2">Form Rules</h6>
-                    </div>
-                    <div class="col-lg-7 mt-2 d-flex">
-                        <div class="col-lg-10">
-                            <app-dropdown [selectedText]="'Please Select Form'"
-                                [isMultiSelectDropdown]="false"></app-dropdown>
-                        </div>
-                        <div class="col-lg-2 mt-2">
-                            <button class="mt-1 cursor button-red" mat-button>
-                                <mat-icon class="mr-10">preview</mat-icon>
-                                <span class="mt-20">Preview</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 mt-2 d-flex">
-                        <div class="col-lg-6">
-                            <mat-form-field>
-                                <mat-label>Effective Date From</mat-label>
-                                <input autocomplete="off" matInput type="date">
-                            </mat-form-field>
-                        </div>
-                        <div class="col-lg-6">
-                            <mat-form-field>
-                                <mat-label>Effective Date To</mat-label>
-                                <input autocomplete="off" matInput type="date">
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-lg-12 text-end">
-                    <button class="mt-1 cursor button-red" mat-button (click)="showDocument = !showDocument">
-                        <mat-icon class="mr-10">save</mat-icon>
-                        <span class="mt-20">Ok</span>
-                    </button>
-                    <button class="mt-1 cursor button-red" mat-button (click)="showDocument = !showDocument">
-                        <mat-icon class="mr-10">cancel</mat-icon>
-                        <span class="mt-20">Cancel</span>
-                    </button>
-                </div>
-            </div>
-            <div class="row" [ngClass]="{'display-none' : !showFileType}">
-                <div class="col-lg-12 mt-3 table-responsive">
-                    <table #table mat-table [dataSource]="fileTypeData" class="tbl-width">
-                        <ng-container *ngFor="let data of matfileTypeColumnConfig; let i = index" matColumnDef="{{data.id}}">
-                            <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}</th>
-                            <td mat-cell *matCellDef="let element; let j = index">
-                                {{element[data.id]}}
-                            </td>
-                        </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="displayedfileTypeColumns; sticky: true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedfileTypeColumns;"></tr>
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" [attr.colspan]="displayedfileTypeColumns.length"> No data matching the filter.
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-lg-12 text-end">
-                    <button class="mt-1 cursor button-red" mat-button (click)="showFileType = !showFileType">
-                        <mat-icon class="mr-10">save</mat-icon>
-                        <span class="mt-20">Ok</span>
-                    </button>
-                    <button class="mt-1 cursor button-red" mat-button (click)="showFileType = !showFileType">
-                        <mat-icon class="mr-10">cancel</mat-icon>
-                        <span class="mt-20">Cancel</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="row" [ngClass]="{'display-none' : !showMisc}">
-            <div class="col-lg-6">
-                <mat-form-field>
-                    <mat-label>Program Name</mat-label>
-                    <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.grant_PgaDesc">
-                </mat-form-field>
-            </div>
-            <div class="col-lg-3">
-                <mat-form-field>
-                    <mat-label>Parent</mat-label>
-                    <input autocomplete="off" matInput disabled [(ngModel)]="this.emitdata.sub_rec_name">
-                </mat-form-field>
-            </div>
-            <div class="col-lg-3">
-                <mat-form-field>
-                    <mat-label>Review Type</mat-label>
-                    <input autocomplete="off" matInput disabled [(ngModel)]="emitdata.searchObj.rvwType">
-                </mat-form-field>
-            </div>
-            <div class="col-lg-12 mt-3 table-responsive">
-                <table #table mat-table [dataSource]="misc" class="tbl-width">
-                    <ng-container *ngFor="let data of matMiscColumnConfig; let i = index" matColumnDef="{{data.id}}">
-                        <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}</th>
-                        <td mat-cell *matCellDef="let element; let j = index">
-                            <span *ngIf="data.id == 'fieldType'">
-                                {{element[data.id]}}
-                            </span>
-                            <span *ngIf="data.id == 'fieldValue'">
-                                {{element[data.id]}}
-                            </span>
-                        </td>
-                    </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedMiscColumns; sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedMiscColumns;"></tr>
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" [attr.colspan]="displayedMiscColumns.length"> No data matching the filter.
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-lg-12 text-end">
-                <button class="mt-1 cursor button-red" mat-button (click)="showMisc = !showMisc">
-                    <mat-icon class="mr-10">save</mat-icon>
-                    <span class="mt-20">Ok</span>
-                </button>
-                <button class="mt-1 cursor button-red" mat-button (click)="showMisc = !showMisc">
-                    <mat-icon class="mr-10">cancel</mat-icon>
-                    <span class="mt-20">Cancel</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-
- public showDocument:boolean = false;
-  public showFileType:boolean = false;
-  public showMisc:boolean = false;
-  public fileTypeData = new MatTableDataSource();
-  public matfileTypeColumnConfig = [
+namespace SSRSReportGeneration
+{
+    class Program
     {
-      "id": "fileType",
-      "name": "File Type"
-    },
-    {
-      "id": "fileDesc",
-      "name": "Description"
-    },
-    {
-      "id": "select",
-      "name": "Select"
-    },
-    {
-      "id": "sizeApp",
-      "name": "Size Appl"
-    },
-    {
-      "id": "maxSize",
-      "name": "Max Size"
-    },
-  ]
-  public displayedfileTypeColumns = [
-    "fileType",
-    "fileDesc",
-    "select",
-    "sizeApp",
-    "maxSize",
-  ];
-  public misc = new MatTableDataSource();
-  public matMiscColumnConfig = [
-    {
-      "id": "fieldType",
-      "name": "Field Type"
-    },
-    {
-      "id": "fieldValue",
-      "name": "Field Value"
-    },
-   
-  ]
-  public displayedMiscColumns = [
-    "fieldType",
-    "fieldValue",
-  ];
+        static async Task Main(string[] args)
+        {
+            string reportServerUrl = "http://yourserver/ReportServer/ReportExecution2005.asmx";  // Replace with your SSRS server URL
+            string reportPath = "/Path/To/YourReport";  // The report path in SSRS (e.g., "/Reports/Sales/MonthlyReport")
+            string outputFileName = "GeneratedReport.pdf";  // Output file name for the report
 
+            // Call the method to generate the report
+            await GenerateSSRSReport(reportServerUrl, reportPath, outputFileName);
+        }
 
+        public static async Task GenerateSSRSReport(string reportServerUrl, string reportPath, string outputFileName)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    // Set up the SOAP request body
+                    string soapEnvelope = $@"
+                    <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:rep='http://schemas.microsoft.com/sqlserver/reporting/2005/06/01/reportexecution'>
+                        <soapenv:Header/>
+                        <soapenv:Body>
+                            <rep:LoadReport>
+                                <rep:Report>{reportPath}</rep:Report>
+                                <rep:HistoryID></rep:HistoryID>
+                            </rep:LoadReport>
+                        </soapenv:Body>
+                    </soapenv:Envelope>";
 
- if(this.pageName == 'document'){
-        this.showDocument = false
-        this.matColumnConfig = [
-          {
-            "id": "sub_desc",
-            "name": "Submission Category"
-          },
-          {
-            "id": "rec_desc",
-            "name": "Document Type"
-          },
-          {
-            "id": "doc_name",
-            "name": "Document Name"
-          },
-          {
-            "id": "doc_cat_desc",
-            "name": "Document Category"
-          },
-          {
-            "id": "select",
-            "name": "Select"
-          },
-          {
-            "id": "form_id",
-            "name": "Preview Form"
-          },
-        ]
-        this.displayedColumns = [
-          "sub_desc",
-          "rec_desc",
-          "doc_name",
-          "doc_cat_desc",
-          "select",
-          "form_id",
-        ];
-      }
+                    // Send the SOAP request to load the report
+                    var content = new StringContent(soapEnvelope, Encoding.UTF8, "text/xml");
+                    HttpResponseMessage response = await client.PostAsync(reportServerUrl, content);
+                    response.EnsureSuccessStatusCode();
 
+                    // Read the response (Execution ID)
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);  // For debugging, to see the raw XML response
 
-.display-none{
-  display: none;
+                    // Now call the Render method using the Execution ID
+                    string executionID = ExtractExecutionID(responseContent);
+
+                    // Render the report
+                    byte[] reportData = await RenderReport(client, reportServerUrl, executionID, "PDF");
+
+                    // Save the report to a file
+                    await System.IO.File.WriteAllBytesAsync(outputFileName, reportData);
+                    Console.WriteLine($"Report generated successfully and saved as {outputFileName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error generating report: {ex.Message}");
+            }
+        }
+
+        public static string ExtractExecutionID(string responseContent)
+        {
+            // You will need to parse the XML response and extract the ExecutionID from it
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(responseContent);
+            XmlNode executionIDNode = xmlDoc.SelectSingleNode("//ExecutionID");
+            return executionIDNode?.InnerText;
+        }
+
+        public static async Task<byte[]> RenderReport(HttpClient client, string reportServerUrl, string executionID, string format = "PDF")
+        {
+            string renderSoapEnvelope = $@"
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:rep='http://schemas.microsoft.com/sqlserver/reporting/2005/06/01/reportexecution'>
+                <soapenv:Header/>
+                <soapenv:Body>
+                    <rep:Render>
+                        <rep:Format>{format}</rep:Format>
+                        <rep:ExecutionID>{executionID}</rep:ExecutionID>
+                    </rep:Render>
+                </soapenv:Body>
+            </soapenv:Envelope>";
+
+            var renderContent = new StringContent(renderSoapEnvelope, Encoding.UTF8, "text/xml");
+            HttpResponseMessage response = await client.PostAsync(reportServerUrl, renderContent);
+            response.EnsureSuccessStatusCode();
+
+            // Get the report data in byte array format
+            byte[] reportData = await response.Content.ReadAsByteArrayAsync();
+            return reportData;
+        }
+    }
 }
+
