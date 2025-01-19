@@ -1,0 +1,31 @@
+.popup {
+    position: absolute;
+    top: 100%; /* Position below the "Insert Table" button */
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: fit-content;
+  }
+  
+  .table-preview {
+    display: grid;
+    grid-template-rows: repeat(10, 20px); /* 10 rows of 20px each */
+    grid-template-columns: repeat(10, 20px); /* 10 columns of 20px each */
+    gap: 2px; /* Space between cells */
+  }
+  
+  .table-preview-cell {
+    width: 20px;
+    height: 20px;
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .table-preview-cell.highlighted {
+    background: #0078d4; /* Blue color for hovered cells */
+  }
+  
