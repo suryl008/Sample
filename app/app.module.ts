@@ -1,18 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
-import { DynamicEditableTableComponent } from './dynamic-editable-table/dynamic-editable-table.component';
-import { MsWordTablePopupComponent } from './ms-word-table-popup/ms-word-table-popup.component';
+import { TimesPipe } from './times.pipe';
+import { RowColSelectorComponent } from './rowcolSelectorComponent/rowcol.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DynamicEditableTableComponent,
-    MsWordTablePopupComponent,
-  ],
   imports: [BrowserModule, FormsModule],
-  providers: [],
+  declarations: [AppComponent, RowColSelectorComponent, TimesPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

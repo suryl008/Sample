@@ -1,2 +1,5 @@
-<h1>{{ title }}</h1>
-<app-dynamic-editable-table></app-dynamic-editable-table>
+<div>
+  <row-col-selector
+    (userSelection)="this.userSelection($event)"
+  ></row-col-selector>
+</div>

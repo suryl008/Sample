@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
+import { IUserSelection } from './user.selection';
 
 @Component({
-  selector: 'app-root', // Ensure this matches the tag in index.html
+  selector: 'my-app',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'angular-dynamic-table';
+  public userSelection(selectedInfoEvent: IUserSelection): void {
+    // console.log('event handled by parent component');
+    console.log(JSON.stringify(selectedInfoEvent));
+    console.log(`row selected - ${selectedInfoEvent.row}`);
+    console.log(`col selected - ${selectedInfoEvent.col}`);
+  }
 }
