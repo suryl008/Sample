@@ -1,0 +1,51 @@
+<div class="row-column-container">
+  <div class="row-column-input">
+    <label for="tableRow">Row(s):</label>
+    <input
+      type="number"
+      id="tableRow"
+      [(ngModel)]="element.tableRow"
+      placeholder="Enter rows"
+    />
+  </div>
+  <div class="row-column-input">
+    <label for="tableColumn">Column(s):</label>
+    <input
+      type="number"
+      id="tableColumn"
+      [(ngModel)]="element.tableColumn"
+      placeholder="Enter columns"
+    />
+  </div>
+</div>
+
+.row-column-container {
+  display: flex;
+  gap: 20px; /* Adjust the gap between Row(s) and Column(s) */
+  align-items: center;
+  font-size: 13px;
+}
+
+.row-column-input {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between label and input */
+}
+
+.row-column-input label {
+  font-weight: bold;
+}
+
+.row-column-input input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 13px;
+  width: 60px; /* Adjust width for the input */
+  text-align: center; /* Center the text inside the input */
+}
+
+.row-column-input input:focus {
+  outline: none;
+  border-color: #007bff; /* Highlight border on focus */
+}
