@@ -1,0 +1,54 @@
+[
+    [
+        {
+        "contact_name": "Aimee Haapala",
+        "off_cd": "SS",
+        "rec_stat": "A",
+        "role_desc": "Enhanced Program Administ5rator",
+        "user_email": "HaapalaA1@gmail.com",
+         "user_id": 2710,
+        "user_name": "HaapalA1",
+        "user_role": "EPADM"
+        },  
+        {
+        "contact_name": "Brenda Sweatman",
+        "off_cd": "SS",
+        "rec_stat": "A",
+        "role_desc": "Program Administrator",
+        "user_email": "Sweatmanb@gmail.com",
+         "user_id": 11834,
+        "user_name": "SweatmanBr",
+        "user_role": "PADM"
+        },  
+         {
+        "contact_name": "Joshua Long",
+        "off_cd": "SS",
+        "rec_stat": "A",
+        "role_desc": "System Administ5rator",
+        "user_email": "LongJ1@gmail.com",
+         "user_id": 1161,
+        "user_name": "longjos1",
+        "user_role": "ADM"
+        },  
+        {
+        "contact_name": "Teshia Johnson",
+        "off_cd": "SS",
+        "rec_stat": "A",
+        "role_desc": "System Administrator",
+        "user_email": "JohnsonT3@gmail.com",
+         "user_id": 4584,
+        "user_name": "Johns849",
+        "user_role": "ADM"
+        },  
+        {
+        "contact_name": "Jim Whittaker",
+        "off_cd": "OCTPA",
+        "rec_stat": "A",
+        "role_desc": "System Administrator",
+        "user_email": "Whitle@gmail.com",
+         "user_id": 2275,
+        "user_name": "WhittaJi",
+        "user_role": "ADM"
+        }
+    ]
+]	

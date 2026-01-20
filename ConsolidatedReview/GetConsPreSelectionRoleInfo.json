@@ -1,0 +1,52 @@
+[
+    [
+        {
+        "chk_ind": "False",
+        "notify_fmt": "E",
+        "pri_ind": "",
+        "role_desc": "Food Service Director",
+        "role_email": "",
+        "role_id": 4410,
+        "role_name": "",
+        "role_phone": "",
+        "role_type": "FSD",
+        "sub_role_id": 0,
+        "training_info": "False",
+        "user_id": 0,
+        "user_role": "",
+        "user_status": ""
+        },  
+        {
+        "chk_ind": "True",
+        "notify_fmt": "|",
+        "pri_ind": " ",
+        "role_desc": "Program Manager",
+        "role_email": "mde-ge@gmail.com",
+        "role_id": 4411,
+        "role_name": "Test Account",
+        "role_phone": "(248) 874 3456",
+        "role_type": "PM",
+        "sub_role_id": 440269,
+        "training_info": "False",
+        "user_id": 3815,
+        "user_role": "Sub-recipient Administrator",
+        "user_status": "I"
+        },  
+         {
+        "chk_ind": "True",
+        "notify_fmt": "|",
+        "pri_ind": "P",
+        "role_desc": "Superintendent",
+        "role_email": "testsuper@gmail.com",
+        "role_id": 4412,
+        "role_name": "test super",
+        "role_phone": "",
+        "role_type": "SUP",
+        "sub_role_id": 440270,
+        "training_info": "False",
+        "user_id": 0,
+        "user_role": "",
+        "user_status": "A"
+        }
+    ]
+]	

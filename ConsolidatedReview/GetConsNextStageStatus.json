@@ -1,0 +1,14 @@
+[
+    [
+        {
+        "promote_stage": "EFBRR",
+        "stage_stat": "C",
+        "stat_desc": "Complete"
+        },  
+        {
+        "promote_stage": "SNSEFB",
+        "stage_stat": "REFBN",
+        "stat_desc": "Resend Excess Fund Balance Notification-2nd Notice"
+        }  
+    ]
+]	
