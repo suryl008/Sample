@@ -1,0 +1,1304 @@
+<div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <div class="col-lg-12">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">{{detailsTitle}}
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-8" style="text-align: right;">
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle(); saveVisitorDetails()">
+                                            <mat-icon class="mr-10">save</mat-icon>
+                                            <span class="mt-20">Save</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <div class="col-lg-3">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">{{getFieldLabel('rvw_type_desc')}}</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.rvw_type_desc">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 ">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">{{getFieldLabel('sub_rec_name')}}</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.sub_rec_name">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 ">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">{{getFieldLabel('rvw_yr')}}</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.rvw_yr">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 ">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">{{getFieldLabel('rvw_ref_no')}}</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.rvw_ref_no">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSchedule class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-12">
+                                        <span class="mat-panel-title-span">Schedule Contacts</span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <div class="row mt-3">
+                                <div class="col-lg-12 mt-10">
+                                    <mat-accordion #contacts class="example-headers-align" multi>
+                                        <mat-expansion-panel [expanded]="true">
+                                            <mat-expansion-panel-header #panelSearchMDE
+                                                class="mat-expansion-panel-header">
+                                                <mat-panel-title>
+                                                    <div class="row" style="width: 100%;">
+                                                        <div class="col-lg-4">
+                                                            <span class="mat-panel-title-span">
+                                                                {{currentTabConfig?.mdeSectionTitle || 'MDE Contacts'}}
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-lg-8" style="text-align: right;">
+                                                            <button *ngIf="isAddOrEdit" class="mt-1 cursor" mat-button
+                                                                style="color: #bd3640;"
+                                                                (click)="panelSearchMDE._toggle();addNewMDERvw()">
+                                                                <mat-icon class="mr-10">add</mat-icon>
+                                                                <span class="mt-20">Add</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
+
+                                            <div class="col-lg-12 mt-3 table-responsive">
+                                                <table #table mat-table [dataSource]="MDERvwTeamInfo" class="tbl-width">
+                                                    <ng-container
+                                                        *ngFor="let data of matMDERvwTeamColumnConfig; let i = index"
+                                                        matColumnDef="{{data.id}}">
+                                                        <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>
+                                                            {{data.name}}
+                                                        </th>
+                                                        <td mat-cell *matCellDef="let element; let j = index">
+                                                            <div *ngIf="data.id == 'role_id'">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeRvwRole($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let role of pgmMDERoleTypes"
+                                                                            [value]="role.role_id">
+                                                                            {{role.role_name +" (" +
+                                                                            role.role_type +")"}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'user_id'">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeReviewer($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let user of assignSchedUsers"
+                                                                            [value]="user.user_id">
+                                                                            {{user.contact_name + " (" +
+                                                                            user.user_name +")" + " - " +
+                                                                            user.off_cd}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'chk_ind'">
+                                                                <mat-checkbox *ngIf="data.id == 'chk_ind'"
+                                                                    (change)="element[data.id] = !element[data.id];"
+                                                                    [checked]="element[data.id]"></mat-checkbox>
+                                                            </div>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Action">
+                                                        <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                                        <td mat-cell *matCellDef="let element; let i = index">
+                                                            <a *ngIf="isAddOrEdit"
+                                                                (click)="openConfirmDeletePopup(element, 'mdervwTeam', i)">
+                                                                <mat-icon color="warn"
+                                                                    class="mr-10 cursor">delete</mat-icon></a>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row
+                                                        *matHeaderRowDef="displayedMDERvwTeamColumns; sticky: true">
+                                                    </tr>
+                                                    <tr mat-row
+                                                        *matRowDef="let row; columns: displayedMDERvwTeamColumns;">
+                                                    </tr>
+                                                    <tr class="mat-row" *matNoDataRow>
+                                                        <td class="mat-cell"
+                                                            [attr.colspan]="displayedMDERvwTeamColumns.length"> No
+                                                            data
+                                                            matching the
+                                                            filter.</td>
+                                                    </tr>
+                                                </table>
+                                                <mat-paginator #mdereviewaginator [pageSizeOptions]="[10, 15, 20]"
+                                                    showFirstLastButtons></mat-paginator>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-12 mt-10">
+                                    <mat-accordion #contacts class="example-headers-align" multi>
+                                        <mat-expansion-panel [expanded]="true">
+                                            <mat-expansion-panel-header #panelSearchSR
+                                                class="mat-expansion-panel-header">
+                                                <mat-panel-title>
+                                                    <div class="row" style="width: 100%;">
+                                                        <div class="col-lg-4">
+                                                            <span class="mat-panel-title-span">
+                                                                {{currentTabConfig?.notificationSectionTitle ||
+                                                                'Sub-Recipient Contacts'}}
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-lg-8" style="text-align: right;">
+                                                            <button *ngIf="isAddOrEdit" class="mt-1 cursor" mat-button
+                                                                style="color: #bd3640;"
+                                                                (click)="panelSearchSR._toggle();addNewNotify()">
+                                                                <mat-icon class="mr-10">add</mat-icon>
+                                                                <span class="mt-20">Add</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                            <div class="col-lg-12 mt-3 table-responsive">
+                                                <table #table mat-table [dataSource]="notificationInfo"
+                                                    class="tbl-width">
+                                                    <ng-container
+                                                        *ngFor="let data of matNotificationColumnConfig; let i = index"
+                                                        matColumnDef="{{data.id}}">
+                                                        <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>
+                                                            {{data.name}}
+                                                        </th>
+                                                        <td mat-cell *matCellDef="let element; let j = index">
+                                                            <div *ngIf="data.id == 'role_id'">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeRoleType($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let role of pgmRoleTypes"
+                                                                            [value]="role.role_id">
+                                                                            {{role.role_name +" (" +
+                                                                            role.role_type +")"}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'user_id'" class="d-flex">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select *ngIf="!element.isNewContact"
+                                                                        [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeUser($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let user of agyUsers"
+                                                                            [value]="user.user_id">
+                                                                            {{user.Name + " (" +
+                                                                            user.user_name +")"}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                    <input *ngIf="element.isNewContact"
+                                                                        autocomplete="off" matInput
+                                                                        [(ngModel)]="element.role_name">
+                                                                </mat-form-field>
+                                                                <mat-icon *ngIf="!element.isNewContact"
+                                                                    clas="mr-10 m-auto" title="Add New Contact"
+                                                                    (click)="element.isNewContact = !element.isNewContact; updateDatasource()">fiber_new</mat-icon>
+                                                                <mat-icon *ngIf="element.isNewContact"
+                                                                    clas="mr-10 m-auto" title="Select Contact"
+                                                                    (click)="element.isNewContact = !element.isNewContact; updateDatasource()">perm_contact_calander</mat-icon>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'role_email'" class="d-flex">
+                                                                <mat-form-field class="=full-width">
+                                                                    <input autocomplete="off" matInput
+                                                                        [disabled]="!element.isNewContact"
+                                                                        [(ngModel)]="element[data.id]">
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <span
+                                                                *ngIf="data.id == 'user_role'">{{element[data.id]}}</span>
+                                                            <mat-checkbox
+                                                                *ngIf=" data.id == 'pri_ind' || data.id == 'chk_ind' "
+                                                                (change)="element[data.id] = !element[data.id]; changePrimaryContact(data.id, element)"
+                                                                [checked]="element[data.id]"></mat-checkbox>
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container matColumnDef="Action">
+                                                        <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                                        <td mat-cell *matCellDef="let element; let i = index">
+                                                            <a *ngIf="isAddOrEdit"
+                                                                (click)="openConfirmDeletePopup(element, 'notification', i)">
+                                                                <mat-icon color="warn"
+                                                                    class="mr-10 cursor">delete</mat-icon></a>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row
+                                                        *matHeaderRowDef="displayedNotificationColumns; sticky: true">
+                                                    </tr>
+                                                    <tr mat-row
+                                                        *matRowDef="let row; columns: displayedNotificationColumns;">
+                                                    </tr>
+                                                    <tr class="mat-row" *matNoDataRow>
+                                                        <td class="mat-cell"
+                                                            [attr.colspan]="displayedNotificationColumns.length">
+                                                            No
+                                                            data
+                                                            matching the
+                                                            filter.</td>
+                                                    </tr>
+                                                </table>
+                                                <mat-paginator #notificationpaginator [pageSizeOptions]="[10, 15, 20]"
+                                                    showFirstLastButtons></mat-paginator>
+
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSchedule class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-3">
+                                        <span class="mat-panel-title-span">
+                                            {{currentTabConfig?.documentsSectionTitle || 'Schedule Documents'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="me-3 mt-3 table-responsive">
+                            <table #table mat-table [dataSource]="responseDocumentData" class="tbl-width">
+                                <ng-container *ngFor="let data of documentColumnConfig; let i = index"
+                                    matColumnDef="{{data.id}}">
+                                    <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}
+                                        <div *ngIf="data.id == 'chk_ind'">
+                                            <mat-checkbox
+                                                (change)="isDocSelectAll = !isDocSelectAll; selectAllCheckBox($event, 'docSearch', true)"
+                                                [checked]="isDocSelectAll"></mat-checkbox>
+                                        </div>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element; let j = index">
+                                        <span
+                                            *ngIf="data.id != 'chk_ind' && data.id != 'previewForm'">{{element[data.id]}}
+                                        </span>
+                                        <mat-checkbox *ngIf="data.id == 'chk_ind'" [(ngModel)]="element[data.id]"
+                                            (change)="!element[data.id]; selectAllCheckBox($event, 'docSearch', false); element.isUserTouched = true"
+                                            [checked]="element[data.id]"></mat-checkbox>
+                                        <mat-icon *ngIf="data.id == 'previewForm' && element[data.id]"
+                                            (click)="downloadPreviewForm(element)" class="cursor">preview</mat-icon>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Action">
+                                    <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="warn" class="mr-10 cursor">delete</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="documentDisplayedColumns; sticky: true">
+                                </tr>
+                                <tr mat-row *matRowDef="let row; columns: documentDisplayedColumns;">
+                                </tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="documentDisplayedColumns.length">
+                                        No
+                                        data
+                                        matching the
+                                        filter.</td>
+                                </tr>
+                            </table>
+                            <mat-paginator #doclistpaginator [pageSizeOptions]="[10, 15, 20]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSchedule class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">
+                                            {{currentTabConfig?.datesSectionTitle || 'Schedule Dates'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20"
+                            *ngIf="subRecipientRvwStatusInfo?.length > 0 && subRecipientRvwStatusInfo[0]?.length > 0">
+                            <div class="col-lg-3">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Start Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerSt"
+                                        [(ngModel)]="subRecipientRvwStatusInfo[0][0].start_dt">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="pickerSt"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerSt color="primary"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3">
+                                <mat-form-field class="full-width">
+                                    <mat-label>End Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerEd"
+                                        [(ngModel)]="subRecipientRvwStatusInfo[0][0].end_dt">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="pickerEd"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerEd color="primary"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-9">
+                                        <span class="mat-panel-title-span">
+                                            {{currentTabConfig?.submissionSectionTitle || 'Submission'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="me-3 mt-3 table-responsive">
+                            <table #table mat-table [dataSource]="responseDocSubmissionData" class="tbl-width">
+                                <ng-container matColumnDef="position">
+                                    <th mat-header-cell *matHeaderCellDef>#</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        {{ i + 1 }}
+                                    </td>
+                                </ng-container>
+                                <ng-container *ngFor="let data of docSubmissionColumnConfig; let i = index"
+                                    matColumnDef="{{data.id}}">
+                                    <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}
+                                        <div *ngIf="data.id == 'doc_completed'">
+                                            <mat-checkbox
+                                                (change)="isDocSelectAll = !isDocSelectAll;   selectAllCheckBox($event, 'docSearch', true)"
+                                                [checked]="isDocSelectAll"></mat-checkbox>
+                                        </div>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element; let j = index">
+                                        <span *ngIf="data.id != 'doc_completed'">{{element[data.id]}}
+                                        </span>
+                                        <mat-checkbox *ngIf="data.id == 'doc_completed'" [(ngModel)]="element[data.id]"
+                                            (change)="!element[data.id]; selectAllCheckBox($event, 'docSearch', false); element.isUserTouched = true"
+                                            [checked]="element[data.id]"></mat-checkbox>
+                                        <mat-icon *ngIf="data.id == 'help_txt'" color="primary"
+                                            (click)="downloadPreviewForm(element)" class="cursor">info</mat-icon>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="View">
+                                    <th mat-header-cell *matHeaderCellDef>View</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="accent" class="mr-10 cursor">visibility</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Errors">
+                                    <th mat-header-cell *matHeaderCellDef>Errors</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="warn" class="mr-10 cursor">error</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Action">
+                                    <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="warn" class="mr-10 cursor">delete</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="docSubmissionDisplayedColumns; sticky: true">
+                                </tr>
+                                <tr mat-row *matRowDef="let row; columns: docSubmissionDisplayedColumns;">
+                                </tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="docSubmissionDisplayedColumns.length">
+                                        No
+                                        data
+                                        matching the
+                                        filter.</td>
+                                </tr>
+                            </table>
+                            <mat-paginator #docSubmissionpaginator [pageSizeOptions]="[10, 15, 20]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">
+                                            {{currentTabConfig?.buttonsSectionTitle || 'Review Buttons'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <div class="col-lg-4">
+                                <div class="d-flex">
+                                    <div class="col-8">
+                                        <mat-form-field class="mt-1">
+                                            <mat-label for="search">Complete(Change status To)</mat-label>
+                                            <mat-select>
+                                                <mat-option style="color: rgb(9, 2, 2);"
+                                                    *ngFor="let data of nextStageList" [value]="data.stage_stat"
+                                                    (onSelectionChange)="onSelectionStageChanged($event, data)">
+                                                    {{data.stat_desc}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''" (click)="promoteNextStage()"
+                                            [disabled]="selectedStage == ''" mat-raised-button>Go</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="d-flex">
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''"
+                                            (click)="openConsolidatedReviewPopup('', 'edit','viewEmails')"
+                                            mat-raised-button>View Emails</button>
+                                    </div>
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''"
+                                            (click)="showAdditionalSupport()" mat-raised-button>Additional
+                                            Support</button>
+                                    </div>
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''"
+                                            (click)="openConsolidatedReviewPopup('', 'edit','overallComments')"
+                                            mat-raised-button>Global Comments</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Review Team
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <table mat-table [dataSource]="reviewTeamList" class="tbl-width">
+                                <ng-container matColumnDef="contact_name">
+                                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.contact_name}}"
+                                            [innerHTML]="element.contact_name"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="perm_desc">
+                                    <th mat-header-cell *matHeaderCellDef>Review Role</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.perm_desc}}" [innerHTML]="element.perm_desc"></span>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedReviewTeamColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedReviewTeamColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedReviewTeamColumns.length">No
+                                        Records Found
+                                    </td>
+                                </tr>
+                            </table>
+                            <mat-paginator #reviewTeamPaginator [pageSizeOptions]="[5, 10, 15, 20, 25]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Stage History
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <table mat-table [dataSource]="stageHistoryList" class="tbl-width">
+                                <ng-container matColumnDef="rvw_stage">
+                                    <th mat-header-cell *matHeaderCellDef>Review Stage</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.rvw_stage}}" [innerHTML]="element.rvw_stage"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="start_dt">
+                                    <th mat-header-cell *matHeaderCellDef>Stage Start</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.start_dt}}"
+                                            [innerHTML]="element.start_dt | date : 'MM/dd/yyyy'"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="end_dt">
+                                    <th mat-header-cell *matHeaderCellDef>Stage End</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.end_dt}}"
+                                            [innerHTML]="element.end_dt | date : 'MM/dd/yyyy'"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="compl_by">
+                                    <th mat-header-cell *matHeaderCellDef>Completed By</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.compl_by}}" [innerHTML]="element.compl_by"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="reason">
+                                    <th mat-header-cell *matHeaderCellDef>Reason</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.reason}}" [innerHTML]="element.reason"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="view">
+                                    <th mat-header-cell *matHeaderCellDef>View</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="element.associated_file_name" title="{{element.associated_file_name}}"
+                                            (click)="openConfirmDeletePopup(element, 'document')"><mat-icon
+                                                color="accent" class="mr-10 cursor">download</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedstageHistoryColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedstageHistoryColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedstageHistoryColumns.length">No
+                                        Records Found
+                                    </td>
+                                </tr>
+                            </table>
+                            <mat-paginator #stageHistoryPaginator [pageSizeOptions]="[5, 10, 15, 20, 25]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+    </mat-card>
+</div>
+
+<!-- <div class="spinner" *ngIf="showSpinner">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+<div>
+    <mat-card>
+        <div class="row" style="display: flex;">
+            <div class="col-lg-12">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Review Details
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-8" style="text-align: right;">
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch._toggle(); saveVisitorDetails()">
+                                            <mat-icon class="mr-10">save</mat-icon>
+                                            <span class="mt-20">Save</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <div class="col-lg-3">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">Review Type</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.rvw_type_desc">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 ">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">District</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.sub_rec_name">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 ">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">Review Year</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.rvw_yr">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 ">
+                                <mat-form-field class="full-width">
+                                    <mat-label for="search">Review Ref. No</mat-label>
+                                    <input readonly disabled="true" autocomplete="off" matInput
+                                        [value]="visitSelectedData.rvw_ref_no">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSchedule class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-12">
+                                        <span class="mat-panel-title-span">Schedule Contacts</span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <div class="row mt-3">
+                                <div class="col-lg-12 mt-10">
+                                    <mat-accordion #contacts class="example-headers-align" multi>
+                                        <mat-expansion-panel [expanded]="true">
+                                            <mat-expansion-panel-header #panelSearchMDE
+                                                class="mat-expansion-panel-header">
+                                                <mat-panel-title>
+                                                    <div class="row" style="width: 100%;">
+                                                        <div class="col-lg-4">
+                                                            <span class="mat-panel-title-span">MDE Contacts</span>
+                                                        </div>
+                                                        <div class="col-lg-8" style="text-align: right;">
+                                                            <button *ngIf="isAddOrEdit" class="mt-1 cursor" mat-button
+                                                                style="color: #bd3640;"
+                                                                (click)="panelSearchMDE._toggle();addNewMDERvw()">
+                                                                <mat-icon class="mr-10">add</mat-icon>
+                                                                <span class="mt-20">Add</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
+
+                                            <div class="col-lg-12 mt-3 table-responsive">
+                                                <table #table mat-table [dataSource]="MDERvwTeamInfo" class="tbl-width">
+                                                    <ng-container
+                                                        *ngFor="let data of matMDERvwTeamColumnConfig; let i = index"
+                                                        matColumnDef="{{data.id}}">
+                                                        <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>
+                                                            {{data.name}}
+                                                        </th>
+                                                        <td mat-cell *matCellDef="let element; let j = index">
+                                                            <div *ngIf="data.id == 'role_id'">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeRvwRole($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let role of pgmMDERoleTypes"
+                                                                            [value]="role.role_id">
+                                                                            {{role.role_name +" (" +
+                                                                            role.role_type +")"}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'user_id'">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeReviewer($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let user of assignSchedUsers"
+                                                                            [value]="user.user_id">
+                                                                            {{user.contact_name + " (" +
+                                                                            user.user_name +")" + " - " +
+                                                                            user.off_cd}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'chk_ind'">
+                                                                <mat-checkbox *ngIf="data.id == 'chk_ind'"
+                                                                    (change)="element[data.id] = !element[data.id];"
+                                                                    [checked]="element[data.id]"></mat-checkbox>
+                                                            </div>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Action">
+                                                        <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                                        <td mat-cell *matCellDef="let element; let i = index">
+                                                            <a *ngIf="isAddOrEdit"
+                                                                (click)="openConfirmDeletePopup(element, 'mdervwTeam', i)">
+                                                                <mat-icon color="warn"
+                                                                    class="mr-10 cursor">delete</mat-icon></a>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row
+                                                        *matHeaderRowDef="displayedMDERvwTeamColumns; sticky: true">
+                                                    </tr>
+                                                    <tr mat-row
+                                                        *matRowDef="let row; columns: displayedMDERvwTeamColumns;">
+                                                    </tr>
+                                                    <tr class="mat-row" *matNoDataRow>
+                                                        <td class="mat-cell"
+                                                            [attr.colspan]="displayedMDERvwTeamColumns.length"> No
+                                                            data
+                                                            matching the
+                                                            filter.</td>
+                                                    </tr>
+                                                </table>
+                                                <mat-paginator [pageSizeOptions]="[10, 15, 20]"
+                                                    showFirstLastButtons></mat-paginator>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-lg-12 mt-10">
+                                    <mat-accordion #contacts class="example-headers-align" multi>
+                                        <mat-expansion-panel [expanded]="true">
+                                            <mat-expansion-panel-header #panelSearchSR
+                                                class="mat-expansion-panel-header">
+                                                <mat-panel-title>
+                                                    <div class="row" style="width: 100%;">
+                                                        <div class="col-lg-4">
+                                                            <span class="mat-panel-title-span">Sub-Recipient
+                                                                Contacts</span>
+                                                        </div>
+                                                        <div class="col-lg-8" style="text-align: right;">
+                                                            <button *ngIf="isAddOrEdit" class="mt-1 cursor" mat-button
+                                                                style="color: #bd3640;"
+                                                                (click)="panelSearchSR._toggle();addNewNotify()">
+                                                                <mat-icon class="mr-10">add</mat-icon>
+                                                                <span class="mt-20">Add</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                            <div class="col-lg-12 mt-3 table-responsive">
+                                                <table #table mat-table [dataSource]="notificationInfo"
+                                                    class="tbl-width">
+                                                    <ng-container
+                                                        *ngFor="let data of matNotificationColumnConfig; let i = index"
+                                                        matColumnDef="{{data.id}}">
+                                                        <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>
+                                                            {{data.name}}
+                                                        </th>
+                                                        <td mat-cell *matCellDef="let element; let j = index">
+                                                            <div *ngIf="data.id == 'role_id'">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeRoleType($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let role of pgmRoleTypes"
+                                                                            [value]="role.role_id">
+                                                                            {{role.role_name +" (" +
+                                                                            role.role_type +")"}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'user_id'" class="d-flex">
+                                                                <mat-form-field class="=full-width">
+                                                                    <mat-select *ngIf="!element.isNewContact"
+                                                                        [(value)]="element[data.id]"
+                                                                        (selectionChange)="onChangeUser($event, element)">
+                                                                        <mat-option style="color: rgb(9,2,2)"
+                                                                            *ngFor="let user of agyUsers"
+                                                                            [value]="user.user_id">
+                                                                            {{user.Name + " (" +
+                                                                            user.user_name +")"}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                    <input *ngIf="element.isNewContact"
+                                                                        autocomplete="off" matInput
+                                                                        [(ngModel)]="element.role_name">
+                                                                </mat-form-field>
+                                                                <mat-icon *ngIf="!element.isNewContact"
+                                                                    clas="mr-10 m-auto" title="Add New Contact"
+                                                                    (click)="element.isNewContact = !element.isNewContact; updateDatasource()">fiber_new</mat-icon>
+                                                                <mat-icon *ngIf="element.isNewContact"
+                                                                    clas="mr-10 m-auto" title="Select Contact"
+                                                                    (click)="element.isNewContact = !element.isNewContact; updateDatasource()">perm_contact_calander</mat-icon>
+                                                            </div>
+                                                            <div *ngIf="data.id == 'role_email'" class="d-flex">
+                                                                <mat-form-field class="=full-width">
+                                                                    <input autocomplete="off" matInput
+                                                                        [disabled]="!element.isNewContact"
+                                                                        [(ngModel)]="element[data.id]">
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <span
+                                                                *ngIf="data.id == 'user_role'">{{element[data.id]}}</span>
+                                                            <mat-checkbox
+                                                                *ngIf=" data.id == 'pri_ind' || data.id == 'chk_ind' "
+                                                                (change)="element[data.id] = !element[data.id]; changePrimaryContact(data.id, element)"
+                                                                [checked]="element[data.id]"></mat-checkbox>
+                                                        </td>
+                                                    </ng-container>
+                                                    <ng-container matColumnDef="Action">
+                                                        <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                                        <td mat-cell *matCellDef="let element; let i = index">
+                                                            <a *ngIf="isAddOrEdit"
+                                                                (click)="openConfirmDeletePopup(element, 'notification', i)">
+                                                                <mat-icon color="warn"
+                                                                    class="mr-10 cursor">delete</mat-icon></a>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row
+                                                        *matHeaderRowDef="displayedNotificationColumns; sticky: true">
+                                                    </tr>
+                                                    <tr mat-row
+                                                        *matRowDef="let row; columns: displayedNotificationColumns;">
+                                                    </tr>
+                                                    <tr class="mat-row" *matNoDataRow>
+                                                        <td class="mat-cell"
+                                                            [attr.colspan]="displayedNotificationColumns.length">
+                                                            No
+                                                            data
+                                                            matching the
+                                                            filter.</td>
+                                                    </tr>
+                                                </table>
+                                                <mat-paginator [pageSizeOptions]="[10, 15, 20]"
+                                                    showFirstLastButtons></mat-paginator>
+
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSchedule class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-3">
+                                        <span class="mat-panel-title-span">Schedule Documents
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="me-3 mt-3 table-responsive">
+                            <table #table mat-table [dataSource]="responseDocumentData" class="tbl-width">
+                                <ng-container *ngFor="let data of documentColumnConfig; let i = index"
+                                    matColumnDef="{{data.id}}">
+                                    <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}
+                                        <div *ngIf="data.id == 'chk_ind'">
+                                            <mat-checkbox
+                                                (change)="isDocSelectAll = !isDocSelectAll; selectAllCheckBox($event, 'docSearch', true)"
+                                                [checked]="isDocSelectAll"></mat-checkbox>
+                                        </div>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element; let j = index">
+                                        <span
+                                            *ngIf="data.id != 'chk_ind' && data.id != 'previewForm'">{{element[data.id]}}
+                                        </span>
+                                        <mat-checkbox *ngIf="data.id == 'chk_ind'" [(ngModel)]="element[data.id]"
+                                            (change)="!element[data.id]; selectAllCheckBox($event, 'docSearch', false); element.isUserTouched = true"
+                                            [checked]="element[data.id]"></mat-checkbox>
+                                        <mat-icon *ngIf="data.id == 'previewForm' && element[data.id]"
+                                            (click)="downloadPreviewForm(element)" class="cursor">preview</mat-icon>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Action">
+                                    <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="warn" class="mr-10 cursor">delete</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="documentDisplayedColumns; sticky: true">
+                                </tr>
+                                <tr mat-row *matRowDef="let row; columns: documentDisplayedColumns;">
+                                </tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="documentDisplayedColumns.length">
+                                        No
+                                        data
+                                        matching the
+                                        filter.</td>
+                                </tr>
+                            </table>
+                            <mat-paginator #doclistpaginator [pageSizeOptions]="[10, 15, 20]"
+                                showFirstLastButtons></mat-paginator>
+
+
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSchedule class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Schedule Dates
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20"
+                            *ngIf="subRecipientRvwStatusInfo?.length > 0 && subRecipientRvwStatusInfo[0]?.length > 0">
+                            <div class="col-lg-3">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Start Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerSt"
+                                        [(ngModel)]="subRecipientRvwStatusInfo[0][0].start_dt">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="pickerSt"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerSt color="primary"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3">
+                                <mat-form-field class="full-width">
+                                    <mat-label>End Date</mat-label>
+                                    <input matInput [matDatepicker]="pickerEd"
+                                        [(ngModel)]="subRecipientRvwStatusInfo[0][0].end_dt">
+                                    <mat-hint>MM/DD/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matIconSuffix [for]="pickerEd"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerEd color="primary"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="false">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-9">
+                                        <span class="mat-panel-title-span">Submission
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="me-3 mt-3 table-responsive">
+                            <table #table mat-table [dataSource]="responseDocSubmissionData" class="tbl-width">
+                                <ng-container matColumnDef="position">
+                                    <th mat-header-cell *matHeaderCellDef>#</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        {{ i + 1 }}
+                                    </td>
+                                </ng-container>
+                                <ng-container *ngFor="let data of docSubmissionColumnConfig; let i = index"
+                                    matColumnDef="{{data.id}}">
+                                    <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef>{{data.name}}
+                                        <div *ngIf="data.id == 'doc_completed'">
+                                            <mat-checkbox
+                                                (change)="isDocSelectAll = !isDocSelectAll;   selectAllCheckBox($event, 'docSearch', true)"
+                                                [checked]="isDocSelectAll"></mat-checkbox>
+                                        </div>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element; let j = index">
+                                        <span *ngIf="data.id != 'doc_completed'">{{element[data.id]}}
+                                        </span>
+                                        <mat-checkbox *ngIf="data.id == 'doc_completed'" [(ngModel)]="element[data.id]"
+                                            (change)="!element[data.id]; selectAllCheckBox($event, 'docSearch', false); element.isUserTouched = true"
+                                            [checked]="element[data.id]"></mat-checkbox>
+                                        <mat-icon *ngIf="data.id == 'help_txt'" color="primary"
+                                            (click)="downloadPreviewForm(element)" class="cursor">info</mat-icon>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="View">
+                                    <th mat-header-cell *matHeaderCellDef>View</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="accent" class="mr-10 cursor">visibility</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Errors">
+                                    <th mat-header-cell *matHeaderCellDef>Errors</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="warn" class="mr-10 cursor">error</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Action">
+                                    <th mat-header-cell *matHeaderCellDef>Delete</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="isAddOrEdit" (click)="openConfirmDeletePopup(element, 'document')">
+                                            <mat-icon color="warn" class="mr-10 cursor">delete</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="docSubmissionDisplayedColumns; sticky: true">
+                                </tr>
+                                <tr mat-row *matRowDef="let row; columns: docSubmissionDisplayedColumns;">
+                                </tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="docSubmissionDisplayedColumns.length">
+                                        No
+                                        data
+                                        matching the
+                                        filter.</td>
+                                </tr>
+                            </table>
+                            <mat-paginator #docSubmissionpaginator [pageSizeOptions]="[10, 15, 20]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Review Buttons
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <div class="col-lg-4">
+                                <div class="d-flex">
+                                    <div class="col-8">
+                                        <mat-form-field class="mt-1">
+                                            <mat-label for="search">Complete(Change status To)</mat-label>
+                                            <mat-select>
+                                                <mat-option style="color: rgb(9, 2, 2);"
+                                                    *ngFor="let data of nextStageList" [value]="data.stage_stat"
+                                                    (onSelectionChange)="onSelectionStageChanged($event, data)">
+                                                    {{data.stat_desc}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''" (click)="promoteNextStage()"
+                                            [disabled]="selectedStage == ''" mat-raised-button>Go</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="d-flex">
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''"
+                                            (click)="openConsolidatedReviewPopup('', 'edit','viewEmails')"
+                                            mat-raised-button>View Emails</button>
+                                    </div>
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''" (click)="promoteNextStage()"
+                                            mat-raised-button>Additional
+                                            Support</button>
+                                    </div>
+                                    <div class="col-4 mt-10 text-end">
+                                        <button class="cursor button-red mr-10"
+                                            [ngClass]="!isAddOrEdit? 'disable-field' : ''"
+                                            (click)="openConsolidatedReviewPopup('', 'edit','overallComments')"
+                                            mat-raised-button>Global Comments</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Review Team
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <table mat-table [dataSource]="reviewTeamList" class="tbl-width">
+                                <ng-container matColumnDef="contact_name">
+                                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.contact_name}}"
+                                            [innerHTML]="element.contact_name"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="perm_desc">
+                                    <th mat-header-cell *matHeaderCellDef>Review Role</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.perm_desc}}" [innerHTML]="element.perm_desc"></span>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedReviewTeamColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedReviewTeamColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedReviewTeamColumns.length">No
+                                        Records Found
+                                    </td>
+                                </tr>
+                            </table>
+                            <mat-paginator #reviewTeamPaginator [pageSizeOptions]="[5, 10, 15, 20, 25]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <div class="col-lg-12 mt-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span">Stage History
+                                        </span>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <table mat-table [dataSource]="stageHistoryList" class="tbl-width">
+                                <ng-container matColumnDef="rvw_stage">
+                                    <th mat-header-cell *matHeaderCellDef>Review Stage</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.rvw_stage}}" [innerHTML]="element.rvw_stage"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="start_dt">
+                                    <th mat-header-cell *matHeaderCellDef>Stage Start</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.start_dt}}"
+                                            [innerHTML]="element.start_dt | date : 'MM/dd/yyyy'"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="end_dt">
+                                    <th mat-header-cell *matHeaderCellDef>Stage End</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.end_dt}}"
+                                            [innerHTML]="element.end_dt | date : 'MM/dd/yyyy'"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="compl_by">
+                                    <th mat-header-cell *matHeaderCellDef>Completed By</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.compl_by}}" [innerHTML]="element.compl_by"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="reason">
+                                    <th mat-header-cell *matHeaderCellDef>Reason</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <span title="{{element.reason}}" [innerHTML]="element.reason"></span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="view">
+                                    <th mat-header-cell *matHeaderCellDef>View</th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <a *ngIf="element.associated_file_name" title="{{element.associated_file_name}}"
+                                            (click)="openConfirmDeletePopup(element, 'document')"><mat-icon
+                                                color="accent" class="mr-10 cursor">download</mat-icon></a>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedstageHistoryColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedstageHistoryColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedstageHistoryColumns.length">No
+                                        Records Found
+                                    </td>
+                                </tr>
+                            </table>
+                            <mat-paginator #stageHistoryPaginator [pageSizeOptions]="[5, 10, 15, 20, 25]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+    </mat-card>
+</div> -->

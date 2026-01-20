@@ -1,0 +1,107 @@
+p {
+  font-family: Lato;
+}
+table {
+  width: 90%;
+  margin: auto;
+  margin-top: 25px;
+}
+.btn-edit {
+  text-align: right;
+}
+h2 {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.table-header {
+  width: 90%;
+  margin: auto;
+  text-align: right;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button-add-row {
+  background: #1b9e1b;
+  color: #ffffff;
+}
+
+.button-remove-rows {
+  background: red;
+  color: #ffffff;
+  margin-right: 5px;
+}
+
+.button-remove {
+  color: red;
+}
+.bt-c {
+  border-bottom: 1px solid #efefef;
+}
+
+::ng-deep .mat-form-field-infix {
+  width: 100% !important;
+}
+
+.form-input {
+  padding-right: 5px;
+}
+
+.ft-size {
+  font-size: 18px;
+}
+.full-table {
+  width: 100%;
+}
+
+/* Edit row container */
+.edit-container {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  padding: 8px 0;
+  box-sizing: border-box;
+}
+
+/* 35% textbox */
+.edit-textbox {
+  flex: 0 0 65%;
+}
+
+/* 65% textarea */
+.edit-textarea {
+  flex: 0 0 95%;
+}
+
+.edit-textarea textarea {
+  min-height: 90px;
+}
+
+/* DELETE COLUMN = 2% */
+.delete-col {
+  width: 5%;
+  min-width: 28px;
+  text-align: center;
+  padding: 0;
+}
+
+.btn-edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tight delete button */
+.button-remove {
+  min-width: 24px !important;
+  padding: 0 !important;
+}
+
+.ft-size {
+  font-size: 18px;
+  color: red;
+}
+
