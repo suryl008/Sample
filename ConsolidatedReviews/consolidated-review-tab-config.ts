@@ -1,4 +1,3 @@
-// consolidated-review-tab-config.ts
 export interface ColumnConfig {
   id: string;
   name: string;
@@ -15,11 +14,9 @@ export interface FieldLabel {
 }
 
 export interface TabConfiguration {
-  // Core properties
   title: string;
   id: string;
 
-  // Search/List page properties
   columns: Array<{
     fieldName: string;
     headerName: string;
@@ -27,19 +24,18 @@ export interface TabConfiguration {
     type: string;
   }>;
   searchObj: any;
+  tblActionTitle?: any;
   dropdownPlaceholder: string;
-  dropdownRvwTypePlaceholder?: string;
+  dropdown1Placeholder?: string;
+  dropdown2Placeholder?: string;
 
-  // Details page properties
   detailsTitle?: string;
 
-  // Column configurations for details page
   notificationColumns?: ColumnConfig[];
   mdeColumns?: ColumnConfig[];
   documentColumns?: ColumnConfig[];
   docSubmissionColumns?: ColumnConfig[];
 
-  // Section titles
   mdeSectionTitle?: string;
   notificationSectionTitle?: string;
   documentsSectionTitle?: string;
@@ -47,10 +43,8 @@ export interface TabConfiguration {
   submissionSectionTitle?: string;
   buttonsSectionTitle?: string;
 
-  // Field labels for details page
   fieldLabels?: FieldLabel;
 
-  // Review type specific properties
   reviewType?: string;
   grantPgmId?: number;
 
@@ -116,15 +110,19 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 570,
+      grantPgm: "EFB19",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
     dropdownPlaceholder: "Please Select District",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "",
+    tblActionTitle: "",
 
-    // Details page properties
     reviewType: "DRT",
     grantPgmId: 570,
 
@@ -187,21 +185,23 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 321,
+      grantPgm: "LCEP",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
       exceptionType: "",
     },
     dropdownPlaceholder: "Please Select District",
-    dropdownRvwTypePlaceholder: "Please Select Program",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Program",
+    tblActionTitle: "",
 
-    // Details page properties
     reviewType: "",
     grantPgmId: 321,
 
-    // Field labels
     fieldLabels: {
       rvw_type_desc: "Review Type",
       sub_rec_name: "District",
@@ -248,17 +248,22 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 325,
+      grantPgm: "CRP",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
       contractId: null,
     },
     dropdownPlaceholder: "Type of Contract",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Parent",
+    tblActionTitle: "",
 
     // Details page properties
-    reviewType: "CON",
+    reviewType: "",
     grantPgmId: 325,
 
     // Field labels
@@ -308,13 +313,18 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 582,
+      grantPgm: "SY21CNP10",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
-    dropdownPlaceholder: "Please Select Program",
+    dropdownPlaceholder: "Please Select Application",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Parent",
+    tblActionTitle: "",
 
     // Details page properties
     reviewType: "",
@@ -336,37 +346,25 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     columns: [
       {
         fieldName: "rvw_type_desc",
-        headerName: "Contract Type",
+        headerName: "Program",
         visible: true,
         type: "text",
       },
       {
         fieldName: "sub_rec_cd",
-        headerName: "Sub-Recipient Code",
+        headerName: "Code",
         visible: true,
         type: "text",
       },
       {
         fieldName: "sub_rec_name",
-        headerName: "Sub-Recipient Name",
+        headerName: "Parent",
         visible: true,
         type: "text",
       },
       {
-        fieldName: "LastActivity",
-        headerName: "Last Activity",
-        visible: true,
-        type: "datetime",
-      },
-      {
-        fieldName: "rvw_stage_desc",
-        headerName: "Review Stage",
-        visible: true,
-        type: "text",
-      },
-      {
-        fieldName: "AssignedTo",
-        headerName: "Assigned To",
+        fieldName: "rvw_ref_no",
+        headerName: "Review Number",
         visible: true,
         type: "text",
       },
@@ -379,17 +377,22 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1459,
+      grantPgm: "FSCR",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
-    dropdownPlaceholder: "Please Select District",
+    dropdownPlaceholder: "Please Select Contract Review",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select SFA",
+    tblActionTitle: "",
 
     // Details page properties
     reviewType: "",
-    grantPgmId: 574,
+    grantPgmId: 1459,
 
     // Field labels
     fieldLabels: {
@@ -432,19 +435,22 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1555,
+      grantPgm: "CWI2122",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
     dropdownPlaceholder: "",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "",
+    tblActionTitle: "",
 
-    // Details page properties
     reviewType: "",
     grantPgmId: 1555,
 
-    // Field labels
     fieldLabels: {
       rvw_type_desc: "Invoice",
       sub_rec_name: "Parent",
@@ -459,52 +465,55 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     detailsTitle: "PSA Contract Review Details",
     columns: [
       {
-        fieldName: "psa_name",
-        headerName: "PSA",
+        fieldName: "rvw_type_desc",
+        headerName: "Program",
         visible: true,
         type: "text",
       },
       {
-        fieldName: "SubmissionType",
-        headerName: "Submission Type",
+        fieldName: "sub_rec_cd",
+        headerName: "Code",
         visible: true,
         type: "text",
       },
       {
-        fieldName: "LastActivity",
-        headerName: "Last Activity",
-        visible: true,
-        type: "datetime",
-      },
-      {
-        fieldName: "rvw_stage_desc",
-        headerName: "Current Stage",
+        fieldName: "sub_rec_name",
+        headerName: "Parent",
         visible: true,
         type: "text",
       },
       {
-        fieldName: "AssignedTo",
-        headerName: "Assigned To",
+        fieldName: "rvw_ref_no",
+        headerName: "Review Number",
+        visible: true,
+        type: "text",
+      },
+      {
+        fieldName: "rvw_yr",
+        headerName: "Review Year",
         visible: true,
         type: "text",
       },
     ],
     searchObj: {
       grantPgmId: 475,
+      grantPgm: "PSACS",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
       psaId: null,
     },
-    dropdownPlaceholder: "Please Select PSA",
+    dropdownPlaceholder: "Please Select Contracts",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Parent",
+    tblActionTitle: "",
 
-    // Details page properties
-    reviewType: "PSA",
+    reviewType: "",
     grantPgmId: 475,
 
-    // Field labels
     fieldLabels: {
       rvw_type_desc: "Contracts",
       sub_rec_name: "Parent",
@@ -513,8 +522,8 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     },
   },
 
-  section61a: {
-    id: "section61a",
+  sec61a2: {
+    id: "sec61a2",
     title: "Section 61a(2) Application",
     detailsTitle: "Section 61a(2) Application Review Details",
     columns: [
@@ -551,17 +560,20 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1698,
+      grantPgm: "61a(2)",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
       exceptionType: "",
     },
-    dropdownPlaceholder: "Please Select District",
-    dropdownRvwTypePlaceholder: "Please Select Program",
+    dropdownPlaceholder: "Please Select Application",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select District",
+    tblActionTitle: "",
 
-    // Details page properties
     reviewType: "",
     grantPgmId: 1698,
 
@@ -574,8 +586,8 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     },
   },
 
-  ctepgm: {
-    id: "ctepgm",
+  ctenewpgm: {
+    id: "ctenewpgm",
     title: "CTE New Program",
     detailsTitle: "CTE New Program Review Details",
     columns: [
@@ -642,13 +654,18 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1537,
+      grantPgm: "CTENP",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
-    dropdownPlaceholder: "Please Select District",
+    dropdownPlaceholder: "Please Select Type",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Applicant",
+    tblActionTitle: "",
 
     // Details page properties
     reviewType: "",
@@ -700,7 +717,8 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
       },
     ],
     searchObj: {
-      grantPgmId: 1698,
+      grantPgmId: 1557,
+      grantPgm: "CTEEMCA",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
@@ -708,14 +726,14 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
       rvwYear: null,
       exceptionType: "",
     },
-    dropdownPlaceholder: "Please Select District",
-    dropdownRvwTypePlaceholder: "Please Select Program",
+    dropdownPlaceholder: "Please Select Planning Grant",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Applicant",
+    tblActionTitle: "",
 
-    // Details page properties
     reviewType: "",
-    grantPgmId: 1698,
+    grantPgmId: 1557,
 
-    // Field labels
     fieldLabels: {
       rvw_type_desc: "Planning Grant",
       sub_rec_name: "Applicant",
@@ -724,8 +742,8 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     },
   },
 
-  cteexec: {
-    id: "cteexec",
+  cteexecel: {
+    id: "cteexecel",
     title: "CTE Excellence Award Scoring",
     detailsTitle: "CTE Excellence Award Scoring Review Details",
     columns: [
@@ -762,15 +780,19 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1544,
+      grantPgm: "CTEEIPA",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
       exceptionType: "",
     },
-    dropdownPlaceholder: "Please Select District",
-    dropdownRvwTypePlaceholder: "Please Select Program",
+    dropdownPlaceholder: "Please Select Type of Award",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Applicant",
+    tblActionTitle: "",
 
     // Details page properties
     reviewType: "",
@@ -785,8 +807,8 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     },
   },
 
-  psa: {
-    id: "psa",
+  psalegacy: {
+    id: "psalegacy",
     title: "PSA (Legacy)",
     detailsTitle: "PSA (Legacy) Review Details",
     columns: [
@@ -823,15 +845,19 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1930,
+      grantPgm: "PSACSLD",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "DRT",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
       exceptionType: "",
     },
-    dropdownPlaceholder: "Please Select District",
-    dropdownRvwTypePlaceholder: "Please Select Program",
+    dropdownPlaceholder: "Please Select Contracts",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Parent",
+    tblActionTitle: "",
 
     // Details page properties
     reviewType: "DRT",
@@ -884,6 +910,7 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1549,
+      grantPgm: "CTEEMCP",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "DRT",
@@ -891,8 +918,10 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
       rvwYear: null,
       exceptionType: "",
     },
-    dropdownPlaceholder: "Please Select District",
-    dropdownRvwTypePlaceholder: "Please Select Program",
+    dropdownPlaceholder: "Please Select Planning Grant",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Applicant",
+    tblActionTitle: "",
 
     // Details page properties
     reviewType: "DRT",
@@ -931,12 +960,6 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
         type: "text",
       },
       {
-        fieldName: "LastActivity",
-        headerName: "Last Activity",
-        visible: true,
-        type: "datetime",
-      },
-      {
         fieldName: "rvw_ref_no",
         headerName: "Review Number",
         visible: true,
@@ -951,19 +974,22 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1926,
+      grantPgm: "31n(6)FPB",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
-    dropdownPlaceholder: "Please Select Program",
+    dropdownPlaceholder: "Please Select Application",
+    dropdown1Placeholder: "lease Select Application",
+    dropdown2Placeholder: "Please Select Applicant",
+    tblActionTitle: "",
 
-    // Details page properties
     reviewType: "",
     grantPgmId: 1926,
 
-    // Field labels
     fieldLabels: {
       rvw_type_desc: "Application",
       sub_rec_name: "Applicant",
@@ -1010,13 +1036,17 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 1927,
+      grantPgm: "PSC2425",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "",
       PSA: "",
       rvwYear: null,
     },
-    dropdownPlaceholder: "Please Select School",
+    dropdownPlaceholder: "Please Select review",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select District",
+    tblActionTitle: "",
 
     // Details page properties
     reviewType: "",
@@ -1075,16 +1105,21 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     ],
     searchObj: {
       grantPgmId: 579,
+      grantPgm: "FD1920",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "FEL",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
     dropdownPlaceholder: "Please Select District",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "",
+    tblActionTitle: "Open",
 
     // Details page properties
-    reviewType: "FEL",
+    reviewType: "",
     grantPgmId: 579,
 
     // Field labels
@@ -1102,61 +1137,54 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
     detailsTitle: "USDADOD Compliant Review Details",
     columns: [
       {
-        fieldName: "sub_rec_name",
-        headerName: "District",
+        fieldName: "rvw_type_desc",
+        headerName: "Program",
         visible: true,
         type: "text",
       },
       {
         fieldName: "sub_rec_cd",
-        headerName: "Sub-Recipient Code",
+        headerName: "Code",
         visible: true,
         type: "text",
       },
       {
-        fieldName: "ComplianceScore",
-        headerName: "Compliance Score",
-        visible: true,
-        type: "number",
-      },
-      {
-        fieldName: "LastReviewDate",
-        headerName: "Last Review Date",
-        visible: true,
-        type: "date",
-      },
-      {
-        fieldName: "rvw_stage_desc",
-        headerName: "Review Stage Description",
+        fieldName: "sub_rec_name",
+        headerName: "Parent",
         visible: true,
         type: "text",
       },
       {
-        fieldName: "AssignedTo",
-        headerName: "Assigned To",
+        fieldName: "rvw_ref_no",
+        headerName: "Review Number",
         visible: true,
         type: "text",
       },
       {
-        fieldName: "ComplianceStatus",
-        headerName: "Compliance Status",
+        fieldName: "rvw_yr",
+        headerName: "Review Year",
         visible: true,
         type: "text",
       },
     ],
     searchObj: {
-      grantPgmId: 580,
+      grantPgmId: 2160,
+      grantPgm: "FDCOMP",
       agencyId: 0,
       charteringAgency: null,
       rvwType: "USD",
+      wfCd: "",
       PSA: "",
       rvwYear: null,
     },
-    dropdownPlaceholder: "Please Select District",
+    dropdownPlaceholder: "Please Select Reviews",
+    dropdown1Placeholder: "",
+    dropdown2Placeholder: "Please Select Sub-recipient",
+    tblActionTitle: "",
 
     // Details page properties
-    reviewType: "USD",
-    grantPgmId: 580,
+    reviewType: "",
+    grantPgmId: 2160,
 
     // Field labels
     fieldLabels: {
@@ -1165,6 +1193,28 @@ export const TAB_CONFIGURATIONS: Record<string, TabConfiguration> = {
       rvw_yr: "Review Year",
       rvw_ref_no: "Review Ref. No",
     },
+  },
+
+  fiscadmserv: {
+    id: "fiscadmserv",
+    title: "Fiscal and Admin Services Cust",
+    detailsTitle: "Fiscal and Admin Services Cust",
+    columns: [],
+    searchObj: {},
+    dropdownPlaceholder: "Select Service",
+    reviewType: "",
+    grantPgmId: 0,
+  },
+
+  ctepgms: {
+    id: "ctepgms",
+    title: "CTE Programs",
+    detailsTitle: "CTE Programs",
+    columns: [],
+    searchObj: {},
+    dropdownPlaceholder: "Select Program",
+    reviewType: "",
+    grantPgmId: 0,
   },
 };
 
@@ -1180,6 +1230,9 @@ export function getTabConfig(tabId: string): TabConfiguration {
       columns: [],
       searchObj: {},
       dropdownPlaceholder: "Please Select",
+      dropdown1Placeholder: "Please Select",
+      dropdown2Placeholder: "Please Select",
+      tblActionTitle: "Select Review",
       reviewType: tabId.toUpperCase().substring(0, 3),
       grantPgmId: 500,
     };
@@ -1254,11 +1307,11 @@ export const TAB_LIST: TabConfig[] = [
   { id: "cnpcontr", label: "CNP Contracts" },
   { id: "clswallinv", label: "Class Wallet Invoicing" },
   { id: "psacontrrvw", label: "PSA Contract Review" },
-  { id: "section61a", label: "Section 61a(2) Application" },
-  { id: "ctepgm", label: "CTE New Program" },
+  { id: "sec61a2", label: "Section 61a(2) Application" },
+  { id: "ctenewpgm", label: "CTE New Program" },
   { id: "emcapp", label: "EMC Application Scoring" },
-  { id: "cteexec", label: "CTE Excellence Award Scoring" },
-  { id: "psa", label: "PSA (Legacy)" },
+  { id: "cteexecel", label: "CTE Excellence Award Scoring" },
+  { id: "psalegacy", label: "PSA (Legacy)" },
   { id: "emcplan", label: "EMC Planning Grant Scoring" },
   { id: "31n6beyondhir", label: "31n(6) Beyond Hiring" },
   { id: "privschconsult", label: "Private Sch Consult" },
@@ -1278,7 +1331,14 @@ export const SIDE_MENU_GROUPS: SideMenuGroup[] = [
   },
   {
     groupLabel: "CTE Programs",
-    items: ["section61a", "ctepgm", "emcapp", "cteexec", "psa", "emcplan"],
+    items: [
+      "sec61a2",
+      "ctenewpgm",
+      "emcapp",
+      "cteexecel",
+      "psalegacy",
+      "emcplan",
+    ],
   },
   {
     items: [

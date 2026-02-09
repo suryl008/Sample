@@ -1,0 +1,132 @@
+<div class="ultra-thin-miscdata-dialog">
+  <!-- Header -->
+  <div class="row p-1 bt-c">
+    <div class="col-lg-5 col-md-5">
+      <h6 class="dialog-main-title">
+        <mat-icon class="title-icon">dataset</mat-icon>
+        Meta Data Management
+      </h6>
+    </div>
+    <div class="col-lg-7 col-md-7 header-actions">
+      <button style="padding: 0;" (click)="toggleEditMode()" *ngIf="!isEdit" class="mt-n1 edit-btn" mat-button
+        color="primary">
+        <mat-icon color="accent" class="ft-size">edit</mat-icon>
+        Edit
+      </button>
+      <button style="padding: 0;" (click)="toggleEditMode()" *ngIf="isEdit" class="mt-n1 cancel-btn" mat-button
+        color="primary">
+        <mat-icon color="accent" class="ft-size">cancel</mat-icon>
+        Cancel
+      </button>
+      <!-- Ultra-Thin Save Button -->
+      <button style="padding: 0;" (click)="saveMetaData()" *ngIf="isEdit" class="mt-n1 ultra-thin-save-btn" mat-button
+        [disabled]="!isSaveEnabled || isSaving" [matTooltip]="getSaveTooltip()">
+        <div class="save-btn-content">
+          <mat-icon class="save-icon" *ngIf="!isSaving">save</mat-icon>
+          <mat-spinner diameter="16" *ngIf="isSaving" class="save-spinner"></mat-spinner>
+          <span class="save-text">{{isSaving ? 'Saving...' : 'Save'}}</span>
+        </div>
+      </button>
+      <button style="padding: 0;" class="mt-n1 add-btn" *ngIf="!isEdit" mat-button color="primary"
+        (click)="addRow(); toggleEditMode()">
+        <mat-icon color="accent" class="ft-size">add</mat-icon>
+        Add
+      </button>
+    </div>
+  </div>
+
+  <!-- Save Status Display -->
+  <div class="ultra-thin-save-status" *ngIf="saveStatus" [class.success]="saveStatus.success"
+    [class.error]="!saveStatus.success">
+    <mat-icon class="status-icon">
+      {{saveStatus.success ? 'check_circle' : 'error'}}
+    </mat-icon>
+    <span class="status-message">{{saveStatus.message}}</span>
+    <button mat-icon-button class="status-close" (click)="clearSaveStatus()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Validation Errors -->
+  <div class="validation-errors" *ngIf="validationErrors.length > 0">
+    <mat-card class="error-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="warn">error</mat-icon>
+        <mat-card-title>Validation Errors</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          <li *ngFor="let error of validationErrors">{{error}}</li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Main Table -->
+  <mat-dialog-content class="mat-typography">
+    <table mat-table [dataSource]="dataSource" class="ultra-thin-table">
+      <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
+
+        <!-- HEADER -->
+        <th mat-header-cell *matHeaderCellDef [class.required]="col.required">
+          <div class="header-content">
+            <span class="header-label">{{ col.label }}</span>
+            <mat-icon class="header-info" *ngIf="col.required" matTooltip="Required field">info</mat-icon>
+          </div>
+        </th>
+
+        <!-- CELL -->
+        <td mat-cell *matCellDef="let element" [class.delete-col]="col.type === 'isEdit'">
+          <div *ngIf="!isEdit" [ngSwitch]="col.type">
+            <!-- DELETE COLUMN -->
+            <div class="btn-edit" *ngSwitchCase="'isEdit'">
+              <button mat-button class="ultra-thin-delete-btn" (click)="confirmAndRemoveRow(element)">
+                <mat-icon class="delete-icon">delete_outline</mat-icon>
+                Delete
+              </button>
+            </div>
+            <!-- NORMAL TEXT -->
+            <span *ngSwitchDefault class="cell-value">
+              {{ element[col.key] || '-' }}
+            </span>
+          </div>
+
+          <!-- EDIT MODE -->
+          <div *ngIf="isEdit && col.type !== 'isEdit'" class="edit-container">
+            <!-- FIELD NAME -->
+            <mat-form-field class="ultra-thin-form-field" *ngIf="col.label === 'Field Name'">
+              <input matInput [required]="col.required" [(ngModel)]="element[col.key]" (ngModelChange)="onFieldChange()"
+                placeholder="Enter field name" />
+              <mat-error *ngIf="!element[col.key]">Field name is required</mat-error>
+            </mat-form-field>
+
+            <!-- MERGE FIELD -->
+            <mat-form-field class="ultra-thin-form-field" *ngIf="col.label === 'Merge Field'">
+              <textarea matInput [required]="col.required" [(ngModel)]="element[col.key]"
+                (ngModelChange)="onFieldChange()" placeholder="Enter merge field data" rows="2"></textarea>
+              <mat-error *ngIf="!element[col.key]">Merge field is required</mat-error>
+            </mat-form-field>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="dataSource.data.length === 0">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <h3 class="empty-title">No Meta Data</h3>
+      <p class="empty-message">Click "Add" to create new meta data entries</p>
+    </div>
+  </mat-dialog-content>
+
+  <!-- Footer -->
+  <div class="ultra-thin-footer" *ngIf="isEdit">
+    <div class="footer-info">
+      <mat-icon class="info-icon">info</mat-icon>
+      <span class="info-text">{{dataSource.data.length}} row(s) • Fill all required fields to enable save</span>
+    </div>
+  </div>
+</div>

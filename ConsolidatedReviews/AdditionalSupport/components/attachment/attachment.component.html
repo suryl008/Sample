@@ -1,0 +1,341 @@
+<div class="attachment-component">
+   <!-- Loading Spinner -->
+   <div *ngIf="showSpinner" class="loading-overlay">
+      <mat-spinner diameter="50"></mat-spinner>
+   </div>
+
+   <!-- Validation Errors -->
+   <div *ngIf="validationErrors.length > 0 && isDocModelEdit" class="validation-errors">
+      <mat-card class="error-card">
+         <mat-card-header>
+            <mat-icon mat-card-avatar color="warn">error</mat-icon>
+            <mat-card-title>Configuration Errors</mat-card-title>
+         </mat-card-header>
+         <mat-card-content>
+            <ul>
+               <li *ngFor="let error of validationErrors">{{error}}</li>
+            </ul>
+         </mat-card-content>
+      </mat-card>
+   </div>
+
+   <!-- Summary Bar -->
+   <div class="summary-bar" *ngIf="isDocModelEdit">
+      <div class="summary-content">
+         <mat-icon class="summary-icon">info</mat-icon>
+         <span class="summary-text">{{getConfigurationSummary()}}</span>
+         <span class="changes-indicator" *ngIf="hasChanges">
+            <mat-icon class="changes-icon">edit</mat-icon>
+            Unsaved changes
+         </span>
+      </div>
+   </div>
+
+   <!-- Ultra-Thin Save Status -->
+   <div class="ultra-thin-save-status" *ngIf="saveStatus">
+      <mat-icon class="status-icon" [class.success]="saveStatus.success" [class.error]="!saveStatus.success">
+         {{saveStatus.success ? 'check_circle' : 'error'}}
+      </mat-icon>
+      <span class="status-message">{{saveStatus.message}}</span>
+      <button mat-icon-button class="status-close" (click)="clearSaveStatus()" *ngIf="!saveStatus.autoHide">
+         <mat-icon>close</mat-icon>
+      </button>
+   </div>
+
+   <!-- Main Container -->
+   <div id="f1_container">
+      <div class="container-header">
+         <div class="row">
+            <div class="col-md-11 col-11">
+               <h6 class="section-title">
+                  <mat-icon class="section-icon">attach_file</mat-icon>
+                  Attachment Configuration
+               </h6>
+            </div>
+            <div class="col-lg-1 float-right" *ngIf="attachmentForm.get('fileTypeAppl')?.value && isDocModelEdit">
+               <button mat-icon-button class="flip-button"
+                  matTooltip="{{isFlipped ? 'Show Configuration' : 'Show File Types'}}" (click)="onClickFlip()">
+                  <mat-icon color="primary">flip</mat-icon>
+               </button>
+            </div>
+         </div>
+      </div>
+
+      <!-- Flip Container -->
+      <div id="f1_card1" [class.flipped]="isFlipped">
+
+         <!-- Front Face - Configuration -->
+         <div class="front face">
+            <form [formGroup]="attachmentForm">
+               <div class="configuration-form">
+
+                  <!-- Instructions -->
+                  <div class="form-section">
+                     <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Instructions *</mat-label>
+                        <textarea matInput formControlName="helpTxt"
+                           placeholder="Enter instructions for file attachments..." rows="3"
+                           [disabled]="!isDocModelEdit">
+                </textarea>
+                        <mat-icon matSuffix>info</mat-icon>
+                        <mat-hint>Provide clear instructions for users uploading files (10-500 characters)</mat-hint>
+                        <mat-error
+                           *ngIf="attachmentForm.get('helpTxt')?.invalid && attachmentForm.get('helpTxt')?.touched">
+                           Instructions are required (10-500 characters)
+                        </mat-error>
+                     </mat-form-field>
+                  </div>
+
+                  <!-- File Number Configuration -->
+                  <div class="form-section">
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <mat-form-field class="full-width" appearance="outline">
+                              <mat-label>Minimum Files *</mat-label>
+                              <input matInput type="number" formControlName="minNos" placeholder="Minimum files"
+                                 [disabled]="!isDocModelEdit">
+                              <mat-icon matSuffix>exposure_minus_1</mat-icon>
+                              <mat-hint>Minimum number of files required (0-100)</mat-hint>
+                              <mat-error
+                                 *ngIf="attachmentForm.get('minNos')?.invalid && attachmentForm.get('minNos')?.touched">
+                                 Valid minimum files required (0-100)
+                              </mat-error>
+                           </mat-form-field>
+                        </div>
+                        <div class="col-lg-6">
+                           <mat-form-field class="full-width" appearance="outline">
+                              <mat-label>Maximum Files *</mat-label>
+                              <input matInput type="number" formControlName="maxNos" placeholder="Maximum files"
+                                 [disabled]="!isDocModelEdit">
+                              <mat-icon matSuffix>exposure_plus_1</mat-icon>
+                              <mat-hint>Maximum number of files allowed (1-100)</mat-hint>
+                              <mat-error
+                                 *ngIf="attachmentForm.get('maxNos')?.invalid && attachmentForm.get('maxNos')?.touched">
+                                 Valid maximum files required (1-100)
+                              </mat-error>
+                           </mat-form-field>
+                        </div>
+                     </div>
+
+                     <div class="file-type-applicability">
+                        <mat-label class="toggle-label">
+                           <mat-icon class="toggle-icon">filter_list</mat-icon>
+                           File Type Applicability
+                        </mat-label>
+                        <mat-slide-toggle formControlName="fileTypeAppl" [disabled]="!isDocModelEdit">
+                           Restrict file types
+                        </mat-slide-toggle>
+                        <mat-hint>Enable to restrict allowed file types</mat-hint>
+                     </div>
+                  </div>
+
+                  <!-- Action Buttons -->
+                  <div class="action-buttons" *ngIf="isDocModelEdit">
+                     <button mat-raised-button color="warn" class="reset-btn" (click)="resetToDefault()"
+                        [disabled]="showSpinner || isSaving">
+                        <mat-icon>refresh</mat-icon>
+                        Reset to Default
+                     </button>
+
+                     <button mat-raised-button color="primary" class="validate-btn" (click)="validate()"
+                        [disabled]="showSpinner || isSaving">
+                        <mat-icon>check_circle</mat-icon>
+                        Validate Configuration
+                     </button>
+
+                     <!-- Ultra-Thin Save Button -->
+                     <button mat-raised-button class="ultra-thin-save-btn"
+                        [disabled]="!isFormValid() || isSaving || showSpinner" (click)="saveAttachmentConfiguration()">
+                        <div class="save-btn-content">
+                           <mat-icon class="save-icon" *ngIf="!isSaving">save</mat-icon>
+                           <mat-spinner diameter="20" *ngIf="isSaving" class="save-spinner"></mat-spinner>
+                           <span class="save-text">{{isSaving ? 'Saving...' : 'Save Configuration'}}</span>
+                        </div>
+                     </button>
+                  </div>
+               </div>
+            </form>
+         </div>
+
+         <!-- Back Face - File Types Table -->
+         <div class="back face">
+            <div class="file-types-section">
+               <div class="section-header">
+                  <h6 class="section-title">
+                     <mat-icon class="section-icon">folder</mat-icon>
+                     File Type Restrictions
+                  </h6>
+                  <p class="section-subtitle" *ngIf="attachmentForm.get('fileTypeAppl')?.value">
+                     Select file types and configure size limits
+                  </p>
+               </div>
+
+               <!-- File Types Table -->
+               <div class="table-container">
+                  <table mat-table [dataSource]="dataSource" class="file-types-table">
+
+                     <!-- File Type Column -->
+                     <ng-container matColumnDef="refType">
+                        <th mat-header-cell *matHeaderCellDef>File Type</th>
+                        <td mat-cell *matCellDef="let element">
+                           <div class="file-type-cell">
+                              <mat-icon class="file-type-icon" [style.color]="getFileTypeColor(element.refCode)">
+                                 {{getFileTypeIcon(element.refCode)}}
+                              </mat-icon>
+                              <div class="file-type-info">
+                                 <div class="file-type-code">{{element.refCode}}</div>
+                                 <div class="file-type-desc">{{element.refDesc}}</div>
+                              </div>
+                           </div>
+                        </td>
+                     </ng-container>
+
+                     <!-- Description Column -->
+                     <ng-container matColumnDef="refDesc">
+                        <th mat-header-cell *matHeaderCellDef>Description</th>
+                        <td mat-cell *matCellDef="let element">
+                           <div class="description-cell">{{element.refDesc}}</div>
+                        </td>
+                     </ng-container>
+
+                     <!-- Selection Column -->
+                     <ng-container matColumnDef="sel">
+                        <th mat-header-cell *matHeaderCellDef>Select</th>
+                        <td mat-cell *matCellDef="let element">
+                           <mat-slide-toggle [checked]="element.sel" (change)="addFileType(element, 'select')"
+                              [disabled]="!isDocModelEdit || !attachmentForm.get('fileTypeAppl')?.value || isSaving"
+                              color="primary">
+                              {{element.sel ? 'Selected' : 'Not Selected'}}
+                           </mat-slide-toggle>
+                        </td>
+                     </ng-container>
+
+                     <!-- Size Applicability Column -->
+                     <ng-container matColumnDef="sizeApply">
+                        <th mat-header-cell *matHeaderCellDef>Size Limit</th>
+                        <td mat-cell *matCellDef="let element">
+                           <mat-slide-toggle [checked]="element.size_appl" (change)="addFileType(element, 'size')"
+                              [disabled]="!isDocModelEdit || !element.sel || !attachmentForm.get('fileTypeAppl')?.value || isSaving"
+                              color="accent">
+                              {{element.size_appl ? 'Enabled' : 'Disabled'}}
+                           </mat-slide-toggle>
+                        </td>
+                     </ng-container>
+
+                     <!-- Max Size Column -->
+                     <ng-container matColumnDef="maxSize">
+                        <th mat-header-cell *matHeaderCellDef>Max Size (MB)</th>
+                        <td mat-cell *matCellDef="let element">
+                           <mat-form-field class="size-input" appearance="outline">
+                              <input matInput type="number" [value]="element.maximum_size"
+                                 (input)="updateFileSize($event, element)"
+                                 [disabled]="!isDocModelEdit || !element.sel || !element.size_appl || !attachmentForm.get('fileTypeAppl')?.value || isSaving"
+                                 min="0" max="100">
+                              <span matSuffix>MB</span>
+                           </mat-form-field>
+                        </td>
+                     </ng-container>
+
+                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+               </div>
+
+               <!-- PDF Page Configuration -->
+               <div class="pdf-configuration" *ngIf="isShowPDFPg && isDocModelEdit">
+                  <div class="pdf-header">
+                     <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+                     <h6 class="pdf-title">PDF Page Configuration</h6>
+                  </div>
+
+                  <div class="pdf-controls">
+                     <div class="page-applicability">
+                        <mat-label class="toggle-label">
+                           <mat-icon class="toggle-icon">format_line_spacing</mat-icon>
+                           Page Number Applicability
+                        </mat-label>
+                        <mat-slide-toggle formControlName="pageAppl" (change)="updatePDFFileInfo($event, 'pageAppl')"
+                           [disabled]="!isDocModelEdit || isSaving">
+                           Restrict page numbers
+                        </mat-slide-toggle>
+                     </div>
+
+                     <div class="page-range" *ngIf="attachmentForm.get('pageAppl')?.value">
+                        <div class="row">
+                           <div class="col-lg-6">
+                              <mat-form-field class="full-width" appearance="outline">
+                                 <mat-label>Minimum Pages</mat-label>
+                                 <input matInput type="number" formControlName="minPg"
+                                    (change)="updatePDFFileInfo($any($event.target).value, 'minPg')"
+                                    [disabled]="!isDocModelEdit || isSaving" min="1" max="1000">
+                                 <mat-icon matSuffix>first_page</mat-icon>
+                                 <mat-hint>Minimum pages allowed (1-1000)</mat-hint>
+                              </mat-form-field>
+                           </div>
+                           <div class="col-lg-6">
+                              <mat-form-field class="full-width" appearance="outline">
+                                 <mat-label>Maximum Pages</mat-label>
+                                 <input matInput type="number" formControlName="maxPg"
+                                    (change)="updatePDFFileInfo($any($event.target).value, 'maxPg')"
+                                    [disabled]="!isDocModelEdit || isSaving" min="1" max="1000">
+                                 <mat-icon matSuffix>last_page</mat-icon>
+                                 <mat-hint>Maximum pages allowed (1-1000)</mat-hint>
+                              </mat-form-field>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Back Action Buttons -->
+               <div class="action-buttons back-actions" *ngIf="isDocModelEdit">
+                  <button mat-raised-button color="basic" class="back-btn" (click)="cancelFlip()" [disabled]="isSaving">
+                     <mat-icon>arrow_back</mat-icon>
+                     Back to Configuration
+                  </button>
+
+                  <!-- Ultra-Thin Save Button for Back Side -->
+                  <button mat-raised-button class="ultra-thin-save-btn back-save-btn"
+                     [disabled]="!isFormValid() || isSaving" (click)="saveAttachmentConfiguration()">
+                     <div class="save-btn-content">
+                        <mat-icon class="save-icon" *ngIf="!isSaving">save</mat-icon>
+                        <mat-spinner diameter="20" *ngIf="isSaving" class="save-spinner"></mat-spinner>
+                        <span class="save-text">{{isSaving ? 'Saving...' : 'Save File Types'}}</span>
+                     </div>
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Footer Status -->
+   <div class="footer-status" *ngIf="isDocModelEdit">
+      <div class="status-indicators">
+         <div class="status-item">
+            <mat-icon class="status-icon" [ngClass]="{'valid': isFormValid(), 'invalid': !isFormValid()}">
+               {{isFormValid() ? 'check_circle' : 'error'}}
+            </mat-icon>
+            <span class="status-text">{{isFormValid() ? 'Configuration Valid' : 'Configuration Invalid'}}</span>
+         </div>
+
+         <div class="status-item">
+            <mat-icon class="status-icon" [ngClass]="{'has-changes': hasChanges, 'no-changes': !hasChanges}">
+               {{hasChanges ? 'edit' : 'done'}}
+            </mat-icon>
+            <span class="status-text">{{hasChanges ? 'Unsaved Changes' : 'All Changes Saved'}}</span>
+         </div>
+
+         <div class="status-item">
+            <mat-icon class="status-icon">attach_file</mat-icon>
+            <span class="status-text">{{getSelectedFileTypesCount()}} File Types Selected</span>
+         </div>
+
+         <!-- Save Status Indicator -->
+         <div class="status-item" *ngIf="isSaving">
+            <mat-icon class="status-icon saving">sync</mat-icon>
+            <span class="status-text">Saving...</span>
+         </div>
+      </div>
+   </div>
+</div>
