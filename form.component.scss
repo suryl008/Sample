@@ -1,0 +1,89 @@
+.form-container {
+  padding: 12px;
+  
+  .form-section {
+    margin-bottom: 16px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .selected-form-info {
+    margin-top: 8px;
+  }
+  
+  .selected-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #e3f2fd;
+    border: 0.5px solid #bbdefb;
+    border-radius: 12px;
+    padding: 4px 8px;
+    gap: 6px;
+    
+    .chip-icon {
+      color: #1976d2;
+      font-size: 14px;
+      height: 14px;
+      width: 14px;
+    }
+    
+    .chip-text {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      
+      .chip-code {
+        color: #666;
+        font-size: 10px;
+      }
+    }
+    
+    .chip-close {
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      
+      mat-icon {
+        font-size: 12px;
+      }
+    }
+  }
+  
+  .loading-option,
+  .no-results {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .mat-form-field {
+    &.mat-form-field-appearance-outline {
+      font-size: 11px;
+      
+      .mat-form-field-outline {
+        border-width: 0.5px;
+      }
+      
+      .mat-form-field-wrapper {
+        padding-bottom: 0.2em;
+      }
+      
+      .mat-form-field-infix {
+        padding: 0.3em 0;
+      }
+    }
+    
+    .mat-hint {
+      font-size: 9px;
+    }
+    
+    .mat-error {
+      font-size: 9px;
+    }
+  }
+}
