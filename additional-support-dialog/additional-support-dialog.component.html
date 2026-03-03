@@ -1,0 +1,662 @@
+<div class="additional-support-dialog" style="padding: 0px;">
+
+  <!-- Loading Spinner Overlay -->
+  <div *ngIf="showSpinner || isSaving" class="spinner-overlay">
+    <div class="spinner-container">
+      <mat-spinner [diameter]="32"></mat-spinner>
+      <div class="spinner-text">
+        {{ isSaving ? 'Saving...' : 'Loading...' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Header -->
+  <div class="dialog-header">
+    <div class="popup-title">
+      <h6 mat-dialog-title class="dialog-title">
+        <mat-icon class="title-icon">support</mat-icon>
+        Additional Support
+        <span class="tab-indicator" *ngIf="currentTabIndex > 0">- {{ getCurrentTabLabel() }}</span>
+      </h6>
+      <div class="header-close">
+        <button mat-icon-button class="close-button" [mat-dialog-close] aria-label="Close" [disabled]="isSaving">
+          <mat-icon class="close-icon">close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Program Information -->
+    <div class="program-info-section">
+      <div class="row column-search mt-2 mb-2">
+        <div class="col-lg-4">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Program Name</mat-label>
+            <input readonly matInput [value]="directorVisitSelectedData.programName || 'Not Available'">
+            <mat-icon matSuffix>business</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Review Type</mat-label>
+            <input readonly matInput
+              [value]="(directorVisitSelectedData.rvw_type_desc || '') + ' (' + (directorVisitSelectedData.rvw_type || '') + ')'">
+            <mat-icon matSuffix>description</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Sub Recipient</mat-label>
+            <input readonly matInput
+              [value]="(directorVisitSelectedData.sub_rec_name || '') + ' (' + (directorVisitSelectedData.sub_rec_cd || '') + ')'">
+            <mat-icon matSuffix>people</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <mat-dialog-content class="dialog-content">
+
+    <!-- Validation Errors -->
+    <div *ngIf="documentFormErrors.length > 0 && currentTabIndex === 1" class="validation-section error-section">
+      <mat-card class="error-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar color="warn">error</mat-icon>
+          <mat-card-title>Please fix the following errors:</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul>
+            <li *ngFor="let error of documentFormErrors">{{error}}</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div *ngIf="supportFormErrors.length > 0 && currentTabIndex === 2" class="validation-section error-section">
+      <mat-card class="error-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar color="warn">error</mat-icon>
+          <mat-card-title>Please fix the following errors:</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul>
+            <li *ngFor="let error of supportFormErrors">{{error}}</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Tabs -->
+    <mat-tab-group animationDuration="200ms" #tabGroup (selectedTabChange)="tabChanged($event)"
+      [selectedIndex]="currentTabIndex" class="support-tabs">
+
+      <!-- Miscellaneous Tab -->
+      <mat-tab label="Miscellaneous">
+        <div class="tab-content">
+          <app-miscdata-dialog></app-miscdata-dialog>
+        </div>
+      </mat-tab>
+
+      <!-- Add Other Document Tab -->
+      <mat-tab label="Add Other Document">
+        <div class="tab-content">
+          <!-- Main Document Form -->
+          <form [formGroup]="documentAddForm" class="document-form">
+            <fieldset formGroupName="documentDetailsForm">
+
+              <!-- Document Basic Information -->
+              <div class="form-section">
+                <h6 class="section-title">
+                  <mat-icon class="section-icon">info</mat-icon>
+                  Document Information
+                </h6>
+                <div class="row mt-2">
+                  <div class="col-lg-4">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Document Name *</mat-label>
+                      <input formControlName="docName" matInput placeholder="Enter document name" required>
+                      <mat-icon matSuffix>title</mat-icon>
+                      <mat-hint>2-100 characters</mat-hint>
+                      <mat-error *ngIf="documentAddForm.get('documentDetailsForm.docName')?.invalid && 
+                        documentAddForm.get('documentDetailsForm.docName')?.touched">
+                        Document name is required (2-100 characters)
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-4">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Document Category *</mat-label>
+                      <mat-select formControlName="docCat" required>
+                        <mat-option *ngFor="let docCategory of documentCategoryList" [value]="docCategory.refCode">
+                          {{ docCategory.refCode ? docCategory.refDesc + " (" + docCategory.refCode + ")" :
+                          docCategory.refDesc }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-icon matSuffix>category</mat-icon>
+                      <mat-hint>Select category</mat-hint>
+                      <mat-error *ngIf="documentAddForm.get('documentDetailsForm.docCat')?.invalid && 
+                        documentAddForm.get('documentDetailsForm.docCat')?.touched">
+                        Document category is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-4 mt-1">
+                    <div class="radio-group-container">
+                      <mat-label class="radio-label">
+                        <mat-icon class="radio-icon">layers</mat-icon>
+                        Type *
+                      </mat-label>
+                      <mat-radio-group formControlName="docType" class="radio-group">
+                        <mat-radio-button *ngFor="let item of formType" class="radio-button"
+                          [value]="item.value">{{item.type}}</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Validity Type (Only for Attachment type) -->
+                <div class="row mt-2" *ngIf="documentAddForm.get('documentDetailsForm.docType')?.value === 'A'">
+                  <div class="col-lg-4 mt-1">
+                    <div class="radio-group-container">
+                      <mat-label class="radio-label">
+                        <mat-icon class="radio-icon">calendar_today</mat-icon>
+                        Validity *
+                      </mat-label>
+                      <mat-radio-group [value]="documentAddForm.get('documentDetailsForm.entType')?.value"
+                        (change)="onValidityTypeChange($event.value === 'N' ? 'NA' : ($event.value === 'D' ? 'Date' : 'Units'))"
+                        class="radio-group">
+                        <mat-radio-button value="N" class="radio-button">NA</mat-radio-button>
+                        <mat-radio-button value="D" class="radio-button">Date</mat-radio-button>
+                        <mat-radio-button value="U" class="radio-button">Units</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Validity Rules - Now INSIDE the form group -->
+              <div *ngIf="showValidityRules()" class="col-lg-12 mt-3">
+                <mat-accordion class="rules-accordion">
+                  <mat-expansion-panel [expanded]="true" class="rules-panel">
+                    <mat-expansion-panel-header class="rules-header">
+                      <mat-panel-title class="rules-title">
+                        <mat-icon class="rules-icon">verified</mat-icon>
+                        <span class="mat-panel-title-span">Validity Rules</span>
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        Configure validity requirements
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <!-- Date Validity -->
+                    <div class="row mt-2" *ngIf="documentAddForm.get('documentDetailsForm.entType')?.value === 'D'">
+                      <div class="col-lg-12">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>Validate Date</mat-label>
+                          <input matInput [matDatepicker]="validatorDatePicker" formControlName="validityDate"
+                            placeholder="Select date">
+                          <mat-datepicker-toggle matSuffix [for]="validatorDatePicker"></mat-datepicker-toggle>
+                          <mat-datepicker #validatorDatePicker></mat-datepicker>
+                          <mat-icon matSuffix>calendar_today</mat-icon>
+                          <mat-hint>Select the validity date</mat-hint>
+                          <mat-error *ngIf="documentAddForm.get('documentDetailsForm.validityDate')?.hasError('required') && 
+                            documentAddForm.get('documentDetailsForm.validityDate')?.touched">
+                            Please select a validity date
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <!-- Units Validity -->
+                    <div class="row mt-2" *ngIf="documentAddForm.get('documentDetailsForm.entType')?.value === 'U'">
+                      <div class="col-lg-6">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>Units</mat-label>
+                          <input matInput type="number" formControlName="validityUnits"
+                            placeholder="Enter number of units" min="1">
+                          <mat-icon matSuffix>exposure_plus_1</mat-icon>
+                          <mat-hint>Enter the number of units</mat-hint>
+                          <mat-error *ngIf="documentAddForm.get('documentDetailsForm.validityUnits')?.hasError('required') && 
+                            documentAddForm.get('documentDetailsForm.validityUnits')?.touched">
+                            Units are required
+                          </mat-error>
+                          <mat-error *ngIf="documentAddForm.get('documentDetailsForm.validityUnits')?.hasError('min')">
+                            Units must be at least 1
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="radio-group-container">
+                          <mat-label class="radio-label">
+                            <mat-icon class="radio-icon">schedule</mat-icon>
+                            Unit Type
+                          </mat-label>
+                          <mat-radio-group formControlName="validityUnitType" class="radio-group">
+                            <mat-radio-button value="day" class="radio-button">Day</mat-radio-button>
+                            <mat-radio-button value="month" class="radio-button">Month</mat-radio-button>
+                            <mat-radio-button value="year" class="radio-button">Year</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+            </fieldset>
+          </form>
+
+          <!-- Attachment Rules (Only for Attachment type) - Outside main form -->
+          <div *ngIf="documentAddForm.get('documentDetailsForm.docType')?.value === 'A'" class="col-lg-12 mt-3">
+            <mat-accordion class="rules-accordion">
+              <mat-expansion-panel [expanded]="true" class="rules-panel">
+                <mat-expansion-panel-header class="rules-header">
+                  <mat-panel-title class="rules-title">
+                    <mat-icon class="rules-icon">attach_file</mat-icon>
+                    <span class="mat-panel-title-span">Attachment Rules</span>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Configure file attachment requirements
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="row mt-2">
+                  <app-attachment [data]="'new'" [isDocModelEdit]="true"
+                    (attachmentEvent)="getAttachmentEventForm($event)"></app-attachment>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+
+          <!-- Form Rules (Only for Form type) -->
+          <div *ngIf="documentAddForm.get('documentDetailsForm.docType')?.value === 'F'" class="col-lg-12 mt-3">
+            <mat-accordion class="rules-accordion">
+              <mat-expansion-panel [expanded]="true" class="rules-panel">
+                <mat-expansion-panel-header class="rules-header">
+                  <mat-panel-title class="rules-title">
+                    <mat-icon class="rules-icon">dynamic_form</mat-icon>
+                    <span class="mat-panel-title-span">Form Rules</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row mt-2">
+                  <app-form [data]="'new'" (formItemEvent)="getFormEvent($event)"></app-form>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+
+          <!-- Submission Section -->
+          <div class="col-lg-12 mt-3">
+            <mat-accordion class="rules-accordion">
+              <mat-expansion-panel [expanded]="true" class="rules-panel">
+                <mat-expansion-panel-header class="rules-header">
+                  <mat-panel-title class="rules-title">
+                    <mat-icon class="rules-icon">cloud_upload</mat-icon>
+                    <span class="mat-panel-title-span">Submission</span>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="row mt-2">
+                  <div class="col-lg-4">
+                    <div class="radio-group-container">
+                      <mat-label class="radio-label">
+                        <mat-icon class="radio-icon">upload_file</mat-icon>
+                        Document Upload Type
+                      </mat-label>
+                      <mat-radio-group [(ngModel)]="uploadDocTypeValue" [ngModelOptions]="{standalone: true}"
+                        class="radio-group">
+                        <mat-radio-button *ngFor="let item of docUploadType" class="radio-button"
+                          [value]="item.value">{{item.type}}</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+
+                  <!-- File Upload (Only for Electronic type) -->
+                  <div class="col-lg-8" *ngIf="uploadDocTypeValue === 'E'">
+                    <div class="file-upload-section">
+                      <div class="row align-items-center">
+                        <div class="col-lg-3">
+                          <label class="form-label">
+                            <mat-icon class="label-icon">insert_drive_file</mat-icon>
+                            File Upload
+                          </label>
+                        </div>
+                        <div class="col-lg-7">
+                          <div class="file-input-container">
+                            <input class="form-control form-control-sm" type="file"
+                              (change)="onFileSelected($event, 'document')"
+                              [disabled]="uploadDocTypeValue !== 'E' || isSaving" #fileInput
+                              accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt">
+                            <button mat-icon-button class="clear-file-btn"
+                              (click)="clearFileSelection('document'); fileInput.value=''" *ngIf="selectedFileName">
+                              <mat-icon>clear</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="col-lg-2 text-right">
+                          <button mat-raised-button color="primary" class="upload-btn btn-sm"
+                            [disabled]="!selectedFile || uploadDocTypeValue !== 'E' || isSaving"
+                            (click)="uploadDocument()">
+                            <mat-icon>upload</mat-icon>
+                            Upload
+                          </button>
+                        </div>
+                      </div>
+                      <div class="row mt-1" *ngIf="selectedFileName">
+                        <div class="col-lg-12">
+                          <div class="file-info">
+                            <mat-icon class="file-icon">description</mat-icon>
+                            <div class="file-details">
+                              <div class="file-name">{{selectedFileName}}</div>
+                              <div class="file-size" *ngIf="selectedFile">
+                                {{selectedFile.size | fileSize}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mt-1">
+                        <div class="col-lg-12">
+                          <small class="text-muted">
+                            <mat-icon class="hint-icon">info</mat-icon>
+                            Max: 10MB | PDF, Word, Excel, Images, Text
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submission Comment -->
+                <div class="row mt-2">
+                  <div class="col-lg-12">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Submission Comment</mat-label>
+                      <textarea matInput rows="2" placeholder="Enter submission comment" [(ngModel)]="submissionComment"
+                        [ngModelOptions]="{standalone: true}"></textarea>
+                      <mat-icon matSuffix>notes</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+
+          <!-- Save/Cancel Buttons -->
+          <div class="action-buttons mt-3">
+            <div class="row">
+              <div class="col-lg-12 text-right">
+                <div class="button-group">
+                  <button mat-raised-button color="warn" class="mr-2 reset-btn" [disabled]="isSaving"
+                    (click)="resetDocumentForm()">
+                    <mat-icon>refresh</mat-icon>
+                    Reset
+                  </button>
+
+                  <button mat-raised-button color="primary" class="mr-2 save-btn" [disabled]="documentAddForm.invalid || 
+                      (documentAddForm.get('documentDetailsForm.docType')?.value === 'A' && !attachmentDetails?.isValid) || 
+                      isSaving" (click)="saveDocument()">
+                    <mat-icon *ngIf="!isSaving">save</mat-icon>
+                    <mat-spinner *ngIf="isSaving" diameter="16" class="button-spinner"></mat-spinner>
+                    {{ isSaving ? 'Saving...' : 'Save Document' }}
+                  </button>
+
+                  <button mat-raised-button color="basic" (click)="closeDialog()" [disabled]="isSaving">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unsaved Changes Warning -->
+            <div class="row mt-1" *ngIf="hasUnsavedChanges">
+              <div class="col-lg-12">
+                <div class="unsaved-changes-warning">
+                  <mat-icon color="warn">warning</mat-icon>
+                  <span>You have unsaved changes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Add Other Support Tab -->
+      <mat-tab label="Add Other Support">
+        <div class="tab-content">
+          <div class="tab-header">
+            <h5 class="tab-title">
+              <mat-icon class="tab-icon">comment</mat-icon>
+              Add Support Comment
+            </h5>
+            <p class="tab-subtitle">Add comments or additional support information</p>
+          </div>
+
+          <!-- Support Comment Form -->
+          <form [formGroup]="supportCommentForm" class="support-form">
+            <div class="col-lg-12 mt-2">
+              <mat-accordion class="rules-accordion">
+                <mat-expansion-panel [expanded]="true" class="rules-panel">
+                  <mat-expansion-panel-header class="rules-header">
+                    <mat-panel-title class="rules-title">
+                      <mat-icon class="rules-icon">chat</mat-icon>
+                      <span class="mat-panel-title-span">Comment</span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Add your comment details
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="row mt-2">
+                    <div class="col-lg-4">
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Comment Type *</mat-label>
+                        <mat-select formControlName="commentType" required>
+                          <mat-option *ngFor="let type of commentTypeList" [value]="type.refCode">
+                            {{type.refDesc}} ({{type.refCode || 'N/A'}})
+                          </mat-option>
+                        </mat-select>
+                        <mat-icon matSuffix>label</mat-icon>
+                        <mat-hint>Select comment type</mat-hint>
+                        <mat-error *ngIf="supportCommentForm.get('commentType')?.invalid && 
+                          supportCommentForm.get('commentType')?.touched">
+                          Comment type is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-4">
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Author</mat-label>
+                        <input matInput [value]="userDetails?.fullName || 'User'" readonly>
+                        <mat-icon matSuffix>person</mat-icon>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-4">
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Date</mat-label>
+                        <input matInput [value]="currentDate" readonly>
+                        <mat-icon matSuffix>today</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="row mt-2">
+                    <div class="col-lg-12">
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Comment *</mat-label>
+                        <textarea matInput rows="4" placeholder="Enter your comment here..." formControlName="comment"
+                          required></textarea>
+                        <mat-icon matSuffix>message</mat-icon>
+                        <mat-hint>10-2000 characters</mat-hint>
+                        <mat-error *ngIf="supportCommentForm.get('comment')?.invalid && 
+                          supportCommentForm.get('comment')?.touched">
+                          Comment is required and must be 10-2000 characters
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+
+            <div class="col-lg-12 mt-3">
+              <mat-accordion class="rules-accordion">
+                <mat-expansion-panel [expanded]="true" class="rules-panel">
+                  <mat-expansion-panel-header class="rules-header">
+                    <mat-panel-title class="rules-title">
+                      <mat-icon class="rules-icon">cloud_upload</mat-icon>
+                      <span class="mat-panel-title-span">Submission</span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Configure submission options
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="row mt-2">
+                    <div class="col-lg-4">
+                      <div class="radio-group-container">
+                        <mat-label class="radio-label">
+                          <mat-icon class="radio-icon">upload_file</mat-icon>
+                          Document Upload Type
+                        </mat-label>
+                        <mat-radio-group [(ngModel)]="uploadSupportTypeValue" [ngModelOptions]="{standalone: true}"
+                          class="radio-group">
+                          <mat-radio-button *ngFor="let item of docUploadType" class="radio-button"
+                            [value]="item.value">{{item.type}}</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                    </div>
+
+                    <!-- Support File Upload (Only for Electronic type) -->
+                    <div class="col-lg-8" *ngIf="uploadSupportTypeValue === 'E'">
+                      <div class="file-upload-section">
+                        <div class="row align-items-center">
+                          <div class="col-lg-3">
+                            <label class="form-label">
+                              <mat-icon class="label-icon">attach_file</mat-icon>
+                              Attachment
+                            </label>
+                          </div>
+                          <div class="col-lg-7">
+                            <div class="file-input-container">
+                              <input class="form-control form-control-sm" type="file"
+                                (change)="onFileSelected($event, 'support')"
+                                [disabled]="uploadSupportTypeValue !== 'E' || isSaving" #supportFileInput
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt">
+                              <button mat-icon-button class="clear-file-btn"
+                                (click)="clearFileSelection('support'); supportFileInput.value=''"
+                                *ngIf="selectedSupportFileName">
+                                <mat-icon>clear</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                          <div class="col-lg-2 text-right">
+                            <button mat-raised-button color="primary" class="upload-btn btn-sm"
+                              [disabled]="!selectedSupportFile || uploadSupportTypeValue !== 'E' || isSaving"
+                              (click)="uploadSupportDocument()">
+                              <mat-icon>upload</mat-icon>
+                              Upload
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row mt-1" *ngIf="selectedSupportFileName">
+                          <div class="col-lg-12">
+                            <div class="file-info">
+                              <mat-icon class="file-icon">description</mat-icon>
+                              <div class="file-details">
+                                <div class="file-name">{{selectedSupportFileName}}</div>
+                                <div class="file-size" *ngIf="selectedSupportFile">
+                                  {{selectedSupportFile.size | fileSize}}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mt-1">
+                          <div class="col-lg-12">
+                            <small class="text-muted">
+                              <mat-icon class="hint-icon">info</mat-icon>
+                              Max: 10MB | PDF, Word, Excel, Images, Text
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Submission Comment -->
+                  <div class="row mt-2">
+                    <div class="col-lg-12">
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Submission Comment</mat-label>
+                        <textarea matInput rows="2" placeholder="Enter submission comment"
+                          [(ngModel)]="submissionComment" [ngModelOptions]="{standalone: true}"></textarea>
+                        <mat-icon matSuffix>notes</mat-icon>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+
+            <!-- Save/Cancel Buttons -->
+            <div class="action-buttons mt-3">
+              <div class="row">
+                <div class="col-lg-12 text-right">
+                  <div class="button-group">
+                    <button mat-raised-button color="warn" class="mr-2 reset-btn" [disabled]="isSaving"
+                      (click)="resetSupportForm()">
+                      <mat-icon>refresh</mat-icon>
+                      Reset
+                    </button>
+
+                    <button mat-raised-button color="primary" class="mr-2 save-btn"
+                      [disabled]="supportCommentForm.invalid || isSaving" (click)="saveSupport()">
+                      <mat-icon *ngIf="!isSaving">save</mat-icon>
+                      <mat-spinner *ngIf="isSaving" diameter="16" class="button-spinner"></mat-spinner>
+                      {{ isSaving ? 'Saving...' : 'Save Support' }}
+                    </button>
+
+                    <button mat-raised-button color="basic" (click)="closeDialog()" [disabled]="isSaving">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unsaved Changes Warning -->
+              <div class="row mt-1" *ngIf="hasUnsavedChanges">
+                <div class="col-lg-12">
+                  <div class="unsaved-changes-warning">
+                    <mat-icon color="warn">warning</mat-icon>
+                    <span>You have unsaved changes</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+
+  <!-- Footer Status -->
+  <mat-dialog-actions class="dialog-footer">
+    <div class="footer-status">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="user-info">
+            <mat-icon class="user-icon">account_circle</mat-icon>
+            <span class="user-name">{{userDetails?.fullName || 'User'}}</span>
+            <span class="user-role" *ngIf="userDetails?.role">({{userDetails.role}})</span>
+          </div>
+        </div>
+        <div class="col-lg-6 text-right">
+          <div class="timestamp">
+            <mat-icon class="time-icon">access_time</mat-icon>
+            <span>{{currentDate}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-actions>
+</div>

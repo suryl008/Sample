@@ -1,0 +1,343 @@
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link active">Menu Mapping</a>
+    </li>
+</ul>
+
+<div class="col-lg-12 mt-10">
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <div class="row mt-10">
+                <div class="col-lg-3">
+                    <mat-form-field>
+                        <mat-label>User Role</mat-label>
+                        <mat-select [(value)]="selectedRole" (selectionChange)="onRoleChange()">
+                            <mat-option *ngFor="let role of userRoleList" [value]="role.refCode">
+                                {{ role.refDesc }} ({{ role.refCode }})
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3">
+                    <mat-form-field>
+                        <mat-label>User (optional)</mat-label>
+                        <mat-select [(value)]="selectedUserId" (selectionChange)="onUserChange()">
+                            <mat-option [value]="null">None</mat-option>
+                            <mat-option *ngFor="let user of userList" [value]="user.userId">
+                                {{ user.displayName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3" *ngIf="selectedUserId">
+                    <mat-checkbox [(ngModel)]="overrideRole" (change)="loadMenuData()">
+                        Override role permissions
+                    </mat-checkbox>
+                </div>
+            </div>
+
+            <div class="col-lg-12 mt-10">
+                <mat-accordion multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch1>
+                            <mat-panel-title>
+                                <div class="row" style="width:100%;">
+                                    <div class="col-lg-4">
+                                        <span>Menu List</span>
+                                    </div>
+                                    <div class="col-lg-8 text-right">
+                                        <button mat-button color="primary" (click)="panelSearch1._toggle(); editMenu()"
+                                            *ngIf="!isMenuEdit">
+                                            <mat-icon>edit</mat-icon> Edit
+                                        </button>
+                                        <button mat-button color="primary"
+                                            (click)="panelSearch1._toggle(); saveMenuMapping()" *ngIf="isMenuEdit">
+                                            <mat-icon>save</mat-icon> Save
+                                        </button>
+                                        <button mat-button (click)="panelSearch1._toggle(); cancelMenu()"
+                                            *ngIf="isMenuEdit">
+                                            <mat-icon>cancel</mat-icon> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row">
+                            <table mat-table [dataSource]="dataSource" class="tbl-width" matSort multiTemplateDataRows>
+                                <!-- Menu Name Column -->
+                                <ng-container matColumnDef="menuName">
+                                    <th mat-header-cell *matHeaderCellDef>Menu Name</th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <span *ngIf="!isMenuEdit" [style.padding-left.px]="item.depth * 20">
+                                            {{ item.menuName }}
+                                        </span>
+                                        <mat-form-field *ngIf="isMenuEdit" appearance="outline"
+                                            [style.margin-left.px]="item.depth * 20">
+                                            <input matInput [(ngModel)]="item.menuName" />
+                                        </mat-form-field>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Menu Code Column -->
+                                <ng-container matColumnDef="menuCode">
+                                    <th mat-header-cell *matHeaderCellDef>Code</th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-form-field *ngIf="isMenuEdit" appearance="outline">
+                                            <input matInput [(ngModel)]="item.menuCode" />
+                                        </mat-form-field>
+                                        <span *ngIf="!isMenuEdit">{{ item.menuCode }}</span>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Parent Menu ID Column -->
+                                <ng-container matColumnDef="parentMenuId">
+                                    <th mat-header-cell *matHeaderCellDef>Parent ID</th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-form-field *ngIf="isMenuEdit" appearance="outline">
+                                            <input matInput type="number" [(ngModel)]="item.parentMenuId" />
+                                        </mat-form-field>
+                                        <span *ngIf="!isMenuEdit">{{ item.parentMenuId }}</span>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Sort Order Column -->
+                                <ng-container matColumnDef="sortOrder">
+                                    <th mat-header-cell *matHeaderCellDef>Order</th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-form-field *ngIf="isMenuEdit" appearance="outline">
+                                            <input matInput type="number" [(ngModel)]="item.sortOrder" />
+                                        </mat-form-field>
+                                        <span *ngIf="!isMenuEdit">{{ item.sortOrder }}</span>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Redirect URL Column -->
+                                <!-- <ng-container matColumnDef="redirectUrl">
+                                    <th mat-header-cell *matHeaderCellDef>Redirect URL</th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-form-field *ngIf="isMenuEdit" appearance="outline">
+                                            <input matInput [(ngModel)]="item.redirectUrl" />
+                                        </mat-form-field>
+                                        <span *ngIf="!isMenuEdit">{{ item.redirectUrl }}</span>
+                                    </td>
+                                </ng-container> -->
+
+                                <!-- Menu Type Column -->
+                                <!-- <ng-container matColumnDef="menuType">
+                                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-select *ngIf="isMenuEdit" [(ngModel)]="item.menuType">
+                                            <mat-option value="Standard">Standard</mat-option>
+                                            <mat-option value="Tab">Tab</mat-option>
+                                        </mat-select>
+                                        <span *ngIf="!isMenuEdit">{{ item.menuType }}</span>
+                                    </td>
+                                </ng-container> -->
+
+                                <!-- Active Menu Column -->
+                                <ng-container matColumnDef="activeMenu">
+                                    <th mat-header-cell *matHeaderCellDef>Active (Menu)</th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-checkbox [(ngModel)]="item.activeMenu"
+                                            [disabled]="!isMenuEdit"></mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Role Active Column -->
+                                <ng-container matColumnDef="roleActive">
+                                    <th mat-header-cell *matHeaderCellDef> Visible (Role) </th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-checkbox [(ngModel)]="item.roleActive"
+                                            [disabled]="!isMenuEdit || selectedUserId != null">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Role Edit Column -->
+                                <ng-container matColumnDef="roleEdit">
+                                    <th mat-header-cell *matHeaderCellDef> Edit (Role) </th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-checkbox [(ngModel)]="item.roleEdit"
+                                            [disabled]="!isMenuEdit || selectedUserId != null">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <!-- User Active Column -->
+                                <ng-container matColumnDef="userActive">
+                                    <th mat-header-cell *matHeaderCellDef> Visible (User) </th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-checkbox [(ngModel)]="item.userActive"
+                                            [disabled]="!isMenuEdit || selectedUserId == null">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <!-- User Edit Column -->
+                                <ng-container matColumnDef="userEdit">
+                                    <th mat-header-cell *matHeaderCellDef> Edit (User) </th>
+                                    <td mat-cell *matCellDef="let item">
+                                        <mat-checkbox [(ngModel)]="item.userEdit"
+                                            [disabled]="!isMenuEdit || selectedUserId == null">
+                                        </mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                                <!-- No data row -->
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                        No records found
+                                    </td>
+                                </tr>
+                            </table>
+                            <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+
+
+<!-- <ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link" [ngClass]="'active'">Menu Mapping</a>
+    </li>
+</ul>
+
+<div class="col-lg-12 mt-10">
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="true">
+            <div class="row mt-10">
+                <div class="col-lg-3">
+                    <mat-form-field>
+                        <mat-label>User Role</mat-label>
+                        <mat-select [(value)]="selectedRole">
+                            <mat-option style="color: rgb(9, 2, 2);" *ngFor="let role of userRoleList"
+                                (onSelectionChange)="selectedUserRole(role, $event)" [value]="role.refCode">
+                                {{role.refDesc + " (" + role.refCode + ")"}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-lg-12 mt-10 mrg-10">
+                <mat-accordion class="example-headers-align" multi>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header #panelSearch1 class="mat-expansion-panel-header">
+                            <mat-panel-title>
+                                <div class="row" style="width: 100%;">
+                                    <div class="col-lg-4">
+                                        <span class="mat-panel-title-span" [innerText]="'Menu List(s)'"></span>
+                                    </div>
+                                    <div class="col-lg-8" style="text-align: right;">
+                                        <button *ngIf="!isMenuEdit" class="mt-1 cursor" mat-button
+                                            style="color: #bd3640;" (click)="panelSearch1._toggle(); editMenu()">
+                                            <mat-icon class="mr-10">edit</mat-icon>
+                                            <span class="mt-20">Edit</span>
+                                        </button>
+                                        <button *ngIf="isMenuEdit" class="mt-1 cursor" mat-button
+                                            style="color: #bd3640;" (click)="panelSearch1._toggle(); saveMenuMapping()">
+                                            <mat-icon class="mr-10">save</mat-icon>
+                                            <span class="mt-20">Save</span>
+                                        </button>
+                                        <button class="mt-1 cursor" mat-button style="color: #bd3640;"
+                                            (click)="panelSearch1._toggle(); cancelMenu();">
+                                            <mat-icon class="mr-10">cancel</mat-icon>
+                                            <span class="mt-20">Cancel</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row column-search mt-20">
+                            <table mat-table [dataSource]="roleAndMenuMapping" class="tbl-width">
+                                <ng-container matColumnDef="menuId">
+                                    <th mat-header-cell *matHeaderCellDef>Menu Id</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.menuId}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="menuName">
+                                    <th mat-header-cell *matHeaderCellDef>Menu Name</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-form-field style="padding-right: 10px" class="full-width"
+                                            *ngIf="isMenuEdit">
+                                            <input autocomplete="off" matInput
+                                                (input)="element.menuName = $any($event.target).value"
+                                                [value]="element.menuName" [disabled]="!isMenuEdit" />
+                                        </mat-form-field>
+                                        <span *ngIf="!isMenuEdit"> {{element.menuName}}</span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="subMenu">
+                                    <th mat-header-cell *matHeaderCellDef>Sub Menu</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-checkbox [(ngModel)]="element.subMenu" (change)="!element.subMenu"
+                                            [disabled]="!isMenuEdit" [checked]="element.subMenu"></mat-checkbox>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="parentMenuId">
+                                    <th mat-header-cell *matHeaderCellDef>Parent Menu Id</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-form-field style="padding-right: 10px" *ngIf="isMenuEdit">
+                                            <input autocomplete="off" matInput
+                                                (input)="element.parentMenuId = $any($event.target).value"
+                                                [value]="element.parentMenuId" [disabled]="!isMenuEdit" />
+                                        </mat-form-field>
+                                        <span *ngIf="!isMenuEdit"> {{element.parentMenuId}}</span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="sortOrder">
+                                    <th mat-header-cell *matHeaderCellDef>Order #</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-form-field style="padding-right: 10px" *ngIf="isMenuEdit">
+                                            <input autocomplete="off" matInput
+                                                (input)="element.sortOrder = $any($event.target).value"
+                                                [value]="element.sortOrder" [disabled]="!isMenuEdit" />
+                                        </mat-form-field>
+                                        <span *ngIf="!isMenuEdit"> {{element.sortOrder}}</span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="active">
+                                    <th mat-header-cell *matHeaderCellDef>Visible</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-checkbox [(ngModel)]="element.active" (change)="!element.active"
+                                            [disabled]="!isMenuEdit" [checked]="element.active"></mat-checkbox>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="edit">
+                                    <th mat-header-cell *matHeaderCellDef>Edit</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-checkbox [(ngModel)]="element.edit" (change)="!element.edit"
+                                            [disabled]="!isMenuEdit" [checked]="element.edit"></mat-checkbox>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedRoleMenuColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedRoleMenuColumns;"></tr>
+                                <tr class="mat-row" *matNoDataRow>
+                                    <td class="mat-cell" [attr.colspan]="displayedRoleMenuColumns.length">No
+                                        Records Found
+                                    </td>
+                                </tr>
+                            </table>
+                            <mat-paginator #menuListPaginator [pageSizeOptions]="[35, 50, 100]"
+                                showFirstLastButtons></mat-paginator>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div> -->

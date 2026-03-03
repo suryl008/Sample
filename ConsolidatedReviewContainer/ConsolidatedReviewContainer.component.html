@@ -1,0 +1,60 @@
+<div class="consolidated-review-container">
+    <div class="main-content">
+        <div class="ultra-thin-nav" *ngIf="!selectedPage || selectedPage === 'selectVisit'">
+            <div class="nav-container">
+                <div class="dropdown-section">
+                    <button mat-button [matMenuTriggerFor]="fiscalMenu" class="nav-dropdown-btn"
+                        *ngIf="fiscalMenuItems.length > 0">
+                        Fiscal and Admin Services Cust
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+                    <mat-menu #fiscalMenu="matMenu" class="ultra-thin-menu">
+                        <button mat-menu-item *ngFor="let item of fiscalMenuItems"
+                            [class.active]="item.id === currentTabId" (click)="navigateToMenuItem(item.id)">
+                            <mat-icon>description</mat-icon>
+                            <span>{{ item.title }}</span>
+                        </button>
+                    </mat-menu>
+
+                    <button mat-button [matMenuTriggerFor]="cteMenu" class="nav-dropdown-btn"
+                        *ngIf="cteMenuItems.length > 0">
+                        CTE Programs
+                        <mat-icon>arrow_drop_down</mat-icon>
+                    </button>
+                    <mat-menu #cteMenu="matMenu" class="ultra-thin-menu">
+                        <button mat-menu-item *ngFor="let item of cteMenuItems"
+                            [class.active]="item.id === currentTabId" (click)="navigateToMenuItem(item.id)">
+                            <mat-icon>description</mat-icon>
+                            <span>{{ item.title }}</span>
+                        </button>
+                    </mat-menu>
+                </div>
+
+                <div class="direct-items-section">
+                    <button mat-button *ngFor="let item of directMenuItems" [class.active]="item.id === currentTabId"
+                        (click)="navigateToMenuItem(item.id)" class="nav-direct-btn">
+                        {{ item.title }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header" *ngIf="selectedPage">
+            <app-landing-header [headerMenu]="headerMenu" [selectedIndex]="selectedIndex"
+                (emitcurrentTabSelection)="getHeaderTabSelection($event)"></app-landing-header>
+
+            <div class="page-content">
+                <div class="content-section" [ngClass]="selectedPage == 'selectVisit' ? '' : 'dispnone'">
+                    <app-consolidatedreview-search [currentTabId]="currentTabId"
+                        (emitTabData)="emitTabData($event)"></app-consolidatedreview-search>
+                </div>
+
+                <div class="content-section" *ngIf="selectedPage == 'visitDetails'">
+                    <app-consolidatedreview-details [visitSelectedData]="visitSelectedData"
+                        [currentTabId]="currentTabId" (emitTabData)="emitTabData($event)"
+                        (emitEnhancedData)="emitEnhancedData($event)"></app-consolidatedreview-details>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
