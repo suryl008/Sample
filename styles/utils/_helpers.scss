@@ -1,0 +1,378 @@
+@use '../abstracts' as *;
+
+/* --- _24-utility-classes.scss --- */
+.add-sub-recipient-popup.ultra-thin {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: $white;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  // Popup Header
+  .popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $ultra-thin-spacing-lg $ultra-thin-spacing-xl;
+    background: $primary-color;
+    color: $white;
+    border-bottom: 2px solid $secondary-color;
+    min-height: 48px;
+
+    .header-title {
+      flex: 1;
+
+      h5 {
+        margin: 0;
+        font-size: $ultra-thin-font-size-lg;
+        font-weight: 600;
+        color: $white;
+        letter-spacing: 0.2px;
+        line-height: $ultra-thin-line-height;
+      }
+    }
+
+    .close-button {
+      color: $white;
+      background: transparent;
+      transition: $ultra-thin-transition;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .ultra-thin-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+      }
+    }
+  }
+  // Popup Content
+  .popup-content {
+    flex: 1;
+    padding: $ultra-thin-spacing-xl;
+    overflow-y: auto;
+    background: $light-gray;
+
+    .main-form.ultra-thin-form {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .form-section {
+      background: $white;
+      border-radius: $ultra-thin-border-radius;
+      padding: $ultra-thin-spacing-xl;
+      box-shadow: $ultra-thin-shadow;
+      border: $ultra-thin-border-width solid $border-color;
+    }
+  }
+  // Loading Spinner Overlay
+  .spinner-overlay.ultra-thin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .ultra-thin-spinner {
+      circle {
+        stroke: $primary-color;
+        stroke-width: 3px;
+      }
+    }
+  }
+  // Form Field Styling
+  .ultra-thin-field {
+    width: 100%;
+    margin-bottom: $ultra-thin-spacing-md;
+
+    .mat-mdc-form-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-mdc-form-field-outline {
+      border-radius: $ultra-thin-border-radius;
+    }
+
+    .ultra-thin-input {
+      @include ultra-thin-input;
+    }
+
+    .search-icon.ultra-thin-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-right: $ultra-thin-spacing-sm;
+      color: $text-secondary;
+    }
+
+    .ultra-thin-button {
+      background: transparent;
+      border: none;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+
+      .ultra-thin-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        color: $text-secondary;
+      }
+    }
+  }
+}
+
+/* --- _25-utility-classes.scss --- */
+.add-sub-recipient-popup.ultra-thin {
+  // Ultra Thin Autocomplete
+  .ultra-thin-autocomplete {
+    .mat-mdc-autocomplete-panel {
+      border-radius: $ultra-thin-border-radius;
+      border: $ultra-thin-border-width solid $border-color;
+      box-shadow: $ultra-thin-shadow-hover;
+      max-height: 300px !important;
+      margin-top: $ultra-thin-spacing-xs;
+    }
+
+    .ultra-thin-option {
+      min-height: 36px;
+      line-height: $ultra-thin-line-height;
+      padding: $ultra-thin-spacing-sm $ultra-thin-spacing-md;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &.mat-active {
+        background: #f5f5f5;
+      }
+
+      &:hover:not(.mat-mdc-option-disabled) {
+        background: #e8f0fe;
+      }
+
+      .ultra-thin-option-content {
+        display: flex;
+        align-items: center;
+        gap: $ultra-thin-spacing-md;
+        width: 100%;
+
+        .ultra-thin-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+          color: $text-secondary;
+          flex-shrink: 0;
+        }
+
+        .ultra-thin-spinner-icon {
+          circle {
+            stroke: $primary-color;
+            stroke-width: 2.5px;
+          }
+        }
+
+        .ultra-thin-text {
+          @include ultra-thin-text;
+        }
+
+        &.ultra-thin-info {
+          background: #e3f2fd;
+          padding: $ultra-thin-spacing-sm $ultra-thin-spacing-md;
+          border-radius: $ultra-thin-border-radius;
+          margin: $ultra-thin-spacing-xs 0;
+
+          .ultra-thin-icon {
+            color: $primary-color;
+          }
+
+          .ultra-thin-text {
+            color: $primary-color;
+            font-weight: 500;
+          }
+        }
+      }
+
+      .ultra-thin-option-text {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: $ultra-thin-spacing-xs;
+
+        .ultra-thin-text {
+          font-weight: 500;
+          color: $text-primary;
+        }
+
+        .ultra-thin-code {
+          color: $text-secondary;
+          font-size: $ultra-thin-font-size-xs;
+          font-family: 'SF Mono', 'Roboto Mono', monospace;
+          background: #f5f5f5;
+          padding: 1px 3px;
+          border-radius: 1px;
+        }
+
+        .ultra-thin-type {
+          color: $text-light;
+          font-size: $ultra-thin-font-size-xs;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
+
+/* --- _26-utility-classes.scss --- */
+.add-sub-recipient-popup.ultra-thin {
+  // Selected Sub-recipient Info Card
+  .selected-form-info.ultra-thin-selected {
+    margin-top: $ultra-thin-spacing-lg;
+
+    .selected-info-card.ultra-thin-card {
+      background: #f8fafc;
+      border-radius: $ultra-thin-border-radius;
+      padding: $ultra-thin-spacing-lg;
+      border: $ultra-thin-border-width solid #e2e8f0;
+      border-left: 2px solid $primary-color;
+
+      .info-row.ultra-thin-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: $ultra-thin-spacing-md;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .info-details.ultra-thin-details {
+          display: flex;
+          align-items: center;
+          flex: 1;
+          gap: $ultra-thin-spacing-sm;
+
+          .info-label.ultra-thin-label {
+            font-weight: 600;
+            color: $text-secondary;
+            font-size: $ultra-thin-font-size-sm;
+            min-width: 40px;
+          }
+
+          .info-value.ultra-thin-value {
+            color: $text-primary;
+            font-size: $ultra-thin-font-size-sm;
+            flex: 1;
+
+            &.ultra-thin-code-value {
+              font-family: 'SF Mono', 'Roboto Mono', monospace;
+              background: #edf2f7;
+              padding: $ultra-thin-spacing-xs $ultra-thin-spacing-sm;
+              border-radius: 1px;
+              border: 1px solid #cbd5e1;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+  // Review Type Dropdown
+  .review-type-container {
+    margin-top: $ultra-thin-spacing-lg;
+
+    .ultra-thin-dropdown {
+      ::ng-deep {
+        .mat-mdc-form-field {
+          .mat-mdc-form-field-wrapper {
+            padding-bottom: 0;
+          }
+
+          .mat-mdc-form-field-infix {
+            border-top: 0;
+            padding: 0;
+          }
+
+          .mat-select {
+            font-size: $ultra-thin-font-size-md;
+            height: 36px;
+            line-height: 36px;
+          }
+        }
+      }
+    }
+  }
+  // Error Message
+  .ultra-thin-error {
+    font-size: $ultra-thin-font-size-xs;
+    line-height: $ultra-thin-line-height;
+    margin-top: $ultra-thin-spacing-xs;
+  }
+  // Popup Actions
+  .popup-actions.ultra-thin-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $ultra-thin-spacing-md;
+    padding: $ultra-thin-spacing-lg $ultra-thin-spacing-xl;
+    background: $white;
+    border-top: $ultra-thin-border-width solid $border-color;
+
+    .ultra-thin-btn {
+      @include ultra-thin-button;
+      font-size: $ultra-thin-font-size-sm;
+      min-width: 80px;
+      height: 32px;
+
+      &.cancel-btn {
+        color: $text-secondary;
+        border-color: $border-color;
+        background: $white;
+
+        &:hover {
+          background: #f5f5f5;
+          border-color: #999;
+        }
+      }
+
+      &.primary {
+        background: $primary-color;
+        color: $white;
+        border-color: $primary-color;
+
+        &:not(:disabled):hover {
+          background: $primary-dark;
+          border-color: $primary-dark;
+          box-shadow: $ultra-thin-shadow-hover;
+        }
+
+        &:disabled {
+          background: #ccc;
+          border-color: #ccc;
+          color: #666;
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+}
+
+// Ultra Thin Dialog Container
+::ng-deep .mat-mdc-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: $ultra-thin-border-radius !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}

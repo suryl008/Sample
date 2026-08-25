@@ -1,0 +1,207 @@
+@use '../abstracts' as *;
+
+/* --- _12-global-reset.scss --- */
+// Global reset
+.ultra-thin-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--dark-color);
+  background: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+// Spinner overlay
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+  
+  .spinner-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    
+    .spinner-text {
+      font-size: 12px;
+      color: var(--primary-color);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// Layout
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px;
+  background: white;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.col-full {
+  grid-column: 1 / -1;
+}
+
+// Card styling
+.ultra-thin-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-thin) !important;
+  border-radius: 6px !important;
+  padding: 20px;
+}
+
+// Accordion styling
+.ultra-thin-accordion {
+  .mat-expansion-panel {
+    background: #fcfcfc;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    margin-bottom: 10px !important;
+    box-shadow: none !important;
+    transition: var(--transition-fast);
+    
+    &:hover {
+      background: #f8f9fa;
+      border-color: #d0d0d0;
+    }
+    
+    &.mat-expanded {
+      background: white;
+      border-color: var(--primary-color);
+      
+      .mat-expansion-panel-header {
+        border-bottom: 1px solid var(--border-light);
+        background: #f8f9fa;
+      }
+    }
+  }
+  
+  .mat-expansion-panel-header {
+    padding: 0 16px !important;
+    height: 48px !important;
+    font-size: 13px;
+    background: #fcfcfc !important;
+    
+    .mat-expansion-panel-header-title {
+      color: var(--dark-color);
+      font-weight: 600;
+    }
+    
+    &:hover {
+      background: #f8f9fa !important;
+    }
+  }
+  
+  .mat-expansion-panel-body {
+    padding: 16px !important;
+    background: white;
+  }
+}
+
+// Panel headers
+.panel-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.panel-title-text {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--dark-color);
+  letter-spacing: 0.1px;
+}
+
+// Info grid
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 12px 0;
+}
+
+// Form fields
+.thin-field {
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin: 0;
+  }
+  
+  .mat-mdc-form-field-outline {
+    background: white;
+  }
+  
+  .mat-mdc-form-field-infix {
+    padding: 10px 0 !important;
+    border-top: 0;
+    min-height: 36px;
+  }
+  
+  .mat-mdc-input-element {
+    font-size: 13px;
+    color: var(--dark-color);
+    background: white;
+  }
+  
+  .mat-mdc-form-field-label {
+    font-size: 12px;
+    color: var(--medium-color);
+  }
+  
+  .mat-mdc-form-field-hint {
+    font-size: 11px;
+    color: #999;
+  }
+  
+  .mat-mdc-autocomplete-panel {
+    background: white;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+  }
+}
+
+// Select fields
+.thin-select {
+  .mat-mdc-form-field-infix {
+    min-width: 140px;
+  }
+  
+  .mat-mdc-select-value {
+    font-size: 13px;
+  }
+  
+  .mat-mdc-select-panel {
+    background: white;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+  }
+}
+
+// Tables
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin: 12px 0;
+  background: white;
+}

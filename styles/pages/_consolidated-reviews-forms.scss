@@ -1,0 +1,431 @@
+@use '../abstracts' as *;
+
+/* --- _37-consolidatedreviewdetails-form-input-ove.scss --- */
+body.qscript-editor-locked {
+  overflow: hidden;
+}
+
+.qscript-page {
+  max-width: 1180px;
+  margin: 12px auto 28px;
+  padding: 0 16px 24px;
+  color: #1f2937;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.qscript-page .qscript-header,
+.qscript-page .qscript-panel {
+  background: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.qscript-page .qscript-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #112e51 0%, #1d4f86 100%);
+  color: #fff;
+}
+
+.qscript-page .qscript-header h1,
+.qscript-page .qscript-header h2 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.qscript-page .qscript-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+.qscript-page .qscript-chip {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+}
+
+.qscript-page .qscript-chip.muted {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.qscript-page .qscript-toast,
+.qscript-page .qscript-banner {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.qscript-page .qscript-toast,
+.qscript-page .qscript-banner.success {
+  background: #ecfdf5;
+  border: 1px solid #b7ebc8;
+  color: #167a46;
+}
+
+.qscript-page .qscript-banner.error {
+  background: #fff1f2;
+  border: 1px solid #f7c3c6;
+  color: #b42318;
+}
+
+.qscript-page .qscript-banner.warn {
+  background: #fff8db;
+  border: 1px solid #f1d98a;
+  color: #7a5b00;
+}
+
+/* --- _38-consolidatedreviewdetails-form-input-ove.scss --- */
+.qscript-page .qscript-banner.info,
+.qscript-page .qscript-loading {
+  background: #f5f7fa;
+  border: 1px solid #dfe3e8;
+  color: #4b5563;
+}
+
+.qscript-page .qscript-toolbar,
+.qscript-page .qscript-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 16px 20px 8px;
+}
+
+.qscript-page .qscript-toolbar {
+  justify-content: space-between;
+}
+
+.qscript-page .qscript-toolbar input[type="search"],
+.qscript-page .qscript-toolbar input[type="text"],
+.qscript-page .qscript-form input,
+.qscript-page .qscript-form textarea,
+.qscript-page .qscript-code,
+.qscript-page .modal-content textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.qscript-page .qscript-toolbar input[type="search"] {
+  max-width: 420px;
+}
+
+.qscript-page .btn-primary,
+.qscript-page .btn-secondary,
+.qscript-page .btn-link {
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+}
+
+.qscript-page .btn-primary {
+  background: #112e51;
+  color: #fff;
+  border-color: #112e51;
+}
+
+.qscript-page .btn-primary:disabled,
+.qscript-page .btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.qscript-page .btn-secondary {
+  background: #fff;
+  color: #112e51;
+  border-color: #c5d0dc;
+}
+
+.qscript-page .btn-link {
+  background: none;
+  color: #0056b3;
+  padding: 4px 8px;
+}
+
+.qscript-page table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.qscript-page th,
+.qscript-page td {
+  border-bottom: 1px solid #dfe3e8;
+  padding: 12px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.qscript-page th {
+  background: #f5f7fa;
+  color: #003d82;
+  font-size: 12px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.qscript-page tbody tr:hover {
+  background: #fafcff;
+}
+
+.qscript-page .truncate {
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #667085;
+}
+
+.qscript-page .qscript-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 8px 20px 24px;
+}
+
+.qscript-page .qscript-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qscript-page .qscript-field-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.qscript-page .qscript-form label {
+  display: block;
+  float: none;
+  width: auto;
+  margin: 0;
+  font-weight: 700;
+  color: #112e51;
+}
+
+.qscript-page .required {
+  color: #d32f2f;
+}
+
+.qscript-page .help-text,
+.qscript-page .char-count {
+  display: block;
+  margin-top: 6px;
+  color: #667085;
+  font-size: 12px;
+}
+
+.qscript-page .error-text {
+  color: #d32f2f;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.qscript-page .audit-row,
+.qscript-page .detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  background: #f5f7fa;
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.qscript-page .qscript-editor {
+  border: 1px solid #cfd6df;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.qscript-page .qscript-editor-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f4f7fb;
+  border-bottom: 1px solid #e6ebf1;
+}
+
+.qscript-page .qscript-editor-title {
+  font-weight: 700;
+  color: #112e51;
+  margin-right: auto;
+}
+
+.qscript-page .qscript-editor .ck-editor__editable_inline {
+  min-height: 360px;
+}
+
+.qscript-page .qscript-editor.is-expanded {
+  position: fixed;
+  inset: 16px;
+  z-index: 4000;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(17, 46, 81, 0.28);
+}
+
+/* --- _39-consolidatedreviewdetails-form-input-ove.scss --- */
+.qscript-page .qscript-editor.is-expanded .ck.ck-editor,
+.qscript-page .qscript-editor.is-expanded .ck-editor__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.qscript-page .qscript-editor.is-expanded .ck-editor__editable_inline {
+  min-height: calc(100vh - 170px) !important;
+  height: calc(100vh - 170px) !important;
+}
+
+.qscript-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.qscript-compare-side {
+  border: 1px solid #dfe3e8;
+  border-radius: 10px;
+  padding: 14px;
+  background: #fafcff;
+}
+
+.qscript-compare-side h3 {
+  margin-top: 0;
+  color: #003d82;
+}
+
+.qscript-line.changed {
+  background: #fff3bf;
+}
+
+.qscript-line.added {
+  background: #d3f9d8;
+}
+
+.qscript-line.removed {
+  background: #ffe3e3;
+}
+
+.qscript-pre {
+  margin: 0;
+  padding: 10px;
+  max-height: 420px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font: 13px/1.5 "Courier New", Courier, monospace;
+  white-space: pre-wrap;
+}
+
+.qscript-empty {
+  text-align: center;
+  padding: 36px 20px;
+}
+
+.qscript-empty p {
+  color: #475467;
+}
+
+.qscript-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1300;
+}
+
+.qscript-modal .modal-content {
+  background: #fff;
+  padding: 22px 20px;
+  border-radius: 12px;
+  width: min(92vw, 520px);
+}
+
+.qscript-modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .qscript-compare {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Rules below came from the previously compiled src/styles.css.
+   They are last so they keep winning over any earlier duplicate. */
+
+@media (max-width: 767px) {
+  #wrapper {
+    padding-left: 70px;
+    transition: all 0.4s ease 0s;
+  }
+
+  #sidebar-wrapper {
+    left: 70px;
+  }
+
+  #wrapper.active {
+    padding-left: 150px;
+  }
+
+  #wrapper.active #sidebar-wrapper {
+    left: 150px;
+    width: 150px;
+    transition: all 0.4s ease 0s;
+  }
+}
+
+/********** User Security ***********/
+.card-body-header {
+}
+
+.user-table-height .mat-mdc-table {
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#field-popup {
+  height: Calc(100vh - 390px);
+  overflow: auto;
+
+  .mat-mdc-tab-body-wrapper {
+    height: calc(100% - 60px);
+  }
+}

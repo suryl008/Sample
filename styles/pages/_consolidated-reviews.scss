@@ -1,0 +1,1170 @@
+/* --- _45-consolidated-reviews.scss --- */
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay),
+.consolidated-review-container.consolidated-reviews-root {
+  width: 100%;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  background: var(--color-surface-alt);
+  --mdc-outlined-text-field-caret-color: #112e51;
+  --mdc-outlined-text-field-focus-outline-color: #112e51;
+  --mdc-outlined-text-field-focus-label-text-color: #112e51;
+  --mdc-outlined-text-field-label-text-color: #595959;
+  --mdc-outlined-text-field-input-text-color: #212121;
+  --mat-form-field-focus-select-arrow-color: #112e51;
+  --mdc-checkbox-selected-icon-color: #112e51;
+  --mdc-checkbox-selected-hover-icon-color: #0b1f38;
+  --mdc-radio-selected-icon-color: #112e51;
+  --mdc-circular-progress-active-indicator-color: #112e51;
+  --mdc-linear-progress-active-indicator-color: #112e51;
+  --mat-datepicker-calendar-date-selected-state-background-color: #112e51;
+}
+
+.consolidated-review-container.consolidated-reviews-root {
+  display: flex;
+  height: 100vh;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .main-content,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .main-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .page-content { flex: 1; overflow: auto; }
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dispnone { display: none !important; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .page-container {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 12px 14px 16px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-nav {
+  background: linear-gradient(135deg, #112e51 0%, #1d4f86 100%);
+  padding: 6px 16px;
+  min-height: 44px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-container,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dropdown-section,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .direct-items-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-container { width: 100%; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-dropdown-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-direct-btn {
+  --mdc-text-button-label-text-color: #fff;
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  height: 32px;
+  padding: 0 12px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-dropdown-btn .mdc-button__label,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-direct-btn .mdc-button__label,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-dropdown-btn .mat-icon,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-direct-btn .mat-icon {
+  color: #fff !important;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-direct-btn.active,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-dropdown-btn:hover,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .nav-direct-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-tab-group,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-tab-header,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-tab-header-manual {
+  background: #fff !important;
+  --mdc-tab-indicator-active-indicator-color: #112e51;
+  --mat-tab-header-active-label-text-color: #112e51;
+  --mat-tab-header-active-focus-label-text-color: #112e51;
+  --mat-tab-header-active-hover-label-text-color: #112e51;
+  --mat-tab-header-inactive-label-text-color: #595959;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-card,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-panel,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-empty-card,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-card {
+  background: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-accordion .mat-expansion-panel,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-expansion-panel {
+  box-shadow: none;
+  border: 1px solid #dfe3e8;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .panel-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .panel-title,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .panel-title-text,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .results-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #112e51;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .panel-subtitle {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .search-form { padding: 12px 8px 4px; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .form-row-inline,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .form-buttons-inline,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .results-header,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .form-field-inline {
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .results-section { margin-top: 16px; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .results-header {
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px 12px;
+  border-bottom: 1px solid #e6ebf1;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .table-container { overflow: auto; background: #fff; }
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-table,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-table { width: 100%; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-header,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-header-cell {
+  background: #f4f7fb;
+  color: #112e51;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 12px 14px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-cell,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-cell {
+  padding: 12px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid #e6ebf1;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-row:hover { background: #fafcff; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-form-field {
+  width: 100%;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-paginator {
+  background: #fff;
+  min-height: 40px;
+  --mat-paginator-container-text-color: #595959;
+  --mat-paginator-enabled-icon-color: #112e51;
+  --mat-paginator-container-size: 40px;
+  --mat-paginator-form-field-container-height: 32px;
+  --mat-paginator-form-field-container-vertical-padding: 4px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-paginator .mat-mdc-paginator-container {
+  min-height: 40px;
+  padding: 0 8px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-paginator .mat-mdc-form-field,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-paginator .mat-mdc-paginator-page-size-select {
+  width: auto;
+  min-width: 52px;
+  flex: none;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-paginator .mat-mdc-text-field-wrapper,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-paginator .mdc-text-field {
+  padding: 0 8px !important;
+  height: 32px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-paginator .mat-mdc-form-field-infix {
+  min-height: 32px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  width: auto;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .cell-content {
+  display: block;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .no-data-message,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .empty-state-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 16px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .info-item { flex: 1; min-width: 180px; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .actions-panel .mat-expansion-panel-body {
+  padding: 12px 16px 16px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .actions-panel .actions-toolbar,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .actions-panel .actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .actions-panel .stage-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  grid-column: auto;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .actions-panel .stage-field {
+  flex: 1;
+  max-width: 420px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .actions-panel .go-button {
+  min-width: 72px;
+  height: 40px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .review-action-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .review-action-row .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+}
+
+/* --- _46-consolidated-reviews.scss --- */
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) {
+  --mdc-filled-button-container-color: #112e51;
+  --mdc-filled-button-label-text-color: #fff;
+  --mdc-filled-button-icon-color: #fff;
+  --mdc-protected-button-container-color: #112e51;
+  --mdc-protected-button-label-text-color: #fff;
+  --mdc-outlined-button-label-text-color: #112e51;
+  --mdc-outlined-button-outline-color: #c5d0dc;
+  --mdc-outlined-button-icon-color: #112e51;
+  --mdc-icon-button-icon-color: #112e51;
+  --mdc-text-button-label-text-color: #112e51;
+  --mdc-tab-indicator-active-indicator-color: #112e51;
+  --mat-tab-header-active-label-text-color: #112e51;
+  --mat-tab-header-inactive-label-text-color: #595959;
+  --mdc-switch-selected-track-color: #112e51;
+  --mdc-switch-selected-handle-color: #fff;
+  --mdc-dialog-container-shape: 12px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-button-primary,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .save-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .save-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .action-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .upload-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .go-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .move-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-unelevated-button:not(.mat-warn) {
+  --mdc-filled-button-container-color: #112e51;
+  --mdc-filled-button-label-text-color: #fff;
+  background: #112e51 !important;
+  color: #fff !important;
+  border: 1px solid #112e51;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  min-height: 36px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-button-secondary,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-button-add,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .cancel-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .edit-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .cancel-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .back-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .action-button.secondary-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .action-button.cancel-button {
+  background: #fff !important;
+  color: #112e51 !important;
+  border: 1px solid #c5d0dc;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  min-height: 36px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-action-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-action-btn .mat-icon {
+  color: #112e51 !important;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #112e51 0%, #1d4f86 100%);
+  color: #fff;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header h5,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header h6,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dialog-title,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .header-title h5,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .header-title h6 {
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dialog-header .title-icon,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header .close-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header .close-button .mat-icon,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .close-icon { color: #fff; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header .close-button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header .close-button .mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header .close-button:hover:not([disabled]) {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-header .close-button[disabled] {
+  opacity: 0.45;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .program-info-section {
+  padding: 12px 16px;
+  background: #f4f7fb;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-content,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dialog-content,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) [mat-dialog-content] {
+  padding: 16px;
+  background: #fff;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .popup-actions,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .modal-actions,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) [mat-dialog-actions] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid #e6ebf1;
+  background: #fff;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .spinner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 20;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .spinner-content,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #112e51;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay).add-sub-recipient-popup,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay).additional-support-dialog,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay).consolidated-review-popup,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay).metadata-dialog,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay).ultra-thin-confirm-dialog {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  min-height: 100%;
+}
+
+.consolidated-reviews-root.consolidated-review-popup {
+  height: 100%;
+  overflow: hidden;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .save-status.success {
+  background: #ecfdf5;
+  color: #167a46;
+  padding: 8px 16px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .save-status.error {
+  background: #fff1f2;
+  color: #b42318;
+  padding: 8px 16px;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dialog-header .edit-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dialog-header .cancel-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .dialog-header .save-btn {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .filter-section { padding: 8px 16px; }
+
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .mat-mdc-unelevated-button.mat-warn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .reset-btn,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .reset-button,
+:is(.consolidated-reviews-root, .program-admin-root, .program-admin-overlay, .questionnaire-root, .questionnaire-overlay) .ultra-thin-delete-btn {
+  --mdc-filled-button-container-color: #c62828;
+  background: #c62828 !important;
+  color: #fff !important;
+  border-color: #c62828;
+}
+
+/* --- _47-consolidated-reviews.scss --- */
+/* Overlay panes attach to body, so they need panelClass, not .consolidated-reviews-root. */
+
+.consolidated-reviews-overlay,
+.program-admin-overlay,
+.questionnaire-overlay,
+.consolidated-review-select-panel,
+.consolidated-review-autocomplete-panel,
+.add-sub-recipient-dialog,
+.full-screen-modal,
+.ultra-thin-menu {
+  --mdc-filled-button-container-color: #112e51;
+  --mdc-filled-button-label-text-color: #fff;
+  --mdc-outlined-button-label-text-color: #112e51;
+  --mdc-outlined-text-field-focus-outline-color: #112e51;
+  --mat-option-selected-state-label-text-color: #112e51;
+  --mat-option-selected-state-focus-state-layer-color: #112e51;
+  --mdc-list-list-item-label-text-color: #212121;
+  --mdc-theme-primary: #112e51;
+  --mat-datepicker-calendar-date-selected-state-background-color: #112e51;
+  --mat-datepicker-calendar-date-selected-state-text-color: #fff;
+}
+
+.add-sub-recipient-dialog .mat-mdc-dialog-container,
+.full-screen-modal .mat-mdc-dialog-container,
+.consolidated-reviews-overlay .mat-mdc-dialog-container,
+.program-admin-overlay .mat-mdc-dialog-container,
+.questionnaire-overlay .mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 12px;
+  --mdc-dialog-container-color: #fff;
+}
+
+.consolidated-review-select-panel .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text,
+.consolidated-review-autocomplete-panel .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
+  color: #112e51;
+}
+
+.ultra-thin-menu .mat-mdc-menu-item .mat-icon {
+  color: #112e51;
+}
+
+/* --- _50-consolidated-reviews-email.scss --- */
+/* Email Log list + detail layout for Consolidated Review popups. */
+
+.consolidated-reviews-root .email-log-container,
+.consolidated-reviews-root .email-detail-container {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 16px 20px 20px;
+}
+
+.consolidated-reviews-root .email-log-container .panel-title,
+.consolidated-reviews-root .email-log-panel .panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.consolidated-reviews-root .email-log-container .panel-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .email-log-container .search-section {
+  margin-bottom: 12px;
+}
+
+.consolidated-reviews-root .email-log-container .search-field {
+  width: 100%;
+}
+
+.consolidated-reviews-root .back-section {
+  margin-bottom: 12px;
+}
+
+.consolidated-reviews-root .back-button {
+  color: #112e51;
+}
+
+.consolidated-reviews-root .back-button .mat-icon {
+  margin-right: 4px;
+}
+
+.consolidated-reviews-root .email-details-card,
+.consolidated-reviews-root .message-card,
+.consolidated-reviews-root .attachments-card {
+  margin-bottom: 16px;
+}
+
+.consolidated-reviews-root .email-details-card .mat-mdc-card-header,
+.consolidated-reviews-root .message-card .mat-mdc-card-header,
+.consolidated-reviews-root .attachments-card .mat-mdc-card-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 16px 0;
+}
+
+.consolidated-reviews-root .email-details-card .mat-mdc-card-header-text,
+.consolidated-reviews-root .message-card .mat-mdc-card-header-text,
+.consolidated-reviews-root .attachments-card .mat-mdc-card-header-text {
+  margin: 0;
+}
+
+.consolidated-reviews-root .email-details-card .mat-mdc-card-title,
+.consolidated-reviews-root .message-card .mat-mdc-card-title,
+.consolidated-reviews-root .attachments-card .mat-mdc-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .email-details-card .header-icon,
+.consolidated-reviews-root .message-card .title-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .message-card .mat-mdc-card-subtitle {
+  margin: 4px 0 0;
+  color: #5b6770;
+}
+
+.consolidated-reviews-root .email-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 20px;
+}
+
+.consolidated-reviews-root .email-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.consolidated-reviews-root .email-meta-item--full {
+  grid-column: 1 / -1;
+}
+
+.consolidated-reviews-root .email-meta-item .field-icon-small {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .email-meta-item .field-label-small {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .email-meta-item .email-meta-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #212121;
+}
+
+.consolidated-reviews-root .email-meta-item .cc-list {
+  min-width: 0;
+}
+
+.consolidated-reviews-root .quick-stats,
+.consolidated-reviews-root .editor-stats,
+.consolidated-reviews-root .editor-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-top: 12px;
+}
+
+.consolidated-reviews-root .editor-actions {
+  justify-content: space-between;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.consolidated-reviews-root .editor-info,
+.consolidated-reviews-root .email-message-container .action-buttons,
+.consolidated-reviews-root .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.consolidated-reviews-root .ckeditor-wrapper {
+  min-height: 180px;
+  border: 1px solid #dfe3e8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.consolidated-reviews-root .no-message-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.consolidated-reviews-root .no-message-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .no-message-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .empty-editor-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .consolidated-reviews-root .email-meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- _51-consolidated-reviews-comments.scss --- */
+/* Global Comments popup layout for Consolidated Reviews. */
+
+.consolidated-reviews-root .overall-comments-container {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 16px 20px 20px;
+}
+
+.consolidated-reviews-root .overall-comments-container .content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.consolidated-reviews-root .comments-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px 16px;
+}
+
+.consolidated-reviews-root .comments-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 16px;
+}
+
+.consolidated-reviews-root .comments-form-grid .comment-text-field {
+  grid-column: 1 / -1;
+}
+
+.consolidated-reviews-root .overall-comments-container .info-field .mat-mdc-form-field-subscript-wrapper,
+.consolidated-reviews-root .overall-comments-container .comment-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.consolidated-reviews-root .new-comment-panel .panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.consolidated-reviews-root .new-comment-panel .panel-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .comment-history-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 12px;
+}
+
+.consolidated-reviews-root .comment-history-section .section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.consolidated-reviews-root .comment-history-section .section-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .comment-history-section .section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .comments-table-container,
+.consolidated-reviews-root .comments-table-container .table-wrapper {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.consolidated-reviews-root .comments-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.consolidated-reviews-root .comments-table .mat-column-create_dt {
+  width: 120px;
+}
+
+.consolidated-reviews-root .comments-table .mat-column-Author {
+  width: 160px;
+}
+
+.consolidated-reviews-root .comments-table .mat-column-comment_cat {
+  width: 140px;
+}
+
+.consolidated-reviews-root .comments-table .mat-mdc-no-data-row,
+.consolidated-reviews-root .comments-table .no-data-row {
+  display: table-row;
+}
+
+.consolidated-reviews-root .comments-table .no-data {
+  display: table-cell;
+  text-align: center;
+  border-bottom: none;
+}
+
+.consolidated-reviews-root .comments-table .no-data-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 28px 16px;
+  color: #5b6770;
+}
+
+.consolidated-reviews-root .comments-table .no-data-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: #112e51;
+}
+
+.consolidated-reviews-root .comments-popup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid #e6ebf1;
+}
+
+@media (max-width: 900px) {
+  .consolidated-reviews-root .comments-meta-grid,
+  .consolidated-reviews-root .comments-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- _52-additional-support.scss --- */
+/* Additional Support dialog: header, close, scroll, metadata tab. */
+
+.full-screen-modal.cdk-overlay-pane,
+.full-screen-modal .mat-mdc-dialog-container,
+.full-screen-modal .mdc-dialog__container,
+.full-screen-modal .mat-mdc-dialog-surface {
+  height: 100%;
+  max-height: 100%;
+}
+
+.full-screen-modal app-additional-support-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.additional-support-dialog.consolidated-reviews-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  max-width: none;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.additional-support-dialog .popup-header,
+.additional-support-dialog .program-info-section,
+.additional-support-dialog > .dialog-footer {
+  flex-shrink: 0;
+}
+
+.additional-support-dialog .as-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 16px;
+  padding: 12px 20px 4px;
+  background: #f4f7fb;
+  border-bottom: 1px solid #e6ebf1;
+}
+
+.additional-support-dialog .as-meta-grid .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.additional-support-dialog .dialog-content,
+.additional-support-dialog .mat-mdc-dialog-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: auto;
+  padding: 0 20px 16px;
+}
+
+.additional-support-dialog .support-tabs .mat-mdc-tab-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  margin-bottom: 12px;
+}
+
+.additional-support-dialog .metadata-dialog {
+  display: block;
+  min-height: 0;
+  height: auto;
+}
+
+.additional-support-dialog .metadata-dialog .dialog-header {
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.additional-support-dialog .metadata-dialog .dialog-header .dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.additional-support-dialog .metadata-dialog .dialog-header .header-left,
+.additional-support-dialog .metadata-dialog .dialog-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.additional-support-dialog .metadata-dialog .dialog-header .edit-btn,
+.additional-support-dialog .metadata-dialog .dialog-header .cancel-btn {
+  background: #fff;
+  color: #112e51;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.additional-support-dialog .metadata-dialog .dialog-header .edit-btn .mat-icon,
+.additional-support-dialog .metadata-dialog .dialog-header .cancel-btn .mat-icon {
+  color: #112e51;
+}
+
+.additional-support-dialog .metadata-dialog .search-field {
+  width: 100%;
+}
+
+.additional-support-dialog .metadata-dialog .table-container,
+.additional-support-dialog .metadata-dialog .table-wrapper {
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
+}
+
+.additional-support-dialog .metadata-table {
+  width: 100%;
+}
+
+.additional-support-dialog > .dialog-footer {
+  justify-content: stretch;
+  margin: 0;
+  padding: 10px 20px;
+}
+
+.additional-support-dialog .footer-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.additional-support-dialog .footer-status .user-name,
+.additional-support-dialog .footer-status .timestamp {
+  font-size: 13px;
+  color: #5b6770;
+}
+
+@media (max-width: 900px) {
+  .additional-support-dialog .as-meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- _53-additional-support-forms.scss --- */
+/* Additional Support form layout, tabs, and panels. */
+
+.additional-support-dialog {
+  --mdc-tab-indicator-active-indicator-color: #112e51;
+  --mat-tab-header-active-label-text-color: #112e51;
+  --mat-tab-header-inactive-label-text-color: #595959;
+  --mat-tab-header-pagination-icon-color: #112e51;
+}
+
+.additional-support-dialog .mdc-tab-indicator__content--underline {
+  border-color: #112e51 !important;
+}
+
+.additional-support-dialog fieldset {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.additional-support-dialog .form-section.as-card,
+.additional-support-dialog .rules-panel {
+  border: 1px solid #dfe3e8;
+  border-radius: 12px;
+  box-shadow: none;
+  margin-bottom: 12px;
+}
+
+.additional-support-dialog .form-section.as-card {
+  padding: 12px 16px 8px;
+  background: #fff;
+}
+
+.additional-support-dialog .section-title {
+  margin: 0 0 12px;
+  color: #112e51;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.additional-support-dialog .as-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 16px;
+  align-items: start;
+}
+
+.additional-support-dialog .as-block {
+  margin-top: 12px;
+}
+
+.additional-support-dialog .radio-group-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 56px;
+  gap: 6px;
+}
+
+.additional-support-dialog .radio-label {
+  color: #112e51;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.additional-support-dialog .radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.additional-support-dialog .as-upload {
+  grid-column: span 2;
+  min-width: 0;
+}
+
+.additional-support-dialog .as-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.additional-support-dialog .as-upload-row .form-control {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 6px 10px;
+  border: 1px solid #c5d0dc;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.additional-support-dialog .as-hint,
+.additional-support-dialog .file-name {
+  display: block;
+  margin-top: 4px;
+  color: #5b6770;
+  font-size: 12px;
+}
+
+.additional-support-dialog .as-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.additional-support-dialog .unsaved-changes-warning {
+  margin-top: 8px;
+  color: #b42318;
+  font-size: 13px;
+}
+
+.additional-support-dialog .rules-accordion {
+  display: block;
+}
+
+.additional-support-dialog .attachment-component .section-title {
+  margin-bottom: 8px;
+}
+
+.additional-support-dialog .attachment-component .file-type-applicability {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .additional-support-dialog .as-form-grid,
+  .additional-support-dialog .as-upload {
+    grid-template-columns: 1fr;
+    grid-column: auto;
+  }
+}

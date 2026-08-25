@@ -1,0 +1,64 @@
+@use '../abstracts' as *;
+
+/* --- _23-snackbar-custom-styles.scss --- */
+// Snackbar Custom Styles
+.success-snackbar {
+  background: #4caf50 !important;
+  color: white !important;
+  border: 0.5px solid #388e3c !important;
+  border-radius: 1px !important;
+  font-size: 12px !important;
+  
+  .mat-simple-snackbar-action {
+    color: white !important;
+    font-size: 11px !important;
+  }
+}
+
+.error-snackbar {
+  background: #f44336 !important;
+  color: white !important;
+  border: 0.5px solid #d32f2f !important;
+  border-radius: 1px !important;
+  font-size: 12px !important;
+  
+  .mat-simple-snackbar-action {
+    color: white !important;
+    font-size: 11px !important;
+  }
+}
+
+.warning-snackbar {
+  background: #ff9800 !important;
+  color: white !important;
+  border: 0.5px solid #f57c00 !important;
+  border-radius: 1px !important;
+  font-size: 12px !important;
+  
+  .mat-simple-snackbar-action {
+    color: white !important;
+    font-size: 11px !important;
+  }
+}
+
+.info-snackbar {
+  background: #2196f3 !important;
+  color: white !important;
+  border: 0.5px solid #1976d2 !important;
+  border-radius: 1px !important;
+  font-size: 12px !important;
+  
+  .mat-simple-snackbar-action {
+    color: white !important;
+    font-size: 11px !important;
+  }
+}
+
+// Utility Classes
+.mt-1 { margin-top: 0.25rem !important; }
+
+.mt-2 { margin-top: 0.5rem !important; }
+
+.mt-3 { margin-top: 1rem !important; }
+
+.mb-1 { margin-bottom: 0.25rem !important; }

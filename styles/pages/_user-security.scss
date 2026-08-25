@@ -1,0 +1,229 @@
+@use '../abstracts' as *;
+
+/* --- _07-user-security.scss --- */
+.mat-tab-header-manual {
+  background: #bda73642;
+}
+
+.mat-mdc-select-panel {
+  margin-left: 25px !important;
+}
+
+.selected-list {
+  margin-top: 6px;
+}
+
+.selected-list .c-list .c-token {
+  background: lightslategrey !important;
+}
+
+.selected-list .c-list {
+  margin-right: 60px;
+}
+
+.pure-checkbox input[type="checkbox"]:checked + label:before {
+  background: lightslategrey !important;
+}
+
+.pure-checkbox input[type="checkbox"] + label:before {
+  color: lightslategray !important;
+  border: 1px solid lightslategray !important;
+}
+
+.pure-checkbox input[type="checkbox"]:disabled + label:before {
+  border-color: #ccc !important;
+}
+
+.selected-item {
+  background: #f0f0f0 !important;
+}
+
+.c-btn {
+  border: none !important;
+  border-bottom: 1px solid rgb(204, 204, 204) !important;
+}
+
+.selected-list .c-btn {
+  padding: 5px 10px 5px 3px !important;
+}
+
+.pure-checkbox {
+  display: flex;
+}
+
+.button-red {
+  color: #bd3640 !important;
+}
+
+.button-blue {
+  color: #1970ea !important;
+}
+
+.mat-datepicker-inpu {
+  width: 90% !important;
+}
+
+.building-header {
+  margin-left: -10px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.contents {
+  height: calc(100vh - 155px);
+  overflow-y: scroll;
+}
+
+.mandatory {
+  color: red;
+}
+
+.mat-datepicker-toggle-default-icon {
+  font-size: 24px;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.emailValid {
+  padding-top: 10px;
+  color: red;
+  position: absolute;
+}
+
+.mat-mdc-card > :first-child,
+.mat-mdc-card-content > :first-child {
+  margin-top: -3px;
+}
+
+#secList .c-remove {
+  display: none !important;
+}
+
+#field-popup {
+  height: Calc(100vh - 390px);
+  overflow: auto;
+
+  .mat-mdc-tab-body-wrapper {
+    height: 100%;
+  }
+}
+
+.mat-mdc-tab-header {
+  background: #bda73642 !important;
+}
+
+.header {
+  background: #112e51;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.mt-5 {
+  margin-top: 5px !important;
+}
+
+.wrapper-box {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  min-height: 100px;
+}
+
+.display-none {
+  display: none;
+}
+
+#emailLog .mat-mdc-form-field-infix {
+  display: flex !important;
+}
+
+th.mat-mdc-header-cell,
+td.mat-mdc-cell,
+td.mat-footer-cell {
+  padding: 10px !important;
+  border-right: 1px solid #000;
+}
+
+mat-row,
+.mat-mdc-header-row,
+mat-footer-row,
+th.mat-mdc-header-cell,
+td.mat-mdc-cell,
+td.mat-footer-cell {
+  border-bottom-color: #000 !important;
+}
+
+.cd-editor__editable {
+  text-transform: none !important;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+/* added Feb 2026 */
+
+/* Add this to your global styles.css or styles.scss */
+.ultra-thin-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* Spinner Overlay */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+
+.spinner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.spinner-text {
+  font-size: 12px;
+  color: #1976d2;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Layout */
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.col-full {
+  grid-column: 1 / -1;
+}
+
+/* Card Styling */
+.ultra-thin-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
