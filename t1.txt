@@ -1,0 +1,69 @@
+import { 
+  ClassicEditor, Essentials, Paragraph, Heading, List, Indent, Link, 
+  Table, TableToolbar, BlockQuote, Bold, Italic, Underline, 
+  Strikethrough, Undo, FontColor, FontBackgroundColor, FontSize, 
+  Alignment, AutoImage, Image, ImageToolbar, ImageCaption, 
+  ImageStyle, ImageUpload, Base64UploadAdapter 
+} from 'ckeditor5';
+
+export const GLOBAL_EDITOR_CONFIG1 = {
+  placeholder: 'Type your content here...',
+  plugins: [ 
+    Essentials, Paragraph, Heading, List, Indent, Link, 
+    Table, TableToolbar, BlockQuote, Bold, Italic, Underline, 
+    Strikethrough, Undo, FontColor, FontBackgroundColor, FontSize, 
+    Alignment, AutoImage, Image, ImageToolbar, ImageCaption, 
+    ImageStyle, ImageUpload, Base64UploadAdapter 
+  ],
+  toolbar: [
+    'undo', 'redo', '|', 'heading', 'fontSize',
+    '|', 'bold', 'italic', 'underline', 'strikethrough', 'fontColor', 'fontBackgroundColor',
+    '|', 'alignment', '|', 'link', 'uploadImage', 'insertTable', 'blockQuote', 
+    '|', 'bulletedList', 'numberedList', 'outdent', 'indent'
+  ],
+  fontSize: { options: [ 'tiny', 'default', 'big', 'huge' ] },
+  alignment: { options: [ 'left', 'center', 'right', 'justify' ] },
+  table: { contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ] },
+  image: { toolbar: [ 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'toggleImageCaption' ] }
+};
+
+export const GLOBAL_EDITOR_CONFIG = {
+    placeholder: 'Type your content message description here...',
+    plugins: [ 
+      Essentials, Paragraph, Heading, List, Indent, Link, 
+      Table, TableToolbar, BlockQuote, Bold, Italic, Underline, 
+      Strikethrough, Undo,
+      FontColor, FontBackgroundColor, FontSize, Alignment,
+      AutoImage, Image, ImageToolbar, ImageCaption, ImageStyle, 
+      ImageUpload, Base64UploadAdapter 
+    ],
+    toolbar: [
+      'undo', 'redo', 
+      '|', 'heading', 'fontSize',
+      '|', 'bold', 'italic', 'underline', 'strikethrough', 'fontColor', 'fontBackgroundColor',
+      '|', 'alignment',
+      '|', 'link', 'uploadImage', 'insertTable', 'blockQuote', 
+      '|', 'bulletedList', 'numberedList', 'outdent', 'indent'
+    ],
+    heading: {
+      options: [
+        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
+      ]
+    },
+    fontSize: {
+      options: [ 'tiny', 'default', 'big', 'huge' ]
+    },
+    alignment: {
+      options: [ 'left', 'center', 'right', 'justify' ]
+    },
+    table: {
+      contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
+    },
+    image: {
+      toolbar: [ 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'toggleImageCaption', 'imageTextAlternative' ]
+    }
+  };
+
