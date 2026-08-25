@@ -1,0 +1,15 @@
+@use 'styles/abstracts/variables' as *;
+
+.mat-column-actions {
+  min-width: 220px;
+  width: 220px;
+  white-space: nowrap;
+}
+
+.qscript-grid-btn {
+  white-space: nowrap;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}

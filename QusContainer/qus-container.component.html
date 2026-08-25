@@ -1,0 +1,34 @@
+<app-landing-header [headerMenu]="headerMenu" [selectedIndex]="selectedIndex" (emitcurrentTabSelection)="getHeaderTabSelection($event)"></app-landing-header>
+<div class="d-height" [ngClass]="selectedPage == 'search' ? '' : 'dispnone'">
+    <app-search (emitSelectedQuestionnaire)="emitSelectedQuestionnaire($event)"></app-search>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'questionnaires'">
+    <app-questionnaires [selectedQuestionnaire]="selectedQuestionnaire" (navigateToScripts)="onNavigateToScripts($event)"></app-questionnaires>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'section'">
+    <app-sections [selectedQuestionnaire]="selectedQuestionnaire" (emitSelectedSection)="emitSelectedSection($event)"></app-sections>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'field'">
+    <app-fields [selectedQuestionnaire]="selectedQuestionnaire" [selectedSection]="selectedSection"></app-fields>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'scripts'">
+    <app-qs
+        [selectedQuestionnaire]="selectedQuestionnaire"
+        [focusScriptId]="activeScriptId"
+        [statusMessage]="scriptStatusMessage"
+        (activeScriptChange)="onActiveScriptChange($event)"
+        (showHistory)="onScriptHistoryRequest($event)"
+        (closeScriptManager)="closeScriptManager()">
+    </app-qs>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'script-history'">
+    <app-script-history
+        [scriptId]="activeScriptId"
+        [questionnaireId]="selectedQuestionnaire?.id"
+        [questionnaireName]="selectedQuestionnaire?.name"
+        [currentActiveScript]="activeScript"
+        (historyLoaded)="onHistoryLoaded($event)"
+        (goBack)="goBackToScripts()"
+        (versionRestored)="onVersionRestored($event)">
+    </app-script-history>
+</div>
