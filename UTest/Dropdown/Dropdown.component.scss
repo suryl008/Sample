@@ -1,0 +1,78 @@
+@use 'styles/abstracts/variables' as *;
+
+.dropdown-search-container {
+  position: sticky;
+  top: 0;
+  background: $color-surface;
+  z-index: 100;
+  padding: 8px 16px;
+  border-bottom: 1px solid $color-border;
+}
+
+.dropdown-search-input {
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid $color-border-strong;
+  border-radius: $radius-sm;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.dropdown-search-input:focus {
+  border-color: $color-primary;
+  box-shadow: 0 0 4px rgba($color-primary, 0.2);
+}
+
+.master-toggle-row {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 48px;
+  cursor: pointer;
+  background-color: $color-surface-alt;
+  border-bottom: 1px dashed $color-border;
+  user-select: none;
+}
+
+.master-toggle-row:hover {
+  background-color: $color-surface-sunken;
+}
+
+.custom-checkbox-box {
+  width: 16px;
+  height: 16px;
+  border: 2px solid $color-text-muted;
+  border-radius: 2px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: background-color $transition, border-color $transition;
+  box-sizing: border-box;
+}
+
+.custom-checkbox-box.is-checked {
+  background-color: $color-primary;
+  border-color: $color-primary;
+}
+
+.checkmark-icon {
+  font-size: 11px;
+  font-weight: bold;
+  color: $color-text-inverse;
+  line-height: 1;
+}
+
+.toggle-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-text;
+}
+
+.no-data-option {
+  font-style: italic;
+  color: $color-text-muted;
+  text-align: center;
+}

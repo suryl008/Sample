@@ -1,0 +1,100 @@
+<div class="spinner" *ngIf="showSpinner" role="status">
+    <div class="fa-3x">
+        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+        <span class="sr-only">Loading fields</span>
+    </div>
+</div>
+<div class="qscript-page">
+    <header class="qscript-header">
+        <div class="qscript-header-copy">
+            <h1>Fields</h1>
+            <p class="qscript-meta">
+                <span class="qscript-chip">{{selectedQuestionnaire?.name || 'Selected Questionnaire'}}</span>
+                <span class="qscript-chip">{{selectedSection?.label || 'Section'}}</span>
+            </p>
+        </div>
+        <div class="qscript-header-actions">
+            <button class="btn-primary" type="button" mat-flat-button (click)="openFieldPopup(false)">
+                <mat-icon aria-hidden="true">add</mat-icon>
+                Add New Fields
+            </button>
+        </div>
+    </header>
+    <section class="qscript-panel">
+                <div class="table-responsive">
+                    <table #table mat-table matSort [dataSource]="responseData" class="tbl-width" cdkDropList
+                        [cdkDropListData]="responseData?.filteredData" (cdkDropListDropped)="dragdropTable($event)">
+                        <ng-container *ngFor="let data of matColumnConfig; let i = index" matColumnDef="{{data.id}}">
+                            <th style="min-width: 60px;" mat-header-cell *matHeaderCellDef mat-sort-header>{{data.name}}</th>
+                            <td mat-cell *matCellDef="let element; let j = index">
+                                <span>{{element[data.id]}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="edit">
+                            <th mat-header-cell *matHeaderCellDef>Edit</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button type="button" class="icon-button" [attr.aria-label]="'Edit field ' + (element.label || element.name || '')" (click)="openFieldPopup(true, element)">
+                                    <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="parentchildField">
+                            <th mat-header-cell *matHeaderCellDef>Parent Child Field</th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- Placeholder with no action yet, so it is hidden from assistive tech. -->
+                                <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="dependencies">
+                            <th mat-header-cell *matHeaderCellDef>Dependencies</th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- Placeholder with no action yet, so it is hidden from assistive tech. -->
+                                <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="rules">
+                            <th mat-header-cell *matHeaderCellDef>Rules</th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- Placeholder with no action yet, so it is hidden from assistive tech. -->
+                                <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="summaryInfo">
+                            <th mat-header-cell *matHeaderCellDef>Summary Info</th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- Placeholder with no action yet, so it is hidden from assistive tech. -->
+                                <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="modals">
+                            <th mat-header-cell *matHeaderCellDef>Modals</th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- Placeholder with no action yet, so it is hidden from assistive tech. -->
+                                <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="calculations">
+                            <th mat-header-cell *matHeaderCellDef>Calculations</th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- Placeholder with no action yet, so it is hidden from assistive tech. -->
+                                <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef>Delete</th>
+                            <td mat-cell *matCellDef="let element">
+                                <!-- Placeholder with no action yet, so it is hidden from assistive tech. -->
+                                <mat-icon class="cursor me-2" aria-hidden="true">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row  cdkDrag [cdkDragData]="row" cdkDragLockAxis="y" *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr mat-row *matNoDataRow>
+                            <td [attr.colspan]="displayedColumns.length"> No data matching the filter.</td>
+                        </tr>
+                    </table>
+                </div>
+                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20, 25]" showFirstLastButtons
+                    [selectConfig]="paginatorSelectConfig"></mat-paginator>
+    </section>
+</div>

@@ -1,0 +1,4 @@
+@use 'styles/abstracts/variables' as *;
+
+:host { display: block; }
+.d-height { min-height: calc(100vh - 180px); }

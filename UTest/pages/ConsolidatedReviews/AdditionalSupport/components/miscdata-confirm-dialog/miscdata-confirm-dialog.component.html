@@ -1,0 +1,24 @@
+<div class="ultra-thin-confirm-dialog consolidated-reviews-root">
+  <div class="dialog-header">
+    <mat-icon class="dialog-icon" [color]="data.type === 'delete' ? 'warn' : 'primary'">
+      {{ data.type === 'info' ? 'info' : 'warning' }}
+    </mat-icon>
+    <h1 mat-dialog-title class="dialog-title">{{ data.title }}</h1>
+  </div>
+
+  <div mat-dialog-content class="dialog-content">
+    <p class="dialog-message">{{ data.message }}</p>
+    <p class="dialog-submessage" *ngIf="data.subMessage">{{ data.subMessage }}</p>
+  </div>
+
+  <div mat-dialog-actions class="ultra-thin-dialog-actions">
+    <button type="button" mat-stroked-button class="ultra-thin-cancel-btn" (click)="onCancel()">
+      {{ data.cancelText }}
+    </button>
+    <button type="button" mat-flat-button class="ultra-thin-delete-btn"
+      [color]="data.type === 'delete' ? 'warn' : undefined" (click)="onConfirm()">
+      <mat-icon class="delete-icon" *ngIf="data.type === 'delete'" aria-hidden="true">delete</mat-icon>
+      {{ data.confirmText }}
+    </button>
+  </div>
+</div>

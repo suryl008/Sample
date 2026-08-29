@@ -1,0 +1,45 @@
+<form [formGroup]="documentListDialogInfoForm">
+   <div class="row" style="width: 100%">
+      <div class="col-md-7 col-lg-7 ">
+         <h6 mat-dialog-title>{{data.documentValue.docName}}</h6>
+      </div>
+      <div class="col-md-2 col-lg-2 ms-4 mt-1 float-right">
+         <button *ngIf="isDocModelEdit === true" (click)="isDocModelEdit = !isDocModelEdit" class="mt-n1" mat-stroked-button>
+            <mat-icon color="accent" class="ft-size">cancel</mat-icon>
+            Cancel
+         </button>
+         <button class="mt-1" *ngIf="!flip && !isDocModelEdit" (click)="editForm()" mat-stroked-button>
+
+            <mat-icon color="accent">edit</mat-icon>
+            Edit
+         </button>
+         <button mat-flat-button (click)="updateDocumentList()" *ngIf="isDocModelEdit === true">Save
+         </button>
+         <button class="mt-1" *ngIf="flip" (click)="onclick()" mat-stroked-button>
+            Back
+         </button>
+      </div>
+      <button class="close-btn col-md-1" style="float: right; background-color: white" mat-button mat-dialog-close>
+         X</button>
+   </div>
+   <hr>
+   <div *ngFor="let r of docTypeList">
+      <div *ngIf="r.item_id === data.documentValue.docType">
+         <app-attachment [data]="data" [isDocModelEdit]="isDocModelEdit" *ngIf="r.item_id === 'A'"
+            (attachmentEvent)="GetAttachmentEventForm($event)"></app-attachment>
+         <app-questionnaire [data]="data" [isDocModelEdit]="isDocModelEdit"
+            (newItemEvent)="GetQuestionnaireForm($event)" *ngIf="r.item_id === 'Q'"></app-questionnaire>
+
+         <app-approvals [data]="data" [isDocModelEdit]="isDocModelEdit"
+            (approvalsItemEvent)="GetApprovalsEventForm($event)" *ngIf="r.item_id === 'V'"></app-approvals>
+
+         <app-eff [data]="data" [isDocModelEdit]="isDocModelEdit" (newFlexFormEvent)="GetEFFEventForm($event)"
+            *ngIf="r.item_id === 'E'"></app-eff>
+
+         <app-form [data]="data" [isDocModelEdit]="isDocModelEdit" (formItemEvent)="GetFormEvent($event)"
+            *ngIf="r.item_id === 'F'"></app-form>
+
+
+      </div>
+   </div>
+</form>

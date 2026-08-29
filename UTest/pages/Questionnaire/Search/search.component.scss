@@ -1,0 +1,38 @@
+@use 'styles/abstracts/variables' as *;
+
+.mat-column-actions {
+  min-width: 220px;
+  width: 220px;
+  white-space: nowrap;
+}
+
+.questionnaire-name-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $color-link;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary-hover;
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-focus;
+    outline-offset: 2px;
+  }
+}
+
+.qscript-grid-btn {
+  white-space: nowrap;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}

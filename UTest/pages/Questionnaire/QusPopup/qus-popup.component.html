@@ -1,0 +1,392 @@
+<div class="qus-popup qscript-page">
+    <header class="qscript-header">
+        <h6 id="qus-popup-title">{{headerName}}</h6>
+        <button type="button" class="qus-popup-close" [mat-dialog-close] aria-label="Close dialog"><b aria-hidden="true">X</b></button>
+    </header>
+    <div class="qus-popup-body">
+    <div *ngIf="pageName == 'section' ">
+        <div class="row mt-20">
+            <div *ngIf="emitdata?.isEdit" class="row column-search">
+                <div class="col-lg-3 pt-4">
+                    <span>Dependency Type: </span>
+                </div>
+                <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                        <mat-select aria-label="Dependency Type">
+                            <mat-option>None</mat-option>
+                            <mat-option></mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3 pt-4">
+                    <span>Label: </span>
+                </div>
+                <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                        <input matInput autocomplete="off" aria-label="Label">
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3 pt-4">
+                    <span>Field Format: </span>
+                </div>
+                <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                        <mat-select aria-label="Field Format">
+                            <mat-option>None</mat-option>
+                            <mat-option></mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3 pt-4">
+                    <span>Fields: </span>
+                </div>
+                <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                        <mat-select aria-label="Fields">
+                            <mat-option>None</mat-option>
+                            <mat-option></mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3 pt-4">
+                    <span>Field Choice: </span>
+                </div>
+                <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                        <mat-select aria-label="Field Choice">
+                            <mat-option>None</mat-option>
+                            <mat-option></mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3 pt-4">
+                    <span>Field Choice IDs: </span>
+                </div>
+                <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                        <input matInput autocomplete="off" aria-label="Field Choice IDs" />
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3 mt-4">
+                    <span class="me-2">Is Modal Content: </span>
+                </div>
+                <div class="col-lg-9 mt-4">
+                    <mat-checkbox aria-label="Is Modal Content"></mat-checkbox>
+                </div>
+            </div>
+            <div *ngIf="!emitdata?.isEdit" class="row column-search">
+                <div class="col-lg-3 pt-4">
+                    <span>Label: </span>
+                </div>
+                <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                        <input matInput autocomplete="off" aria-label="Label">
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3 mt-4">
+                    <span class="me-2">Is Modal Content: </span>
+                </div>
+                <div class="col-lg-9 mt-4">
+                    <mat-checkbox aria-label="Is Modal Content"></mat-checkbox>
+                </div>
+            </div>
+        </div>
+        <div class="qus-popup-actions">
+            <button class="btn-secondary" type="button" mat-stroked-button mat-dialog-close>
+                <mat-icon aria-hidden="true">cancel</mat-icon>
+                Cancel
+            </button>
+            <button *ngIf="!emitdata?.isEdit" class="btn-primary" type="button" mat-flat-button>
+                <mat-icon aria-hidden="true">save</mat-icon>
+                Save
+            </button>
+            <button *ngIf="emitdata?.isEdit" class="btn-primary" type="button" mat-flat-button>
+                <mat-icon aria-hidden="true">update</mat-icon>
+                Update Now
+            </button>
+        </div>
+    </div>
+    <div *ngIf="pageName == 'field' ">
+        <div class="row mt-20" id="field-popup">
+            <mat-tab-group>
+                <mat-tab label="Edit Field">
+                    <div class="row column-search">
+                        <div class="col-lg-2 pt-4">
+                            <span>Field Type : </span>
+                        </div>
+                        <div class="col-lg-10">
+                                    <mat-form-field appearance="outline">
+                                <mat-select aria-label="Field Type">
+                                    <mat-option>None</mat-option>
+                                    <mat-option *ngFor="let state of fieldTypeList" [value]="state"></mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2 mt-4">
+                            <span id="field-label-caption">Label : </span>
+                        </div>
+                        <div class="col-lg-10 mt-4">
+                            <div role="group" aria-labelledby="field-label-caption">
+                                <ckeditor [editor]="Editor" [config]="editorConfig" [(ngModel)]="editorContent" debounce="300"></ckeditor>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="emitdata?.isEdit" label="Parent Child Field">
+                    <div class="row column-search">
+                        <div class="col-lg-3 pt-4">
+                            <span>Parent Questionnaire Field ID: </span>
+                        </div>
+                        <div class="col-lg-4">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Parent Questionnaire Field ID">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="emitdata?.isEdit" label="Dependencies">
+                    <div class="row column-search">
+                        <div class="col-lg-3 pt-4">
+                            <span>Questionnaire Field ID: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Questionnaire Field ID">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Dependency Type: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Dependency Type">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Questionnaire Field Choice ID: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Questionnaire Field Choice ID">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Tiered To Parent Questionnaire: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Tiered To Parent Questionnaire">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Record Status: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <textarea matInput rows="3" autocomplete="off" aria-label="Record Status"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="emitdata?.isEdit" label="Rules">
+                    <div class="row column-search">
+                        <div class="col-lg-3 pt-4">
+                            <span>Validation Expression: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Validation Expression">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Maximum Length: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Maximum Length">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Validation Message: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Validation Message">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Max Length Restriction Type: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Max Length Restriction Type">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Response On Parent Field ID: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Response On Parent Field ID">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Compare Validation: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <textarea matInput rows="2" autocomplete="off" aria-label="Compare Validation"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 mt-3">
+                            <span class="me-2">Response Is Required: </span>
+                            <mat-checkbox aria-label="Response Is Required"></mat-checkbox>
+                        </div>
+                        <div class="col-lg-3 mt-3">
+                            <span class="me-2">Response Is Multiple: </span>
+                            <mat-checkbox aria-label="Response Is Multiple"></mat-checkbox>
+                        </div>
+                        <div class="col-lg-2 mt-3">
+                            <span class="me-2">Obfuscate: </span>
+                            <mat-checkbox aria-label="Obfuscate"></mat-checkbox>
+                        </div>
+                        <div class="col-lg-2 mt-3">
+                            <span class="me-2">Read Only: </span>
+                            <mat-checkbox aria-label="Read Only"></mat-checkbox>
+                        </div>
+                        <div class="col-lg-2 mt-3">
+                            <span class="me-2">Textbox Expanded: </span>
+                            <mat-checkbox aria-label="Textbox Expanded"></mat-checkbox>
+                        </div>
+
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="emitdata?.isEdit" label="Summary Info">
+                    <div class="row column-search">
+                        <div class="col-lg-3 pt-4">
+                            <span>Caption: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <textarea rows="2" matInput autocomplete="off" aria-label="Caption"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Tip: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <textarea rows="2" matInput autocomplete="off" aria-label="Tip"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Source: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <mat-select aria-label="Source">
+                                    <mat-option>None</mat-option>
+                                    <mat-option *ngFor="let state of sourceList" [value]="state"></mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Response Viewer Field: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <mat-select aria-label="Response Viewer Field">
+                                    <mat-option>None</mat-option>
+                                    <mat-option *ngFor="let state of responseViewerList" [value]="state"></mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Export Sequence: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Export Sequence">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Created By: </span>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>TEST&#64;abc.com</span>
+                        </div>
+                        <div class="col-lg-5 pt-4">
+                            <span class="me-3">Created Date: </span>
+                            <span>11/08/2024 11:00 pm</span>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Modified By: </span>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>TEST&#64;abc.com</span>
+                        </div>
+                        <div class="col-lg-5 pt-4">
+                            <span class="me-4">Modified By: </span>
+                            <span>11/08/2024 11:00 pm</span>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="emitdata?.isEdit" label="Models">
+                    <div class="row column-search">
+                        <div class="col-lg-3 pt-4">
+                            <span>Modal ID: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Modal ID">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Modal Button Text: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Modal Button Text">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab *ngIf="emitdata?.isEdit" label="Calculations">
+                    <div class="row column-search">
+                        <div class="col-lg-3 pt-4">
+                            <span>Calculation Field: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <input matInput autocomplete="off" aria-label="Calculation Field">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3 pt-4">
+                            <span>Calculation Expression: </span>
+                        </div>
+                        <div class="col-lg-9">
+                                    <mat-form-field appearance="outline">
+                                <textarea rows="3" matInput autocomplete="off" aria-label="Calculation Expression"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="qus-popup-actions">
+            <button class="btn-secondary" type="button" mat-stroked-button mat-dialog-close>
+                <mat-icon aria-hidden="true">cancel</mat-icon>
+                Cancel
+            </button>
+            <button *ngIf="!emitdata?.isEdit" class="btn-primary" type="button" mat-flat-button>
+                <mat-icon aria-hidden="true">save</mat-icon>
+                Save
+            </button>
+            <button *ngIf="emitdata?.isEdit" class="btn-primary" type="button" mat-flat-button>
+                <mat-icon aria-hidden="true">update</mat-icon>
+                Update Now
+            </button>
+        </div>
+    </div>
+    </div>
+</div>

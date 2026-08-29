@@ -1,0 +1,84 @@
+.header nav ul li {
+  position: relative;
+  cursor: pointer;
+}
+
+.header nav ul li a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.sub-menu {
+  position: absolute;
+  left: auto;
+  top: 100%;
+  min-width: 180px;
+  text-align: left;
+  z-index: 9999;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sub-menu li {
+  margin: 5px !important;
+}
+
+.header nav ul li:hover > ul.sub-menu,
+.header nav ul li:focus-within > ul.sub-menu {
+  visibility: visible;
+  opacity: 1;
+}
+
+.sub-menu li a {
+  color: var(--color-primary) !important;
+}
+
+.sub-menu li:hover a,
+.sub-menu li.active a {
+  border-color: var(--color-accent);
+  color: var(--color-accent) !important;
+}
+
+.main-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.main-nav .menu-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  overflow: visible;
+  color: inherit;
+  transition: transform 0.15s ease;
+}
+
+.main-nav .navbar-item.has-children:hover > .nav-link .menu-arrow,
+.main-nav .navbar-item.has-children:focus-within > .nav-link .menu-arrow {
+  transform: rotate(180deg);
+}
+
+.menuName {
+  color: var(--color-primary);
+}
+
+.active .menuName,
+.active .menu-arrow {
+  color: var(--color-accent);
+}
+
+.pointer-event-none {
+  pointer-events: none;
+}

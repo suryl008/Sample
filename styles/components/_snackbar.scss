@@ -1,0 +1,66 @@
+@use '../abstracts' as *;
+
+.success-snackbar {
+  --mdc-snackbar-container-color: #{$color-success};
+  --mat-snack-bar-button-color: #{$color-text-inverse};
+  --mdc-snackbar-supporting-text-color: #{$color-text-inverse};
+  background: $color-success !important;
+  color: $color-text-inverse !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+
+  .mat-mdc-button.mat-mdc-snack-bar-action,
+  .mat-mdc-snack-bar-action {
+    color: $color-text-inverse !important;
+  }
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #{$color-error};
+  --mat-snack-bar-button-color: #{$color-text-inverse};
+  --mdc-snackbar-supporting-text-color: #{$color-text-inverse};
+  background: $color-error !important;
+  color: $color-text-inverse !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+
+  .mat-mdc-button.mat-mdc-snack-bar-action,
+  .mat-mdc-snack-bar-action {
+    color: $color-text-inverse !important;
+  }
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: #{$color-warning-text};
+  --mat-snack-bar-button-color: #{$color-text-inverse};
+  --mdc-snackbar-supporting-text-color: #{$color-text-inverse};
+  background: $color-warning-text !important;
+  color: $color-text-inverse !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+
+  .mat-mdc-button.mat-mdc-snack-bar-action,
+  .mat-mdc-snack-bar-action {
+    color: $color-text-inverse !important;
+  }
+}
+
+.info-snackbar {
+  --mdc-snackbar-container-color: #{$color-link};
+  --mat-snack-bar-button-color: #{$color-text-inverse};
+  --mdc-snackbar-supporting-text-color: #{$color-text-inverse};
+  background: $color-link !important;
+  color: $color-text-inverse !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+
+  .mat-mdc-button.mat-mdc-snack-bar-action,
+  .mat-mdc-snack-bar-action {
+    color: $color-text-inverse !important;
+  }
+}
+
+.mt-1 { margin-top: 0.25rem !important; }
+.mt-2 { margin-top: 0.5rem !important; }
+.mt-3 { margin-top: 1rem !important; }
+.mb-1 { margin-bottom: 0.25rem !important; }

@@ -1,0 +1,205 @@
+@use '../abstracts' as *;
+
+/* --- _16-lce-section.scss --- */
+.misc-table {
+  .field-name-header, .field-data-header {
+    border: none !important;
+    background: transparent !important;
+  }
+  
+  .field-name-cell {
+    text-align: right;
+    padding-right: 20px !important;
+    background: #f8f9fa;
+    border-right: 1px solid var(--border-color);
+    
+    .field-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--medium-color);
+    }
+  }
+  
+  .field-data-cell {
+    .thin-field {
+      width: 100%;
+    }
+  }
+}
+
+// Review type selector
+.review-type-selector {
+  padding: 12px 0;
+  
+  .thin-dropdown {
+    max-width: 320px;
+  }
+}
+
+// Actions panel
+.actions-panel {
+  .mat-mdc-expansion-panel-body,
+  .mat-expansion-panel-body {
+    padding: 20px 16px !important;
+    background: white;
+  }
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  align-items: center;
+}
+
+.stage-selector {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  .thin-field {
+    flex: 1;
+    min-width: 240px;
+  }
+  
+  .go-button {
+    min-width: 70px;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+// Review team
+.team-member-name {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.team-member-role {
+  font-size: 13px;
+  color: var(--medium-color);
+}
+
+// Stage history
+.stage-name {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.stage-date {
+  font-size: 12px;
+  color: var(--medium-color);
+}
+
+.completed-by {
+  font-size: 13px;
+}
+
+.stage-reason {
+  font-size: 12px;
+  color: var(--medium-color);
+  font-style: italic;
+}
+
+// Readonly text
+.readonly-text {
+  font-size: 13px;
+  color: var(--dark-color);
+}
+
+// Move Review Section (NEW)
+.move-review-content {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.move-review-row {
+  width: 100%;
+  max-width: 600px;
+}
+
+.upload-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  .upload-button {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border-radius: 4px !important;
+    padding: 6px 16px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    min-height: 32px;
+    line-height: 1;
+    
+    .mat-icon {
+      margin-right: 6px;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+    
+    &:hover {
+      background: #1565c0 !important;
+    }
+  }
+  
+  .file-name {
+    font-size: 12px;
+    color: var(--dark-color);
+  }
+}
+
+.stage-select, .reason-input {
+  width: 100%;
+  max-width: 400px;
+}
+
+.move-review-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  
+  .move-button {
+    background: var(--success-color) !important;
+    color: white !important;
+    
+    &:hover:not([disabled]) {
+      background: #388e3c !important;
+    }
+    
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .mat-icon {
+      margin-right: 6px;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  .cancel-button {
+    border: 1px solid var(--border-color) !important;
+    color: var(--dark-color) !important;
+    
+    &:hover {
+      background: #f5f5f5 !important;
+    }
+  }
+}
+
+// Tooltips
+.mat-mdc-tooltip {
+  font-size: 12px !important;
+  padding: 6px 10px !important;
+}

@@ -1,0 +1,865 @@
+<div class="ultra-thin-container consolidated-reviews-root">
+    <!-- Loading Spinner -->
+    <div class="spinner-overlay" *ngIf="showSpinner">
+        <div class="spinner-content">
+            <mat-spinner diameter="32"></mat-spinner>
+            <span class="spinner-text">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="page-container">
+        <mat-card class="ultra-thin-card">
+            <div class="layout-grid">
+
+                <!-- Header Section -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="true" class="header-panel">
+                            <mat-expansion-panel-header #panelSearch>
+                                <mat-panel-title>
+                                    <div class="panel-header-content">
+                                        <div class="panel-title">
+                                            <span class="panel-title-text">{{detailsTitle}}</span>
+                                        </div>
+                                        <div class="panel-actions">
+                                            <button type="button" class="save-button" mat-button
+                                                (click)="saveVisitorDetails(); $event.stopPropagation()">
+                                                <mat-icon class="icon-small" aria-hidden="true">save</mat-icon>
+                                                <span>Save</span>
+                                            </button>
+                                            <button type="button" class="ultra-thin-button-secondary" mat-stroked-button
+                                                (click)="close(); $event.stopPropagation()">
+                                                <mat-icon class="icon-small" aria-hidden="true">close</mat-icon>
+                                                <span>Close</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <mat-form-field appearance="outline" class="thin-field">
+                                        <mat-label>{{getFieldLabel('rvw_type_desc')}}</mat-label>
+                                        <input readonly matInput [value]="visitSelectedData.rvw_type_desc">
+                                    </mat-form-field>
+                                </div>
+                                <div class="info-item">
+                                    <mat-form-field appearance="outline" class="thin-field">
+                                        <mat-label>{{getFieldLabel('sub_rec_name')}}</mat-label>
+                                        <input readonly matInput [value]="visitSelectedData.sub_rec_name">
+                                    </mat-form-field>
+                                </div>
+                                <div class="info-item">
+                                    <mat-form-field appearance="outline" class="thin-field">
+                                        <mat-label>{{getFieldLabel('rvw_yr')}}</mat-label>
+                                        <input readonly matInput [value]="visitSelectedData.rvw_yr">
+                                    </mat-form-field>
+                                </div>
+                                <div class="info-item">
+                                    <mat-form-field appearance="outline" class="thin-field">
+                                        <mat-label>{{getFieldLabel('rvw_ref_no')}}</mat-label>
+                                        <input readonly matInput [value]="visitSelectedData.rvw_ref_no">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Schedule Contacts -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="false">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">Schedule Contacts</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <!-- MDE Contacts -->
+                            <div class="contact-section">
+                                <mat-accordion class="nested-accordion" multi>
+                                    <mat-expansion-panel [expanded]="true" class="sub-panel">
+                                        <mat-expansion-panel-header #panelSearchMDE>
+                                            <mat-panel-title>
+                                                <div class="subpanel-header">
+                                                    <div class="subpanel-title">
+                                                        <span>{{currentTabConfig?.mdeSectionTitle || 'MDE
+                                                            Contacts'}}</span>
+                                                    </div>
+                                                    <div class="subpanel-actions" *ngIf="isAddOrEdit">
+                                                        <button class="add-button" mat-button (click)="addNewMDERvw()">
+                                                            <mat-icon class="icon-xsmall">add</mat-icon>
+                                                            <span>Add</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+
+                                        <div class="table-container">
+                                            <table mat-table [dataSource]="MDERvwTeamInfo" class="ultra-thin-table">
+                                                <ng-container
+                                                    *ngFor="let data of matMDERvwTeamColumnConfig; let i = index"
+                                                    matColumnDef="{{data.id}}">
+                                                    <th mat-header-cell *matHeaderCellDef class="table-header">
+                                                        {{data.name}}
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let element; let j = index"
+                                                        class="table-cell">
+                                                        <div *ngIf="data.id == 'role_id'" class="select-cell">
+                                                            <mat-form-field appearance="outline" class="thin-select">
+                                                                <mat-select
+                                                                    panelClass="consolidated-review-select-panel"
+                                                                    [(value)]="element[data.id]"
+                                                                    (selectionChange)="onChangeRvwRole($event, element)">
+                                                                    <mat-option *ngFor="let role of pgmMDERoleTypes"
+                                                                        [value]="role.role_id">
+                                                                        {{role.role_name +" (" + role.role_type +")"}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div *ngIf="data.id == 'user_id'" class="select-cell">
+                                                            <mat-form-field appearance="outline" class="thin-select">
+                                                                <mat-select
+                                                                    panelClass="consolidated-review-select-panel"
+                                                                    [(value)]="element[data.id]"
+                                                                    (selectionChange)="onChangeReviewer($event, element)">
+                                                                    <mat-option *ngFor="let user of assignSchedUsers"
+                                                                        [value]="user.user_id">
+                                                                        {{user.contact_name + " (" + user.user_name +")"
+                                                                        + " - " + user.off_cd}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div *ngIf="data.id == 'chk_ind'" class="checkbox-cell">
+                                                            <mat-checkbox
+                                                                (change)="element[data.id] = !element[data.id];"
+                                                                [checked]="element[data.id]"></mat-checkbox>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="Action">
+                                                    <th mat-header-cell *matHeaderCellDef class="action-header">Delete
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let element; let i = index"
+                                                        class="action-cell">
+                                                        <button *ngIf="isAddOrEdit" class="icon-button delete-button"
+                                                            (click)="openConfirmDeletePopup(element, 'mdervwTeam', i)">
+                                                            <mat-icon class="icon-xsmall">delete</mat-icon>
+                                                        </button>
+                                                    </td>
+                                                </ng-container>
+
+                                                <tr mat-header-row *matHeaderRowDef="displayedMDERvwTeamColumns"></tr>
+                                                <tr mat-row *matRowDef="let row; columns: displayedMDERvwTeamColumns">
+                                                </tr>
+                                                <tr class="empty-row" *matNoDataRow>
+                                                    <td class="empty-cell"
+                                                        [attr.colspan]="displayedMDERvwTeamColumns.length">
+                                                        No data available
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <mat-paginator #mdereviewaginator [pageSizeOptions]="[10, 15, 20]"
+                                                class="thin-paginator" showFirstLastButtons></mat-paginator>
+                                        </div>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </div>
+
+                            <!-- Sub-Recipient Contacts -->
+                            <div class="contact-section">
+                                <mat-accordion class="nested-accordion" multi>
+                                    <mat-expansion-panel [expanded]="true" class="sub-panel">
+                                        <mat-expansion-panel-header #panelSearchSR>
+                                            <mat-panel-title>
+                                                <div class="subpanel-header">
+                                                    <div class="subpanel-title">
+                                                        <span>{{currentTabConfig?.notificationSectionTitle ||
+                                                            'Sub-Recipient Contacts'}}</span>
+                                                    </div>
+                                                    <div class="subpanel-actions" *ngIf="isAddOrEdit">
+                                                        <button class="add-button" mat-button (click)="addNewNotify()">
+                                                            <mat-icon class="icon-xsmall">add</mat-icon>
+                                                            <span>Add</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+
+                                        <div class="table-container">
+                                            <table mat-table [dataSource]="notificationInfo" class="ultra-thin-table">
+                                                <ng-container
+                                                    *ngFor="let data of matNotificationColumnConfig; let i = index"
+                                                    matColumnDef="{{data.id}}">
+                                                    <th mat-header-cell *matHeaderCellDef class="table-header">
+                                                        {{data.name}}
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let element; let j = index"
+                                                        class="table-cell">
+                                                        <!-- Role Selector -->
+                                                        <div *ngIf="data.id == 'role_id'" class="select-cell">
+                                                            <mat-form-field appearance="outline" class="thin-select">
+                                                                <mat-select
+                                                                    panelClass="consolidated-review-select-panel"
+                                                                    [(value)]="element[data.id]"
+                                                                    (selectionChange)="onChangeRoleType($event, element)">
+                                                                    <mat-option *ngFor="let role of pgmRoleTypes"
+                                                                        [value]="role.role_id">
+                                                                        {{role.role_name +" (" + role.role_type +")"}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+
+                                                        <!-- Contact Name - Hybrid Input -->
+                                                        <div *ngIf="data.id == 'user_id'" class="contact-name-cell">
+                                                            <mat-form-field appearance="outline" class="thin-field">
+                                                                <input matInput [matAutocomplete]="contactAuto"
+                                                                    [formControl]="getContactControl(element)"
+                                                                    placeholder="Select or type contact"
+                                                                    (blur)="onContactFieldBlur(element)">
+
+                                                                <mat-autocomplete
+                                                                    panelClass="consolidated-review-autocomplete-panel"
+                                                                    #contactAuto="matAutocomplete"
+                                                                    [displayWith]="displayContactFn"
+                                                                    (optionSelected)="onContactSelected($event, element)">
+                                                                    <mat-option
+                                                                        *ngFor="let contact of getFilteredContacts(element)"
+                                                                        [value]="contact">
+                                                                        {{ displayContactFn(contact) }}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
+                                                        </div>
+
+                                                        <!-- Email Field -->
+                                                        <div *ngIf="data.id == 'role_email'" class="email-cell">
+                                                            <mat-form-field appearance="outline" class="thin-field">
+                                                                <input matInput [(ngModel)]="element[data.id]"
+                                                                    [readonly]="!element.isNewContact"
+                                                                    placeholder="Email">
+                                                            </mat-form-field>
+                                                        </div>
+
+                                                        <!-- User Role (read-only) -->
+                                                        <span *ngIf="data.id == 'user_role'"
+                                                            class="readonly-text">{{element[data.id]}}</span>
+
+                                                        <!-- Primary and Check Indicators -->
+                                                        <mat-checkbox
+                                                            *ngIf="data.id == 'pri_ind' || data.id == 'chk_ind'"
+                                                            (change)="element[data.id] = !element[data.id]; changePrimaryContact(data.id, element)"
+                                                            [checked]="element[data.id]"
+                                                            class="thin-checkbox"></mat-checkbox>
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="Action">
+                                                    <th mat-header-cell *matHeaderCellDef class="action-header">Delete
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let element; let i = index"
+                                                        class="action-cell">
+                                                        <button *ngIf="isAddOrEdit" class="icon-button delete-button"
+                                                            (click)="openConfirmDeletePopup(element, 'notification', i)">
+                                                            <mat-icon class="icon-xsmall">delete</mat-icon>
+                                                        </button>
+                                                    </td>
+                                                </ng-container>
+
+                                                <tr mat-header-row *matHeaderRowDef="displayedNotificationColumns"></tr>
+                                                <tr mat-row
+                                                    *matRowDef="let row; columns: displayedNotificationColumns;"></tr>
+                                                <tr class="empty-row" *matNoDataRow>
+                                                    <td class="empty-cell"
+                                                        [attr.colspan]="displayedNotificationColumns.length">
+                                                        No data available
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <mat-paginator #notificationpaginator [pageSizeOptions]="[10, 15, 20]"
+                                                class="thin-paginator" showFirstLastButtons></mat-paginator>
+                                        </div>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Schedule Documents -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="false" class="documents-panel">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">
+                                        {{currentTabConfig?.documentsSectionTitle || 'Schedule Documents'}}
+                                    </span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="table-container">
+                                <table mat-table [dataSource]="responseDocumentData" class="ultra-thin-table">
+                                    <ng-container *ngFor="let data of documentColumnConfig; let i = index"
+                                        matColumnDef="{{data.id}}">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">
+                                            {{data.name}}
+                                            <div *ngIf="data.id == 'chk_ind'" class="select-all">
+                                                <mat-checkbox
+                                                    (change)="isDocSelectAll = !isDocSelectAll; selectAllCheckBox($event, 'docSearch', true)"
+                                                    [checked]="isDocSelectAll"></mat-checkbox>
+                                            </div>
+                                        </th>
+                                        <td mat-cell *matCellDef="let element; let j = index" class="table-cell">
+                                            <span *ngIf="data.id != 'chk_ind' && data.id != 'previewForm'"
+                                                class="cell-text">
+                                                {{element[data.id]}}
+                                            </span>
+                                            <mat-checkbox *ngIf="data.id == 'chk_ind'" [(ngModel)]="element[data.id]"
+                                                (change)="!element[data.id]; selectAllCheckBox($event, 'docSearch', false); element.isUserTouched = true"
+                                                [checked]="element[data.id]" class="thin-checkbox"></mat-checkbox>
+                                            <button *ngIf="data.id == 'previewForm' && element[data.id]"
+                                                class="icon-button preview-button"
+                                                (click)="downloadPreviewForm(element)">
+                                                <mat-icon class="icon-xsmall">visibility</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action">
+                                        <th mat-header-cell *matHeaderCellDef class="action-header">Delete</th>
+                                        <td mat-cell *matCellDef="let element; let i = index" class="action-cell">
+                                            <button *ngIf="isAddOrEdit" class="icon-button delete-button"
+                                                (click)="openConfirmDeletePopup(element, 'document')">
+                                                <mat-icon class="icon-xsmall">delete</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="documentDisplayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: documentDisplayedColumns"></tr>
+                                    <tr class="empty-row" *matNoDataRow>
+                                        <td class="empty-cell" [attr.colspan]="documentDisplayedColumns.length">
+                                            No documents available
+                                        </td>
+                                    </tr>
+                                </table>
+                                <mat-paginator #doclistpaginator [pageSizeOptions]="[10, 15, 20]" class="thin-paginator"
+                                    showFirstLastButtons></mat-paginator>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Schedule Dates -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="false">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">
+                                        {{currentTabConfig?.datesSectionTitle || 'Schedule Dates'}}
+                                    </span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div *ngIf="subRecipientRvwStatusInfo?.length > 0 && subRecipientRvwStatusInfo[0]?.length > 0"
+                                class="dates-grid">
+                                <div class="date-field">
+                                    <mat-form-field appearance="outline" class="thin-field">
+                                        <mat-label>Start Date</mat-label>
+                                        <input matInput [matDatepicker]="pickerSt"
+                                            [(ngModel)]="subRecipientRvwStatusInfo[0][0].start_dt">
+                                        <mat-datepicker-toggle matSuffix [for]="pickerSt"></mat-datepicker-toggle>
+                                        <mat-datepicker #pickerSt
+                                            panelClass="consolidated-reviews-overlay"></mat-datepicker>
+                                        <mat-hint class="date-hint">MM/DD/YYYY</mat-hint>
+                                    </mat-form-field>
+                                </div>
+                                <div class="date-field">
+                                    <mat-form-field appearance="outline" class="thin-field">
+                                        <mat-label>End Date</mat-label>
+                                        <input matInput [matDatepicker]="pickerEd"
+                                            [(ngModel)]="subRecipientRvwStatusInfo[0][0].end_dt">
+                                        <mat-datepicker-toggle matSuffix [for]="pickerEd"></mat-datepicker-toggle>
+                                        <mat-datepicker #pickerEd
+                                            panelClass="consolidated-reviews-overlay"></mat-datepicker>
+                                        <mat-hint class="date-hint">MM/DD/YYYY</mat-hint>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Submission Section -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="false" class="submission-panel">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">
+                                        {{currentTabConfig?.submissionSectionTitle || 'Submission'}}
+                                    </span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="table-container">
+                                <table mat-table [dataSource]="responseDocSubmissionData"
+                                    class="ultra-thin-table submission-table">
+                                    <!-- Position Column -->
+                                    <ng-container matColumnDef="position">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header sequence-header">#
+                                        </th>
+                                        <td mat-cell *matCellDef="let element; let i = index"
+                                            class="table-cell sequence-cell">
+                                            <span class="sequence-number">{{ i + 1 }}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Dynamic Columns -->
+                                    <ng-container *ngFor="let data of docSubmissionColumnConfig; let i = index"
+                                        matColumnDef="{{data.id}}">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">
+                                            {{data.name}}
+                                        </th>
+                                        <td mat-cell *matCellDef="let element; let j = index" class="table-cell">
+                                            <!-- Text Content -->
+                                            <span
+                                                *ngIf="data.id != 'doc_completed' && data.id != 'help_txt' && data.id != 'doc_name'"
+                                                class="cell-content">
+                                                {{element[data.id]}}
+                                            </span>
+                                            <a (click)="onDocumentClick(element)" *ngIf="data.id == 'doc_name'">
+                                                <span title=" {{element[data.id]}}"
+                                                    [innerHTML]="element[data.id]"></span> 
+                                            </a>
+
+                                                <!-- Completed Checkbox -->
+                                                <mat-checkbox *ngIf="data.id == 'doc_completed'" disabled="true"
+                                                    [(ngModel)]="element[data.id]"
+                                                    (change)="!element[data.id]; selectAllCheckBox($event, 'docSubmission', false); element.isUserTouched = true"
+                                                    [checked]="element[data.id]"
+                                                    class="thin-checkbox submission-checkbox"></mat-checkbox>
+
+                                                <!-- Help/Info Icon -->
+                                                <button *ngIf="data.id == 'help_txt' && element[data.id] == ''"
+                                                    class="icon-button info-button">
+                                                    <mat-icon *ngIf="element[data.id] == ''" class="icon-xsmall"
+                                                        style="color: rgba(0, 0, 0, 0.38);">info</mat-icon>
+                                                </button>
+                                                <button *ngIf="data.id == 'help_txt' && element[data.id] != ''"
+                                                    class="icon-button info-button" (click)="showHelpInfo(element)"
+                                                    matTooltip="View Instructions">
+                                                    <mat-icon class="icon-xsmall"
+                                                        style="color: #3f51b5;">info</mat-icon>
+                                                </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- View Column -->
+                                    <ng-container matColumnDef="View">
+                                        <th mat-header-cell *matHeaderCellDef class="action-header">View</th>
+                                        <td mat-cell *matCellDef="let element; let i = index" class="action-cell">
+                                            <button class="icon-button view-button" *ngIf="element['doc_completed']"
+                                                (click)="openConsolidatedReviewPopup(element, 'view','viewdoc')"
+                                                matTooltip="View document">
+                                                <mat-icon class="icon-xsmall">attach_file</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Errors Column -->
+                                    <ng-container matColumnDef="Errors">
+                                        <th mat-header-cell *matHeaderCellDef class="action-header">Errors</th>
+                                        <td mat-cell *matCellDef="let element; let i = index" class="action-cell">
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="docSubmissionDisplayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: docSubmissionDisplayedColumns"></tr>
+                                    <tr class="empty-row" *matNoDataRow>
+                                        <td class="empty-cell" [attr.colspan]="docSubmissionDisplayedColumns.length">
+                                            No submission documents available
+                                        </td>
+                                    </tr>
+                                </table>
+                                <mat-paginator #docSubmissionpaginator [pageSizeOptions]="[10, 15, 20]"
+                                    class="thin-paginator" showFirstLastButtons></mat-paginator>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Late Claim Exception Info (Conditional) -->
+                <div class="col-full" *ngIf="currentTabId === 'ltclaimexcep'">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="false" class="lce-panel-expanded">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">
+                                        {{currentTabConfig?.lateClaimExceptionInfoTitle || 'Late Claim Exception Info'}}
+                                    </span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="lce-content">
+                                <!-- LCE Header Info -->
+                                <div *ngIf="isLCEClaimDateVisible" class="lce-header">
+                                    <div class="lce-info-item">
+                                        <span class="info-label">Last Claim Exception Used:</span>
+                                        <span class="info-value">{{ lastClaimExceptionUsed || 'None' }}</span>
+                                    </div>
+                                    <div class="lce-info-item">
+                                        <span class="info-label">Claim Month Approved:</span>
+                                        <div class="date-selectors">
+                                            <mat-form-field appearance="outline" class="month-selector">
+                                                <mat-select panelClass="consolidated-review-select-panel"
+                                                    [formControl]="claimMonthControl"
+                                                    (selectionChange)="checkLCEExceptionEligible()">
+                                                    <mat-option *ngFor="let m of months" [value]="m.value">
+                                                        {{ m.label }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" class="year-selector">
+                                                <mat-select panelClass="consolidated-review-select-panel"
+                                                    [formControl]="claimYearControl"
+                                                    (selectionChange)="checkLCEExceptionEligible()">
+                                                    <mat-option *ngFor="let y of years" [value]="y">
+                                                        {{ y === 0 ? '' : y }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <button class="clear-button" mat-icon-button (click)="clearLCEClaimMonth()">
+                                                <mat-icon class="icon-xsmall">clear</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="lce-info-item">
+                                        <span class="info-label">Exception Eligible?</span>
+                                        <span class="eligibility-badge" [class.eligible]="isExceptionEligible"
+                                            [class.not-eligible]="!isExceptionEligible">
+                                            {{ isExceptionEligible ? 'Yes' : 'No' }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Miscellaneous Fields Table -->
+                                <div class="misc-table-container">
+                                    <table mat-table [dataSource]="miscellaneousFields"
+                                        class="ultra-thin-table misc-table">
+                                        <ng-container matColumnDef="field_name">
+                                            <th mat-header-cell *matHeaderCellDef class="field-name-header"></th>
+                                            <td mat-cell *matCellDef="let element" class="field-name-cell">
+                                                <span class="field-label">{{ element.field_name?.trim() || '' }}:</span>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="field_data">
+                                            <th mat-header-cell *matHeaderCellDef class="field-data-header"></th>
+                                            <td mat-cell *matCellDef="let element" class="field-data-cell">
+                                                <mat-form-field appearance="outline" class="thin-field"
+                                                    *ngIf="element.field_name !== 'Claim Submitted Date(s)'">
+                                                    <input matInput [(ngModel)]="element.field_data">
+                                                </mat-form-field>
+                                                <mat-form-field appearance="outline" class="thin-field"
+                                                    *ngIf="element.field_name === 'Claim Submitted Date(s)'">
+                                                    <input matInput [matDatepicker]="picker"
+                                                        [(ngModel)]="element.field_data">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker
+                                                        panelClass="consolidated-reviews-overlay"></mat-datepicker>
+                                                </mat-form-field>
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Change Review Type (Conditional) -->
+                <div class="col-full"
+                    *ngIf="currentTabId === 'ltclaimexcep' || currentTabId === 'psacontrrvw' || currentTabId === 'greensheet'">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">Change Review Type to</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <app-dropdown [selectedText]="'Change Review Type to'"
+                                        [selectedItemsValues]="selectedReviewTypeList"
+                                        [dropdownListValue]="reviewTypeList"
+                                        (updatedSelectedValue)="updatedSelectedValue($event)"
+                                        [isMultiSelectDropdown]="false" class="thin-dropdown">
+                                    </app-dropdown>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Review Buttons -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="true" class="actions-panel">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">
+                                        {{currentTabConfig?.buttonsSectionTitle || 'Review Buttons'}}
+                                    </span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="actions-toolbar">
+                                <div class="stage-selector">
+                                    <mat-form-field appearance="outline" class="thin-field stage-field">
+                                        <mat-label>Complete (Change status To)</mat-label>
+                                        <mat-select panelClass="consolidated-review-select-panel"
+                                            [(value)]="selectedStage">
+                                            <mat-option *ngFor="let data of nextStageList" [value]="data.stage_stat">
+                                                {{data.stat_desc}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <button class="action-button go-button" mat-flat-button
+                                        [disabled]="!selectedStage || !isAddOrEdit" (click)="promoteNextStage()">
+                                        Go
+                                    </button>
+                                </div>
+
+                                <div class="review-action-row">
+                                    <button mat-stroked-button class="action-button secondary-button"
+                                        [disabled]="!isAddOrEdit"
+                                        (click)="openConsolidatedReviewPopup('', 'edit','editemail')">
+                                        <mat-icon>email</mat-icon>
+                                        Edit Emails
+                                    </button>
+                                    <button mat-stroked-button class="action-button secondary-button"
+                                        [disabled]="!isAddOrEdit"
+                                        (click)="openConsolidatedReviewPopup('', 'edit','viewEmails')">
+                                        <mat-icon>email</mat-icon>
+                                        View Emails
+                                    </button>
+                                    <button mat-stroked-button class="action-button secondary-button"
+                                        [disabled]="!isAddOrEdit" (click)="showAdditionalSupport()">
+                                        <mat-icon>support</mat-icon>
+                                        Additional Support
+                                    </button>
+                                    <button *ngIf="currentTabId === 'ltclaimexcep' || currentTabId === 'greensheet'"
+                                        mat-stroked-button class="action-button secondary-button"
+                                        [disabled]="!isAddOrEdit" (click)="previewApplication()">
+                                        <mat-icon>print</mat-icon>
+                                        Questionnaire Print Version
+                                    </button>
+                                    <button mat-stroked-button class="action-button secondary-button"
+                                        [disabled]="!isAddOrEdit"
+                                        (click)="openConsolidatedReviewPopup('', 'edit','overallComments')">
+                                        <mat-icon>forum</mat-icon>
+                                        Global Comments
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Review Team -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">Review Team</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="table-container">
+                                <table mat-table [dataSource]="reviewTeamList" class="ultra-thin-table">
+                                    <ng-container matColumnDef="contact_name">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">Name</th>
+                                        <td mat-cell *matCellDef="let element" class="table-cell">
+                                            <span class="team-member-name">{{element.contact_name}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="perm_desc">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">Review Role</th>
+                                        <td mat-cell *matCellDef="let element" class="table-cell">
+                                            <span class="team-member-role">{{element.perm_desc}}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedReviewTeamColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedReviewTeamColumns"></tr>
+                                    <tr class="empty-row" *matNoDataRow>
+                                        <td class="empty-cell" [attr.colspan]="displayedReviewTeamColumns.length">
+                                            No team members found
+                                        </td>
+                                    </tr>
+                                </table>
+                                <mat-paginator #reviewTeamPaginator [pageSizeOptions]="[5, 10, 15, 20, 25]"
+                                    class="thin-paginator" showFirstLastButtons></mat-paginator>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Stage History -->
+                <div class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">Stage History</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="table-container">
+                                <table mat-table [dataSource]="stageHistoryList" class="ultra-thin-table">
+                                    <ng-container matColumnDef="rvw_stage">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">Review Stage</th>
+                                        <td mat-cell *matCellDef="let element" class="table-cell">
+                                            <span class="stage-name">{{element.rvw_stage}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="start_dt">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">Stage Start</th>
+                                        <td mat-cell *matCellDef="let element" class="table-cell">
+                                            <span class="stage-date">{{element.start_dt | date : 'MM/dd/yyyy'}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="end_dt">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">Stage End</th>
+                                        <td mat-cell *matCellDef="let element" class="table-cell">
+                                            <span class="stage-date">{{element.end_dt | date : 'MM/dd/yyyy'}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="compl_by">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">Completed By</th>
+                                        <td mat-cell *matCellDef="let element" class="table-cell">
+                                            <span class="completed-by">{{element.compl_by}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="reason">
+                                        <th mat-header-cell *matHeaderCellDef class="table-header">Reason</th>
+                                        <td mat-cell *matCellDef="let element" class="table-cell">
+                                            <span class="stage-reason">{{element.reason}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="view">
+                                        <th mat-header-cell *matHeaderCellDef class="action-header">View</th>
+                                        <td mat-cell *matCellDef="let element; let i = index" class="action-cell">
+                                            <button *ngIf="element.associated_file_name" class="icon-button view-button"
+                                                (click)="downloadPreviewForm(element)"
+                                                [matTooltip]="element.associated_file_name">
+                                                <mat-icon class="icon-xsmall">download</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedstageHistoryColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedstageHistoryColumns;"></tr>
+                                    <tr class="empty-row" *matNoDataRow>
+                                        <td class="empty-cell" [attr.colspan]="displayedstageHistoryColumns.length">
+                                            No stage history available
+                                        </td>
+                                    </tr>
+                                </table>
+                                <mat-paginator #stageHistoryPaginator [pageSizeOptions]="[5, 10, 15, 20, 25]"
+                                    class="thin-paginator" showFirstLastButtons></mat-paginator>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <!-- Move Review Section (NEW) -->
+                <div *ngIf="currentTabId === 'sec61a2' || currentTabId === 'psacontrrvw' || currentTabId === 'greensheet'"
+                    class="col-full">
+                    <mat-accordion class="ultra-thin-accordion" multi>
+                        <mat-expansion-panel [expanded]="false">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span class="panel-title-text">Move Review</span>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="move-review-content">
+                                <!-- File Upload -->
+                                <div class="move-review-row">
+                                    <div class="upload-container">
+                                        <button mat-stroked-button class="upload-button" (click)="fileInput.click()">
+                                            <mat-icon>attach_file</mat-icon>
+                                            Choose File
+                                        </button>
+                                        <input #fileInput type="file" hidden (change)="onMoveFileSelected($event)" />
+                                        <span class="file-name" *ngIf="moveSelectedFileName">{{ moveSelectedFileName
+                                            }}</span>
+                                        <span class="file-name" *ngIf="!moveSelectedFileName">No file chosen</span>
+                                    </div>
+                                </div>
+
+                                <!-- Stage Dropdown -->
+                                <div class="move-review-row">
+                                    <mat-form-field appearance="outline" class="thin-field stage-select">
+                                        <mat-label>Move to Stage</mat-label>
+                                        <mat-select panelClass="consolidated-review-select-panel"
+                                            [(ngModel)]="moveTargetStage">
+                                            <mat-option *ngFor="let stage of stageOptions" [value]="stage.rvw_stage">
+                                                {{ stage.rvw_stage ? stage.stage_desc + ' (' + stage.rvw_stage + ')' :
+                                                stage.stage_desc }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Reason Hybrid Input (Autocomplete with free text) -->
+                                <div class="move-review-row">
+                                    <mat-form-field appearance="outline" class="thin-field reason-input">
+                                        <mat-label>Reason for Move</mat-label>
+                                        <input matInput [matAutocomplete]="reasonAuto" [formControl]="reasonControl"
+                                            placeholder="Select or type reason">
+                                        <mat-autocomplete panelClass="consolidated-review-autocomplete-panel"
+                                            #reasonAuto="matAutocomplete" [displayWith]="displayReasonFn"
+                                            (optionSelected)="onReasonSelected($event)">
+                                            <mat-option *ngFor="let reason of filteredReasonOptions" [value]="reason">
+                                                {{ reason.label || reason }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="move-review-actions">
+                                    <button mat-flat-button class="action-button move-button" (click)="moveReview()"
+                                        [disabled]="!canMoveReview()">
+                                        <mat-icon>arrow_forward</mat-icon>
+                                        MoveReview
+                                    </button>
+                                    <button mat-button class="action-button cancel-button" (click)="resetMoveReview()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

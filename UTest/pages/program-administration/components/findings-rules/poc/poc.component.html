@@ -1,0 +1,8 @@
+<app-dropdown
+  [dropdownListValue]="dropdownListValue"
+  [selectedItemsValues]="selectedItemsValues"
+  [selectedText]="selectedText"
+  [isMultiSelectDropdown]="true"
+  [isDisable]="isDIsable"
+  (updatedSelectedValue)="updatedSelectedValue.emit($event.selectedItemsValues)">
+</app-dropdown>

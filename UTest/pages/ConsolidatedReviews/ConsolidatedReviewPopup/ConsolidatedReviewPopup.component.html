@@ -1,0 +1,860 @@
+<div class="consolidated-review-popup consolidated-reviews-root">
+    <!-- Header -->
+    <div class="popup-header">
+        <div class="header-title">
+            <h6>{{ headerName }}</h6>
+        </div>
+        <button mat-icon-button class="close-button" type="button" (click)="closeDialog()" aria-label="Close">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="showSpinner" class="spinner-overlay">
+        <mat-spinner diameter="50"></mat-spinner>
+    </div>
+
+    <div class="popup-body">
+    <div class="review-info-section popup-review-info" *ngIf="showSharedReviewInfo">
+        <mat-form-field appearance="outline" class="info-field">
+            <mat-label>Program Name</mat-label>
+            <input matInput [value]="visitSelectedData.programName || 'N/A'" readonly>
+            <mat-icon matSuffix>business</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="info-field">
+            <mat-label>Review Type</mat-label>
+            <input matInput [value]="visitSelectedData.rvw_type_desc || 'N/A'" readonly>
+            <mat-icon matSuffix>list_alt</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="info-field">
+            <mat-label>{{getFieldLabel('sub_rec_name')}}</mat-label>
+            <input matInput [value]="getDisplayValue() || visitSelectedData.sub_rec_name || 'N/A'" readonly>
+            <mat-icon matSuffix>location_city</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="info-field">
+            <mat-label>Review #</mat-label>
+            <input matInput [value]="visitSelectedData.rvw_ref_no || 'N/A'" readonly>
+            <mat-icon matSuffix>tag</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="info-field" *ngIf="pageName === 'viewdoc'">
+            <mat-label>Document Name</mat-label>
+            <input matInput [value]="documentName || 'N/A'" readonly>
+            <mat-icon matSuffix>description</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <!-- View Emails Page -->
+    <div *ngIf="pageName !== 'overallComments' && pageName != 'eemAmendment' && pageName != 'viewdoc' && pageName != 'editemail' && !showEmailDetail"
+        class="email-log-container">
+        <div class="content-wrapper">
+            <mat-accordion multi>
+                <mat-expansion-panel [expanded]="true" class="email-log-panel">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="panel-title">
+                                <mat-icon class="panel-icon">email</mat-icon>
+                                Email Log
+                            </span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="panel-content">
+                        <!-- Search Filter -->
+                        <div class="search-section">
+                            <mat-form-field appearance="outline" class="search-field">
+                                <mat-label>Search Emails</mat-label>
+                                <input matInput (keyup)="applyFilter($event)"
+                                    placeholder="Search by recipient, subject, etc.">
+                                <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Email Table -->
+                        <div class="table-section">
+                            <div class="table-wrapper">
+                                <table mat-table [dataSource]="emailLogList" class="email-table"
+                                    matSort #emailLogSort="matSort">
+                                    <!-- Email Date Column -->
+                                    <ng-container matColumnDef="email_dt">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email Date</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="email-date">
+                                                {{ element.email_dt | date: 'MMM-dd-yy hh:mm:ss a' }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Email To Column -->
+                                    <ng-container matColumnDef="email_to">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email To</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="email-to truncate-text" [title]="element.email_to">
+                                                {{ element.email_to }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Email CC Column -->
+                                    <ng-container matColumnDef="email_cc">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email CC</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="email-cc truncate-text"
+                                                [title]="element.CCList || element.email_cc">
+                                                {{ element.CCList || element.email_cc || 'None' }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Email Subject Column -->
+                                    <ng-container matColumnDef="email_sub">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email Subject</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="email-subject truncate-text" [title]="element.email_sub">
+                                                {{ element.email_sub }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- View Column -->
+                                    <ng-container matColumnDef="select">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center">Select Email</th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <button mat-icon-button (click)="showEmail(element)"
+                                                [title]="'View email details'" class="view-button">
+                                                <mat-icon>visibility</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Header Row -->
+                                    <tr mat-header-row *matHeaderRowDef="emailLogDisplayedColumns"></tr>
+
+                                    <!-- Data Row -->
+                                    <tr mat-row *matRowDef="let row; columns: emailLogDisplayedColumns;"></tr>
+
+                                    <!-- No Data Row -->
+                                    <tr class="no-data-row" *matNoDataRow>
+                                        <td class="no-data" [attr.colspan]="emailLogDisplayedColumns.length">
+                                            <div class="no-data-content">
+                                                <mat-icon>email</mat-icon>
+                                                <span class="no-data-text">
+                                                    {{ emailLogList.filter ? 'No emails match your search' : 'No emails
+                                                    are currently logged for this review.' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Paginator -->
+                            <mat-paginator *ngIf="emailLogList?.data?.length > 10" #emailLogPaginator
+                                [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons
+                                [length]="emailLogList?.data?.length || 0" class="email-paginator">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+    <!-- Email Detail View -->
+    <div *ngIf="showEmailDetail" class="email-detail-container">
+        <mat-card appearance="outlined" class="email-details-card">
+            <mat-card-header class="email-card-header">
+                <mat-card-title>
+                    <mat-icon class="header-icon">email</mat-icon>
+                    Email Details
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="email-card-content">
+                <div class="email-meta-grid">
+                    <div class="email-meta-item">
+                        <mat-icon class="field-icon-small">person</mat-icon>
+                        <span class="field-label-small">From</span>
+                        <span class="email-meta-value">{{ emailLogInfo.email_fr || 'N/A' }}</span>
+                    </div>
+                    <div class="email-meta-item">
+                        <mat-icon class="field-icon-small">send</mat-icon>
+                        <span class="field-label-small">To</span>
+                        <span class="email-meta-value">{{ emailLogInfo.email_to || 'N/A' }}</span>
+                    </div>
+                    <div class="email-meta-item">
+                        <mat-icon class="field-icon-small">schedule</mat-icon>
+                        <span class="field-label-small">Sent</span>
+                        <span class="email-meta-value">
+                            {{ emailLogInfo.email_dt | date: 'MMM dd, yyyy hh:mm a' }}
+                        </span>
+                    </div>
+                    <div class="email-meta-item email-meta-item--full" *ngIf="getCCListArray().length > 0">
+                        <mat-icon class="field-icon-small">people</mat-icon>
+                        <span class="field-label-small">Cc</span>
+                        <mat-chip-set class="cc-list">
+                            <mat-chip *ngFor="let ccEmail of getCCListArray()" class="cc-chip" [matTooltip]="ccEmail">
+                                {{ ccEmail }}
+                            </mat-chip>
+                        </mat-chip-set>
+                    </div>
+                    <div class="email-meta-item email-meta-item--full">
+                        <mat-icon class="field-icon-small">subject</mat-icon>
+                        <span class="field-label-small">Subject</span>
+                        <span class="email-meta-value">{{ emailLogInfo.email_sub || 'N/A' }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined" class="message-card">
+            <mat-card-header class="message-card-header">
+                <mat-card-title>
+                    <mat-icon class="title-icon">message</mat-icon>
+                    Message
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="message-card-content">
+                <div *ngIf="emailLogInfo.email_txt; else noMessage" class="email-message-container">
+                    <div class="editor-actions" *ngIf="!isEditirDisabled">
+                        <div class="action-buttons">
+                            <button mat-flat-button type="button" (click)="saveMessage()" class="save-btn"
+                                [disabled]="!hasUnsavedChanges">
+                                <mat-icon>save</mat-icon> Save Changes
+                            </button>
+                            <button mat-flat-button type="button" (click)="resetMessage()" class="reset-btn"
+                                [disabled]="!hasUnsavedChanges">
+                                <mat-icon>refresh</mat-icon> Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ckeditor-wrapper" [class.ckeditor-readonly]="isEditirDisabled">
+                        <ckeditor [editor]="Editor" [(ngModel)]="emailLogInfo.email_txt" [config]="editorConfig"
+                            [disabled]="true" (ready)="onEditorReady($event)">
+                        </ckeditor>
+                    </div>
+                </div>
+
+                <ng-template #noMessage>
+                    <div *ngIf="isEditirDisabled" class="no-data-content">
+                        <mat-icon>email</mat-icon>
+                        <span class="no-data-text">No message content.</span>
+                    </div>
+                    <div *ngIf="!isEditirDisabled" class="no-message-content">
+                        <div class="no-message-header">
+                            <mat-icon class="no-message-icon">add_circle</mat-icon>
+                            <h3>Compose New Message</h3>
+                        </div>
+                        <div class="no-message-body">
+                            <p>No existing message content. You can compose a new message below:</p>
+                            <div class="ckeditor-wrapper empty-editor">
+                                <ckeditor [editor]="Editor" [(ngModel)]="newMessageContent" [config]="editorConfig"
+                                    (ready)="onEditorReady($event)">
+                                </ckeditor>
+                            </div>
+                            <div class="empty-editor-actions">
+                                <button mat-flat-button type="button" (click)="createNewMessage()">
+                                    <mat-icon>send</mat-icon> Create Message
+                                </button>
+                                <button mat-button type="button" *ngIf="hasComposeDraft()" (click)="cancelNewMessage()">
+                                    <mat-icon>cancel</mat-icon> Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined" *ngIf="attachments && attachments.length > 0" class="attachments-card">
+            <mat-card-header class="attachments-card-header">
+                <mat-card-title>Attachments ({{ attachments.length }})</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="attachments-card-content">
+                <mat-list class="attachments-list">
+                    <mat-list-item *ngFor="let attachment of attachments" class="attachment-item">
+                        <mat-icon matListItemIcon class="attachment-icon">insert_drive_file</mat-icon>
+                        <div matListItemTitle class="attachment-name">{{ attachment.file_name }}</div>
+                        <div matListItemLine class="attachment-size">Attachment {{ attachment.attach_srl }}</div>
+                        <button mat-icon-button (click)="downloadAttachment(attachment)" class="download-button"
+                            [title]="'Download ' + attachment.file_name">
+                            <mat-icon>download</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Overall Comments Page -->
+    <div *ngIf="pageName === 'overallComments'" class="overall-comments-container">
+        <div class="content-wrapper">
+            <!-- Add New Comment Section -->
+            <mat-accordion multi class="comments-accordion">
+                <mat-expansion-panel [expanded]="true" class="new-comment-panel">
+                    <mat-expansion-panel-header class="new-comment-header">
+                        <mat-panel-title>
+                            <span class="panel-title">
+                                <mat-icon class="panel-icon">add_comment</mat-icon>
+                                Add New Comment
+                            </span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="new-comment-content comments-form-grid">
+                        <mat-form-field appearance="outline" class="comment-field">
+                            <mat-label>Date</mat-label>
+                            <input matInput [value]="dt | date: 'MM/dd/yyyy'" readonly>
+                            <mat-icon matSuffix>calendar_today</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="comment-field">
+                            <mat-label>Author</mat-label>
+                            <input matInput [value]="userDetails?.fullName || 'N/A'" readonly>
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="comment-field">
+                            <mat-label>Document Category</mat-label>
+                            <mat-select [(ngModel)]="selectedRole" name="category">
+                                <mat-option *ngFor="let role of docCategoryList" [value]="role.refCode">
+                                    {{ role.refCode ? role.refDesc + " (" + role.refCode + ")" : role.refDesc }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="comment-text-field">
+                            <mat-label>New Comment</mat-label>
+                            <textarea matInput [(ngModel)]="newComment" rows="5"
+                                placeholder="Enter your comment here..."></textarea>
+                        </mat-form-field>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <div class="comment-history-section">
+                <div class="section-header">
+                    <mat-icon class="section-icon">history</mat-icon>
+                    <h5 class="section-title">Comment History</h5>
+                </div>
+
+                <div class="search-section">
+                    <mat-form-field appearance="outline" class="search-field">
+                        <mat-label>Search Comments</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Search by author, category, or text">
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="comments-table-container">
+                    <div class="table-wrapper">
+                        <table mat-table [dataSource]="reviewerOverallComment" class="comments-table"
+                            matSort #commentsSort="matSort">
+                            <ng-container matColumnDef="create_dt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span class="comment-date">
+                                        {{ element.create_dt | date: 'MM/dd/yyyy' }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Author">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Author</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span class="comment-author">{{ element.Author }}</span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="comment_cat">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span [ngClass]="element.comment_cat? 'category-badge' : ''">
+                                        {{ element.comment_cat }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="comment_txt">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Comment</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div [ngClass]="element.comment_txt? 'comment-text' : ''">
+                                        {{ element.comment_txt }}
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="commentDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: commentDisplayedColumns;"></tr>
+
+                            <tr class="mat-mdc-row mat-mdc-no-data-row no-data-row" *matNoDataRow>
+                                <td class="mat-mdc-cell no-data" [attr.colspan]="commentDisplayedColumns.length">
+                                    <div class="no-data-content">
+                                        <mat-icon class="no-data-icon">comment</mat-icon>
+                                        <span class="no-data-text">No comments found for this review</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <mat-paginator *ngIf="reviewerOverallComment?.data?.length > 5" #reviewOverallCommentPaginator
+                        [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons
+                        [length]="reviewerOverallComment?.data?.length || 0" class="comments-paginator">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- EEM Amendment Page -->
+    <div *ngIf="pageName === 'eemAmendment'" class="email-log-container">
+        <div class="content-wrapper">
+            <mat-accordion multi>
+                <mat-expansion-panel [expanded]="true" class="email-log-panel">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="panel-title">
+                                <mat-icon class="panel-icon">edit_note</mat-icon>
+                                EEM Amendment List
+                            </span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="panel-content">
+                        <div class="search-section">
+                            <mat-form-field appearance="outline" class="search-field">
+                                <mat-label>Search Amendments</mat-label>
+                                <input matInput (keyup)="applyFilter($event)"
+                                    placeholder="Search by date, topic, or user">
+                                <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="table-section">
+                            <div class="table-wrapper">
+                                <table mat-table [dataSource]="eemAmendmentList" class="email-table"
+                                    matSort #eemSort="matSort">
+                                    <ng-container matColumnDef="Date">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="email-date">
+                                                {{ element.Date | date: 'MM/dd/yyyy' }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Topic">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Topic</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="email-to truncate-text" [title]="element.Topic">
+                                                {{ element.Topic }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="UserName">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Changed By</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="email-subject truncate-text" [title]="element.UserName">
+                                                {{ element.UserName }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="amendmentDisplayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: amendmentDisplayedColumns;"></tr>
+
+                                    <tr class="no-data-row" *matNoDataRow>
+                                        <td class="no-data" [attr.colspan]="amendmentDisplayedColumns.length">
+                                            <div class="no-data-content">
+                                                <mat-icon>edit_note</mat-icon>
+                                                <span class="no-data-text">
+                                                    {{ eemAmendmentList.filter ? 'No amendments match your search' :
+                                                    'No EEM amendments are currently logged for this review.' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Paginator -->
+                        <mat-paginator *ngIf="eemAmendmentList?.data?.length > 10" #eemPaginator
+                            [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons
+                            [length]="eemAmendmentList?.data?.length || 0" class="email-paginator">
+                        </mat-paginator>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+
+    <div *ngIf="pageName == 'editemail' && !isShowEmailDraftDetails" class="email-log-container">
+        <div class="content-wrapper">
+            <mat-accordion multi>
+                <mat-expansion-panel [expanded]="true" class="email-log-panel">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="panel-title">
+                                <mat-icon class="panel-icon">email</mat-icon> Edit Email
+                            </span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="panel-content">
+                        <div class="search-section">
+                            <mat-form-field appearance="outline" class="search-field">
+                                <mat-label>Search Emails</mat-label>
+                                <input matInput (keyup)="applyFilter($event)"
+                                    placeholder="Search by recipient, subject, etc.">
+                                <mat-icon matSuffix>search</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="table-section">
+                            <div class="table-wrapper">
+                                <table mat-table [dataSource]="emailTemplatesData" class="email-table mat-elevation-z1"
+                                    matSort #emailTemplatesSort="matSort">
+                                    <ng-container *ngFor="let data of matEmailTemplatesColumnConfig; let i = index"
+                                        [matColumnDef]="data.id">
+                                        <th style="min-width: 20px;" mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            {{data.name}}
+                                        </th>
+                                        <td mat-cell *matCellDef="let element; let j = index">
+                                            <span *ngIf="data.id != 'is_editable'">{{element[data.id]}}</span>
+                                            <mat-checkbox *ngIf="data.id == 'is_editable'" [checked]="element[data.id]"
+                                                (change)="element[data.id] = !element[data.id];">
+                                            </mat-checkbox>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action">
+                                        <th mat-header-cell *matHeaderCellDef class="text-center">Edit</th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <button mat-icon-button color="primary" (click)="editEmailTemplate(element)"
+                                                [title]="'Edit email details'" class="view-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedEmailTemplatesColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedEmailTemplatesColumns;"></tr>
+
+                                    <tr class="no-data-row" *matNoDataRow>
+                                        <td class="no-data"
+                                            [attr.colspan]="displayedEmailTemplatesColumns.length">
+                                            <div class="no-data-content">
+                                                <mat-icon>email</mat-icon>
+                                                <span class="no-data-text">
+                                                    {{ emailTemplatesData.filter ? 'No templates match your search' :
+                                                    'No email templates are available for this review.' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <mat-paginator *ngIf="emailTemplatesData?.data?.length > 5" #emailTemplatesPaginator
+                                [length]="emailTemplatesData?.data?.length || 0" [pageSizeOptions]="[10, 15, 20]"
+                                showFirstLastButtons>
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+
+    <div *ngIf="isShowEmailDraftDetails" class="email-detail-container">
+        <mat-card appearance="outlined" class="email-details-card">
+            <mat-card-header class="email-card-header">
+                <mat-card-title>
+                    <div class="compact-row">
+                        <mat-icon class="header-icon">email</mat-icon>
+                        <span>Email Details</span>
+                    </div>
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="email-card-content">
+                <div class="compact-row">
+                    <div class="compact-field">
+                        <div class="compact-field-header">
+                            <mat-icon class="field-icon-small">send</mat-icon>
+                            <span class="field-label-small">To</span>
+                        </div>
+                        <div class="compact-field-value">
+                            <mat-form-field class="full-width">
+                                <mat-label for="emailTemplateTo">To Addresses</mat-label>
+                                <input autocomplete="off" id="emailTemplateTo"
+                                    [(ngModel)]="emailDraftDetails.email_to_addresses"
+                                    [title]="emailDraftDetails.email_to_addresses" placeholder="To Addresses"
+                                    matInput />
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compact-row">
+                    <div class="compact-field cc-field">
+
+                        <div class="compact-field-header">
+                            <mat-icon class="field-icon-small">people</mat-icon>
+                            <span class="field-label-email">CC:</span>
+                        </div>
+                        <div class="compact-field-value cc-list">
+                            <mat-form-field class="full-width">
+                                <mat-label for="emailTemplateCC">CC Addresses</mat-label>
+                                <input autocomplete="off" [title]="emailDraftDetails.email_cc_addresses"
+                                    placeholder="CC Addresses" matInput
+                                    [(ngModel)]="emailDraftDetails.email_cc_addresses" id="emailTemplateCC"
+                                    placeholder="CC Addresses">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compact-row">
+                    <div class="compact-field cc-field">
+                        <div class="compact-field-header">
+                            <mat-icon class="field-icon-small">people</mat-icon>
+                            <span class="field-label-email">BCC:</span>
+                        </div>
+                        <div class="compact-field-value cc-list">
+                            <mat-form-field class="full-width">
+                                <mat-label for="emailTemplateBCC">BCC Addresses</mat-label>
+                                <input autocomplete="off" [title]="emailDraftDetails.email_bcc_addresses"
+                                    placeholder="BCC Addresses" matInput
+                                    [(ngModel)]="emailDraftDetails.email_bcc_addresses" id="emailTemplateBCC" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compact-row">
+                    <div class="compact-field subject-field">
+
+                        <div class="compact-field-header">
+                            <mat-icon class="field-icon-small">subject</mat-icon>
+                            <span class="field-label-small">Subject:</span>
+                        </div>
+                        <div class="compact-field-value subject-value">
+                            <mat-form-field class="full-width">
+                                <mat-label for="emailTemplateSubject">Email Subject</mat-label>
+                                <input autocomplete="off" [title]="emailDraftDetails.template_subject"
+                                    placeholder="Email Subject" matInput
+                                    [(ngModel)]="emailDraftDetails.template_subject" id="emailTemplateSubject" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Message Editor Section -->
+        <mat-card appearance="outlined" class="message-card">
+            <mat-card-header class="message-card-header">
+                <mat-card-title>
+                    <div class="compact-row">
+                        <mat-icon class="header-icon">message</mat-icon>
+                        <span>Message</span>
+                    </div>
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="message-card-content">
+                <div class="email-message-container">
+                    <div *ngIf="!isEditirDisabled" class="editor-actions">
+                        <div class="action-buttons">
+                            <button mat-flat-button type="button" (click)="saveEmailDraft()" class="save-btn"
+                                [disabled]="!hasUnsavedChanges">
+                                <mat-icon>save</mat-icon> Save Changes
+                            </button>
+                            <button mat-flat-button type="button" (click)="resetMessage()" class="reset-btn"
+                                [disabled]="!hasUnsavedChanges">
+                                <mat-icon>refresh</mat-icon> Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ckeditor-wrapper">
+                        <ckeditor [editor]="Editor" debounce="300"
+                            [(ngModel)]="emailDraftDetails.template_body"
+                            [config]="editorConfig" [disabled]="isEditirDisabled"
+                            (ready)="onEditorReady($event)" (change)="onEditorChange($event)"
+                            (focus)="onEditorFocus($event)" (blur)="onEditorBlur($event)">
+                        </ckeditor>
+                    </div>
+                    <div class="editor-stats" *ngIf="editorStats">
+                        <span class="stat-item">
+                            <mat-icon class="stat-icon">text_fields</mat-icon>
+                            <span class="stat-text">{{editorStats.characters}} chars</span>
+                        </span>
+                        <span class="stat-item">
+                            <mat-icon class="stat-icon">format_size</mat-icon>
+                            <span class="stat-text">{{editorStats.words}} words</span>
+                        </span>
+                        <span class="stat-item">Last modified: {{editorStats.lastModified | date:'short'}}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <div class="file-upload-section">
+            <label class="form-label">
+                <mat-icon class="label-icon">insert_drive_file</mat-icon>
+                Attach File
+            </label>
+            <div class="file-upload-row">
+                <input type="file" class="form-control" [disabled]="isSaving"
+                    (change)="onFileSelected($event)" #fileInput
+                    accept=".pdf, .doc, .docx, .xls, .xlsx, .jpg, .jpeg, .png, .txt">
+                <button mat-icon-button class="clear-file-btn" type="button"
+                    (click)="clearFileSelection(); fileInput.value=''" *ngIf="selectedFileName"
+                    aria-label="Clear file">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button mat-flat-button class="upload-btn" type="button"
+                    (click)="uploadFile()" [disabled]="!selectedFile || isSaving">
+                    <mat-icon>upload</mat-icon>
+                    Upload
+                </button>
+            </div>
+            <div class="file-name" *ngIf="selectedFileName">
+                {{selectedFileName}}
+                <span *ngIf="selectedFile"> ({{selectedFile.size | fileSize}})</span>
+            </div>
+            <small class="file-upload-hint">
+                <mat-icon class="hint-icon">info</mat-icon>
+                Max: 10MB | PDF, Word, Excel, Images, Text
+            </small>
+        </div>
+
+        <mat-card appearance="outlined" *ngIf="draftAttachments.length > 0" class="attachments-card">
+            <mat-card-header class="attachments-card-header">
+                <mat-card-title>
+                    <mat-icon>attach_file</mat-icon> Attachments ({{ draftAttachments.length }})
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="attachments-card-content">
+                <mat-list class="attachments-list">
+                    <mat-list-item *ngFor="let attachment of draftAttachments" class="attachment-item">
+                        <mat-icon matListItemIcon class="attachment-icon">insert_drive_file</mat-icon>
+                        <div matListItemTitle class="attachment-name">{{ attachment.file_name }}</div>
+                        <div matListItemLine class="attachment-size">Attachment {{ attachment.attach_srl }}</div>
+                        <button mat-icon-button (click)="downloadFile(attachment, 'editEmail')"
+                            [title]="'Download ' + attachment.file_name">
+                            <mat-icon>download</mat-icon>
+                        </button>
+                        <button *ngIf="isAddOrEdit" mat-icon-button color="warn"
+                            (click)="openConfirmDeleteFilePopup(attachment)"
+                            [title]="'Delete ' + attachment.file_name">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div *ngIf="pageName == 'viewdoc'" class="email-log-container">
+        <div class="content-wrapper">
+            <mat-card appearance="outlined" class="attachments-card">
+                <mat-card-header class="attachments-card-header">
+                    <mat-card-title>
+                        <mat-icon>attach_file</mat-icon>
+                        Attachments ({{ submissionDocsInfo?.length || 0 }})
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="attachments-card-content">
+                    <div *ngIf="isAddOrEdit && viewEditDoc == 'edit'" class="file-upload-section">
+                        <label class="form-label">
+                            <mat-icon class="label-icon">insert_drive_file</mat-icon>
+                            File Upload
+                        </label>
+                        <div class="file-upload-row file-upload-row--with-comment">
+                            <input type="file" class="form-control" multiple
+                                (change)="onMultipleFileSelected($event)" [disabled]="isSaving"
+                                #uploadOption
+                                accept=".pdf, .doc, .docx, .xls, .xlsx, .jpg, .jpeg, .png, .txt">
+                            <button mat-icon-button class="clear-file-btn" type="button"
+                                (click)="clearFileSelection(); uploadOption.value=''"
+                                *ngIf="selectedFileName" aria-label="Clear file">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-form-field appearance="outline" class="upload-comment-field">
+                                <mat-label>Comments</mat-label>
+                                <input matInput [(ngModel)]="txtComments" placeholder="Enter comments">
+                            </mat-form-field>
+                            <button mat-flat-button class="upload-btn" type="button"
+                                [disabled]="!selectedFile || isSaving" (click)="uploadFile()">
+                                <mat-icon>upload</mat-icon>
+                                Upload
+                            </button>
+                        </div>
+                        <div class="file-name" *ngIf="selectedFileName">
+                            {{selectedFileName}}
+                            <span *ngIf="selectedFile"> ({{selectedFile.size | fileSize}})</span>
+                        </div>
+                        <small class="file-upload-hint">
+                            <mat-icon class="hint-icon">info</mat-icon>
+                            Max: 10MB | PDF, Word, Excel, Images, Text
+                        </small>
+                    </div>
+
+                    <mat-list class="attachments-list" *ngIf="submissionDocsInfo?.length; else noDocs">
+                        <mat-list-item *ngFor="let attachment of submissionDocsInfo" class="attachment-item">
+                            <mat-icon matListItemIcon class="attachment-icon">insert_drive_file</mat-icon>
+                            <div matListItemTitle class="attachment-name">
+                                {{ attachment.doc_title || attachment.file_name || attachment.doc_url || 'Untitled' }}
+                            </div>
+                            <div matListItemLine class="attachment-size">
+                                {{ attachment.rvw_comments || attachment.doc_url || 'Attachment' }}
+                            </div>
+                            <button mat-icon-button (click)="downloadFile(attachment, 'viewdoc')"
+                                [title]="'Download ' + (attachment.file_name || attachment.doc_title)">
+                                <mat-icon>download</mat-icon>
+                            </button>
+                            <button *ngIf="isAddOrEdit && viewEditDoc == 'edit'" mat-icon-button color="warn"
+                                (click)="openConfirmDeleteFilePopup(attachment)"
+                                [title]="'Delete ' + (attachment.file_name || attachment.doc_title)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-list-item>
+                    </mat-list>
+                    <ng-template #noDocs>
+                        <div class="no-data-content">
+                            <mat-icon>insert_drive_file</mat-icon>
+                            <span class="no-data-text">No attachments found for this document.</span>
+                        </div>
+                    </ng-template>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    </div>
+
+    <div class="popup-footer">
+        <div class="popup-footer-actions">
+            <button *ngIf="showEmailDetail" mat-stroked-button class="back-btn" type="button"
+                (click)="backToEmailList()">
+                <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button *ngIf="isShowEmailDraftDetails" mat-stroked-button class="back-btn" type="button"
+                (click)="backToTemplateList()">
+                <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <ng-container *ngIf="pageName === 'overallComments' && !showEmailDetail && !isShowEmailDraftDetails">
+                <button mat-flat-button type="button" class="save-btn" (click)="saveOverallComment()"
+                    [disabled]="!selectedRole || !newComment.trim()">
+                    <mat-icon>save</mat-icon> Save
+                </button>
+                <button mat-flat-button type="button" class="reset-btn" (click)="resetCommentForm()">
+                    <mat-icon>refresh</mat-icon> Reset
+                </button>
+            </ng-container>
+        </div>
+        <button mat-stroked-button class="cancel-button" type="button" (click)="closeDialog()">Close</button>
+    </div>
+</div>

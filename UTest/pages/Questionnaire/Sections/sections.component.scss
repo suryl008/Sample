@@ -1,0 +1,28 @@
+@use 'styles/abstracts/variables' as *;
+
+.mat-column-emailTemplate {
+  white-space: break-spaces !important;
+}
+
+.table-responsive {
+  max-height: calc(100vh - 405px);
+}
+
+:host .tbl-width {
+  overflow: visible;
+}
+
+.section-label-cell {
+  overflow: visible;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  vertical-align: middle;
+}
+
+.section-label-field {
+  width: 100%;
+  min-width: 160px;
+  margin: 0;
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-container-vertical-padding: 8px;
+}

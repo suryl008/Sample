@@ -1,0 +1,57 @@
+<form [formGroup]="questionnaireForm">
+   <div class="col-lg-12">
+      <mat-form-field class="example-full-width col-lg-12" appearance="outline">
+         <mat-label>Instructions</mat-label>
+         <textarea formControlName="helpTxt" matInput placeholder="Enter instruction"></textarea>
+      </mat-form-field>
+   </div>
+   <div class="col-lg-12">
+      <div class="col-lg-9">
+         <label class="col-lg-6">Allow multiple instance</label>
+         <mat-slide-toggle formControlName="alloMultipleQuestionnaireInstances">
+         </mat-slide-toggle>
+      </div>
+   </div>
+   <div class="col-lg-12">
+      <div class="col-lg-12">
+         <mat-form-field appearance="outline" class="full-width">
+            <input matInput required [matAutocomplete]="auto" [formControl]="searchQuestionnaireCtrl"
+               placeholder="Min 3 Characters Ex. Ogs" />
+            <button *ngIf="selectedSearchQuestionnaire" matSuffix mat-icon-button aria-label="Clear"
+               (click)="clearSelection()">
+               <mat-icon>close</mat-icon>
+            </button>
+            <div style="margin-bottom: -30px">
+               <mat-icon style="margin-top: -2px" matSuffix></mat-icon>
+            </div>
+            <span matSuffix>
+               <mat-icon matSuffix>search</mat-icon>
+            </span>
+            <mat-label>Select Questionnaire</mat-label>
+            <mat-autocomplete [panelWidth]="670" #auto="matAutocomplete" [displayWith]="displayWith">
+               <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+               <ng-container *ngIf="!isLoading">
+                  <mat-option (click)="OnSelect(questionnaire)" *ngFor="let questionnaire of filteredQuestionnaire"
+                     [value]="questionnaire">
+                     <span><b>{{questionnaire.name}}</b>
+                        ({{questionnaire.questionnaireCode}})</span>
+                  </mat-option>
+               </ng-container>
+            </mat-autocomplete>
+         </mat-form-field>
+      </div>
+   </div>
+   <!-- <div class="col-lg-12">
+      <div class="col-lg-9">
+         <label class="col-lg-6">Allow multiple instance</label>
+         <mat-slide-toggle [labelPosition]="myLabelPosition" formControlName="alloMultipleInsCtrl">
+         </mat-slide-toggle>
+      </div>
+   </div> -->
+   <div class="col-lg-12" *ngIf="questionnaireForm.controls['alloMultipleQuestionnaireInstances'].value">
+      <mat-form-field class="example-full-width col-lg-12" appearance="outline">
+         <mat-label>Links to GEMS Light: Questionarie Field</mat-label>
+         <input matInput type="number" placeholder="Enter Field" formControlName="questionnaireFieldId">
+      </mat-form-field>
+   </div>
+</form>

@@ -1,0 +1,128 @@
+<div class="metadata-dialog consolidated-reviews-root">
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="header-left">
+      <h6 class="dialog-title">Metadata</h6>
+    </div>
+    <div class="header-actions">
+      <button (click)="toggleEditMode()" *ngIf="!isEdit" class="edit-btn" mat-button>
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+      <button (click)="toggleEditMode()" *ngIf="isEdit" class="cancel-btn" mat-button>
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+      <button (click)="saveMetaData()" *ngIf="isEdit" class="save-btn" mat-button [disabled]="!hasChanges || isSaving">
+        <mat-icon *ngIf="!isSaving">save</mat-icon>
+        <mat-spinner *ngIf="isSaving" diameter="18"></mat-spinner>
+        <span>{{isSaving ? 'Saving...' : 'Save'}}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Save Status -->
+  <div class="save-status" *ngIf="saveStatus" [class.success]="saveStatus.success" [class.error]="!saveStatus.success">
+    <mat-icon class="status-icon">{{saveStatus.success ? 'check_circle' : 'error'}}</mat-icon>
+    <span class="status-message">{{saveStatus.message}}</span>
+    <button mat-icon-button class="status-close" (click)="clearSaveStatus()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section" *ngIf="!isEdit">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search metadata" #input>
+      <mat-icon matPrefix>search</mat-icon>
+      <button mat-icon-button matSuffix *ngIf="input.value" (click)="clearFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div class="filter-info" *ngIf="filterValue">
+      <span class="filter-text">Results for: "{{filterValue}}"</span>
+      <button mat-button class="clear-filter-btn" (click)="clearFilter()">
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="table-container">
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" class="metadata-table" matSort>
+
+        <!-- Field Name Column -->
+        <ng-container matColumnDef="field_name">
+          <th mat-header-cell *matHeaderCellDef class="field-header" mat-sort-header>
+            Field Name
+          </th>
+          <td mat-cell *matCellDef="let element" class="field-cell">
+            <div class="field-content">
+              {{ element.field_name || '-' }}
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Merge Field Column -->
+        <ng-container matColumnDef="field_data">
+          <th mat-header-cell *matHeaderCellDef class="merge-header" mat-sort-header>
+            Merge Field
+          </th>
+          <td mat-cell *matCellDef="let element" class="merge-cell">
+            <div *ngIf="!isEdit" class="merge-content">
+              {{ element.field_data || '-' }}
+            </div>
+            <textarea *ngIf="isEdit" [(ngModel)]="element.field_data" (ngModelChange)="onFieldChange()"
+              placeholder="Enter merge field data" class="merge-textarea" rows="4"></textarea>
+          </td>
+        </ng-container>
+
+        <!-- No Data Row -->
+        <ng-container matColumnDef="noData">
+          <td mat-cell *matCellDef="let element" colspan="2" class="no-data-cell">
+            <div class="no-data-content">
+              <mat-icon>search_off</mat-icon>
+              <span>No results for "{{filterValue}}"</span>
+              <button mat-button class="clear-search-btn" (click)="clearFilter()">
+                Clear search
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Header Row -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <!-- Data Rows -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- No Data Row -->
+        <tr mat-row *matRowDef="let row; columns: noDataColumn" class="no-data-row"
+          [style.display]="dataSource.filteredData.length === 0 && filterValue ? '' : 'none'"></tr>
+
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="dataSource.data.length === 0 && !filterValue">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <h3>No metadata</h3>
+      <p>No metadata available</p>
+    </div>
+  </div>
+
+  <!-- Footer & Info -->
+  <div class="footer-section">
+    <div class="results-count" *ngIf="!isEdit">
+      {{dataSource.filteredData.length}} of {{dataSource.data.length}} entries
+      <span *ngIf="filterValue"> (filtered)</span>
+    </div>
+
+    <div class="dialog-footer" *ngIf="isEdit">
+      <span>Edit merge fields and click Save</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<app-landing-header [headerMenu]="headerMenu" [selectedIndex]="selectedIndex" (emitcurrentTabSelection)="getHeaderTabSelection($event)"></app-landing-header>
+<div class="d-height" [ngClass]="selectedPage == 'enhancedSearch' ? '' : 'dispnone'">
+    <app-enhanced-form-search (emitTabData)="emitTabData($event)"></app-enhanced-form-search>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'enhancedDetails'">
+    <app-enhanced-details [enhancedSelectedID]="enhancedSelectedID" (emitTabData)="emitTabData($event)" (emitEnhancedData)="emitEnhancedData($event)"></app-enhanced-details>
+</div>
+<div class="d-height" *ngIf="selectedPage == 'enhancedFormFieldList'">
+    <app-enhanced-form-list [enhancedSelectedID]="enhancedSelectedID" [enhancedSelectedData]="enhancedSelectedData" (emitTabData)="emitTabData($event)"></app-enhanced-form-list>
+</div>

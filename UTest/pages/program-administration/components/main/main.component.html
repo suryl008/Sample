@@ -1,0 +1,37 @@
+<div class="container-fluid program-detail-view program-admin-root">
+  <div class="row" *ngIf="isProgramView">
+    <div class="col-12 program-info-bar" id="program-info-bar">
+      <div *ngIf="program" class="program-info-bar__inner">
+        <h1 class="title-program">{{ program.grantPgmDesc }} ({{ program.grantPgm }})</h1>
+        <div class="review_type_section">
+          <mat-form-field appearance="outline" class="review-type-field" subscriptSizing="dynamic">
+            <mat-label>Review Type</mat-label>
+            <mat-select title="Select Review Type" (selectionChange)="changeReviewType($event)"
+              [value]="reviewType" name="review_type">
+              <mat-option *ngFor="let rvw of program.pgmRvwInfos" [value]="rvw.rvwType">
+                {{ rvw.rvwDesc }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-stroked-button type="button" (click)="navigateToAddNewReview()" class="add-new-review-btn">
+            <mat-icon aria-hidden="true">add</mat-icon>
+            Add New
+          </button>
+        </div>
+      </div>
+      <div *ngIf="!program" class="program-info-bar__inner">
+        <h5>Setup new Program</h5>
+      </div>
+    </div>
+  </div>
+  <div class="row program-content">
+    <div class="col-sm-3 col-md-3 col-lg-2 sidebar pl-0" *ngIf="isProgramView">
+      <program-sidebar></program-sidebar>
+    </div>
+    <div class="main" [ngClass]="{
+        'col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 col-lg-10 col-md-offset-1': isProgramView
+      }">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
