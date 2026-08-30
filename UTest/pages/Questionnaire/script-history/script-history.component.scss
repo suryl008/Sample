@@ -1,4 +1,0 @@
-@use 'styles/abstracts/variables' as *;
-
-:host { display: block; }
-:host ::ng-deep .ck-editor__editable_inline { min-height: 280px; font-family: "Courier New", Courier, monospace; }
