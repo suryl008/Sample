@@ -1,0 +1,53 @@
+.header nav ul li {
+  position: relative;
+  cursor: pointer;
+}
+
+.header nav ul li .nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  cursor: pointer;
+}
+
+.main-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: var(--line-height);
+  color: var(--color-primary);
+  background: transparent;
+}
+
+.main-nav .menu-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xl);
+  width: var(--text-xl);
+  height: var(--text-xl);
+  line-height: var(--text-xl);
+  overflow: visible;
+  color: inherit;
+  transition: transform var(--transition);
+}
+
+.main-nav .navbar-item.has-children .nav-link[aria-expanded="true"] .menu-arrow {
+  transform: rotate(180deg);
+}
+
+.main-nav .menuName {
+  color: inherit;
+  font: inherit;
+}
+
+.main-nav > ul > li.active > .nav-link,
+.main-nav > ul > li.active > .nav-link .menuName,
+.main-nav > ul > li.active > .nav-link .menu-arrow {
+  color: var(--color-accent);
+}

@@ -1,0 +1,85 @@
+export interface PendingTask {
+    rvwTaskId: number;
+    taskId: number;
+    taskDesc: string;
+    taskLinktopage?: string | null;
+    taskTab?: string | null;
+    appCode?: string | null;
+    pgmName?: string | null;
+    subRvwId?: number | null;
+    docListId?: number | null;
+    rvwStage?: string | null;
+    stageStat?: string | null;
+    rvwFindId?: number | null;
+    compPlanId?: string | null;
+    createDt?: string | null;
+    recStat?: string | null;
+    openAsModal?: string | null;
+    modalName?: string | null;
+    questionnaireResponseId?: number | null;
+    questionnaireCode?: string | null;
+    subRecCd?: string | null;
+    modalInstructions?: string | null;
+  }
+  
+  export interface AdminUserTaskClick {
+    id: string;
+    userId: number;
+    rvwTaskId: number;
+    recStat: string;
+    createDt: Date;
+  }
+
+ const data = applySort(this.dataSource?.filteredData ?? [], this.currentSort, {
+   sortableColumns: this.sortableColumnIds,
+ });
+
+const data = applySort(this.dataSource?.filteredData ?? [], this.currentSort, {
+  sortableColumns: this.sortableColumnIds
+});
+
+ return normalizeSortValue(getNestedValue(data, sortHeaderId));
+
+  sortData(sort: Sort): void {
+    try {
+      if (!sort?.active || sort.direction === "") {
+        return;
+      }
+
+      this.responseData.data = applySort(this.responseData.data, sort);
+    } catch (error) {
+      console.error("Failed to sort consolidated reviews", error);
+
+CdkMenuModule,
+
+chrome.css
+elements.css
+
+  <div class="results-header">
+      <mat-radio-group class="radio-group toolbar-radio-group"
+          aria-label="Filter questionnaires by record status"
+          [(ngModel)]="status">
+          <mat-radio-button (change)="changeStatus(list)" class="mat-radio-button"
+              *ngFor="let list of statusList" [value]="list">
+              {{list}}
+          </mat-radio-button>
+      </mat-radio-group>
+      <div class="search-filter-field">
+          <mat-form-field appearance="outline" class="ultra-thin-form-field search-field">
+              <mat-label>Filter</mat-label>
+              <input autocomplete="off" id="search" matInput placeholder="Search columns"
+                  (keyup)="applyFilter($event)" #input [(ngModel)]="searchFilter">
+              <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+      </div>
+      <div class="page-size-field" *ngIf="dataSource?.data?.length > 0">
+          <mat-form-field appearance="outline" class="ultra-thin-form-field">
+              <mat-label>Items per page</mat-label>
+              <mat-select [(value)]="currentPageSize" (selectionChange)="onPageSizeChange($event)">
+                  <mat-option *ngFor="let option of pageSizeOptionLabels"
+
+ color: var(--color-error);  class="cursor delete-icon"
+
+
+
+
